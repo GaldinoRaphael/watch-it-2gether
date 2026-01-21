@@ -8,4 +8,7 @@ export class SearchMoviesUseCase {
     async execute(query: string) {
         return this.movieGateway.search(query);
     }
+    async getById(externalId: string) {
+        return this.movieGateway.getById(externalId);
+    }
 }

@@ -14,4 +14,15 @@ export class MovieController {
             res.status(500).json({ error: 'Internal Server Error', errorMessage: (error as Error).message });
         }
     }
+
+    async getById(req: Request, res: Response) {
+        try {
+            console.log("Getting movie by ID", req.params.id);
+            const externalId = String(req.params.id);
+            const movie = await this.searchMoviesUseCase.getById(externalId);
+            return res.json(movie);
+        } catch (error) {
+            res.status(500).json({ error: 'Internal Server Error', errorMessage: (error as Error).message });
+        }
+    }
 }

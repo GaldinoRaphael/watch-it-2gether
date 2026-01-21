@@ -9,7 +9,6 @@ const instance = axios.create({
 export class IMDBApiClient implements MovieGateway {
 
     async search(query: string): Promise<MovieSummaryDTO[]> {
-
         try {
             const response = await instance.get('/search/titles', {
                 params: {
@@ -29,6 +28,15 @@ export class IMDBApiClient implements MovieGateway {
             });
             console.log('moviesSummary', moviesSummary);
             return moviesSummary;
+        } catch (error) {
+            throw new Error("Error fetching data from IMDB API");
+        }
+    }
+
+    async getById(externalId: string): Promise<any> {
+        try {
+            const response = await instance.get(`/titles/${externalId}`);
+            return response.data;
         } catch (error) {
             throw new Error("Error fetching data from IMDB API");
         }

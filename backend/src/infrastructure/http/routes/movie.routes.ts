@@ -10,5 +10,6 @@ const useCase = new SearchMoviesUseCase(gateway);
 const controller = new MovieController(useCase);
 
 router.get('/movies/search', (req, res) => controller.search(req, res));
+router.get('/movies/:id', (req, res) => controller.getById(req, res));
 
 export default router;
