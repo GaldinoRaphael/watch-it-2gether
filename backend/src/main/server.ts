@@ -1,9 +1,11 @@
 import express from "express"
 import movieRoutes from "../infrastructure/http/routes/movie.routes";
+import voteRoutes from "../infrastructure/http/routes/vote.routes";
 
 const app = express();
 app.use(express.json());
 app.use(movieRoutes);
+app.use(voteRoutes);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
