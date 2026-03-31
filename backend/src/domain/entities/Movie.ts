@@ -1,6 +1,5 @@
 import { MovieId } from "../value-objects/MovieId";
 import { ExternalMovieProps } from "../../infrastructure/http/mappers/ImdbMovieMapper";
-import { randomUUID } from "node:crypto";
 
 export class Movie {
     constructor(
@@ -9,18 +8,31 @@ export class Movie {
         readonly title: string,
         readonly year: string,
         readonly posterUrl?: string,
-        readonly createdAt?: string,
+        readonly createdAt: string = new Date().toISOString(),
         readonly provider = 'api.imdbapi.dev/'
     ) { }
 
-    static createdFromExternalData(props: ExternalMovieProps) {
+    static create(
+        externalId: string,
+        title: string,
+        year: string,
+        posterUrl?: string,
+    ): Movie {
         return new Movie(
             MovieId.generate(),
-            props.externalId,
-            props.title,
-            props.year,
-            props.poster,
-            new Date().toISOString()
+            externalId,
+            title,
+            year,
+            posterUrl,
+            new Date().toISOString(),
         );
+    }
+
+    getId(): string {
+        return this.id.getValue();
+    }
+
+    getCreatedAt(): string {
+        return this.createdAt;
     }
 }

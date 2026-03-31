@@ -12,12 +12,62 @@ datasource db {
   provider = "postgresql"
 }
 
-model Movie{
-  id String @id @default(uuid())
-  externalId String
-  title String
-  year String
-  posterUrl String
-  createdAt String
-  provider String
+model Movie {
+  id         String   @id @default(uuid())
+  externalId String   @unique
+  title      String
+  year       String
+  posterUrl  String?
+  provider   String?
+  createdAt  DateTime @default(now())
+
+  votes Vote[]
+}
+
+model User {
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  passwordHash String
+  createdAt    DateTime      @default(now())
+  ownedGroups  Group[]
+  votes        Vote[]
+  groups       GroupMember[]
+}
+
+model Group {
+  id        String        @id @default(uuid())
+  name      String
+  ownerId   String
+  owner     User          @relation(fields: [ownerId], references: [id])
+  members   GroupMember[]
+  createdAt DateTime      @default(now())
+  vote      Vote[]
+}
+
+model GroupMember {
+  id       String   @id @default(uuid())
+  groupId  String
+  userId   String
+  joinedAt DateTime @default(now())
+
+  group Group @relation(fields: [groupId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@unique([groupId, userId])
+}
+
+model Vote {
+  id        String   @id @default(uuid())
+  userId    String
+  groupId   String
+  movieId   String
+  rating    Float
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
+  movie Movie @relation(fields: [movieId], references: [id])
+
+  @@unique([userId, groupId, movieId])
 }

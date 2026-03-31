@@ -1,24 +1,21 @@
-import crypto from 'crypto';
+import { Id } from "./Id";
 
 export class VoteId {
-  private constructor(private readonly value: string) {}
+  constructor(private readonly id: Id) {}
 
   static create(value: string): VoteId {
-    if (!value || value.trim() === '') {
-      throw new Error('VoteId cannot be empty');
-    }
-    return new VoteId(value);
+    return new VoteId(Id.create(value));
   }
 
   static generate(): VoteId {
-    return new VoteId(crypto.randomUUID());
+    return new VoteId(Id.generate());
   }
 
-  get valueAsString(): string {
-    return this.value;
+  getValue(): string {
+    return this.id.getValue();
   }
 
   equals(other: VoteId): boolean {
-    return this.value === other.value;
+    return this.id.equals(other.id);
   }
 }

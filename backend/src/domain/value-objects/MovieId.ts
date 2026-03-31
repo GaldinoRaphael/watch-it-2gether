@@ -1,22 +1,22 @@
-export class MovieId{
-    private constructor(private readonly value: string) {}
+import { Id } from "./Id";
 
-    static create(value: string): MovieId {
-        if(!value || value.trim() === '') {
-            throw new Error('MovieId cannot be empty');
-        }
-        return new MovieId(value);
-    }
+export class MovieId {
+  constructor(private readonly id: Id) {}
 
-    static generate(): MovieId {
-        return new MovieId(crypto.randomUUID());
-    }
+  static create(value: string): MovieId {
+    return new MovieId(Id.create(value));
+  }
 
-    getValue(): string {
-        return this.value;
-    }
+  static generate(): MovieId {
+    return new MovieId(Id.generate());
+  }
 
-    equals(other: MovieId): boolean {
-        return this.value === other.value;
-    }
+  getValue(): string {
+    return this.id.getValue();
+  }
+
+  equals(other: MovieId): boolean {
+    return this.id.equals(other.id);
+  }
 }
+

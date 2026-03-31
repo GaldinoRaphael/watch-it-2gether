@@ -4,6 +4,7 @@ import { MovieRepository } from "../../ports/repositories/MovieRepository";
 import { VoteRepository } from "../../ports/repositories/VoteRepository";
 import { MovieGateway } from "../../domain/repositories/MovieGateway";
 import { ImdbMovieMapper } from "../../infrastructure/http/mappers/ImdbMovieMapper";
+import { UserId } from "../../domain/value-objects/UserId";
 import { VoteId } from "../../domain/value-objects/VoteId";
 
 interface Input {
@@ -28,9 +29,14 @@ export class VoteUseCase {
         const imdbMovie = await this.movieGateway.getById(externalId);
         const movieData = ImdbMovieMapper.toDomain(imdbMovie);
 
-        const movie = Movie.createdFromExternalData(movieData);
+        const movie = Movie.create(
+            movieData.externalId,
+            movieData.title,
+            movieData.year,
+            movieData.poster
+        );
 
-        const newVote = new Vote(VoteId.generate(), `1`, movie.id, rating);
+        const newVote = new Vote(VoteId.generate(), UserId.create(userId), movie.id, rating);
         
         await this.voteRepository.save(newVote);
 
