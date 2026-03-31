@@ -3,13 +3,14 @@ import { MovieSummaryDTO } from "../../application/dto/MovieSummaryDTO";
 import { MovieGateway } from "../../domain/repositories/MovieGateway";
 
 const instance = axios.create({
-    baseURL: 'http://api.imdbapi.dev/',
+    baseURL: 'https://api.imdbapi.dev/',
 });
 
 export class IMDBApiClient implements MovieGateway {
 
     async search(query: string): Promise<MovieSummaryDTO[]> {
         try {
+            console.log('Searching movies with query:', query);
             const response = await instance.get('/search/titles', {
                 params: {
                     query: query

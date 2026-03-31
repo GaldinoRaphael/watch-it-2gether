@@ -33,5 +33,7 @@ export class VoteUseCase {
         const newVote = new Vote(VoteId.generate(), `1`, movie.id, rating);
         
         await this.voteRepository.save(newVote);
+
+        return newVote;
     }
 }
