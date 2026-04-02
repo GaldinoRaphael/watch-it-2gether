@@ -1,9 +1,9 @@
 import { Movie } from "../../domain/entities/Movie";
 import { Vote } from "../../domain/entities/Vote";
-import { MovieRepository } from "../../ports/repositories/MovieRepository";
-import { VoteRepository } from "../../ports/repositories/VoteRepository";
+import { MovieRepository } from "../../ports/repositories/movie-repository";
+import { VoteRepository } from "../../ports/repositories/vote-repository";
 import { MovieGateway } from "../../domain/repositories/MovieGateway";
-import { ImdbMovieMapper } from "../../infrastructure/http/mappers/ImdbMovieMapper";
+import { ImdbMovieMapper } from "../../infrastructure/http/mappers/imdb-movie-mapper";
 import { UserId } from "../../domain/value-objects/UserId";
 import { Commentary } from "../../domain/entities/Commentary";
 import { GroupId } from "../../domain/value-objects/GroupId";

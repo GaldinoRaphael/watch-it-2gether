@@ -1,12 +1,15 @@
 import { MovieDTO } from "../../application/dto/MovieDTO";
 import { Movie } from "../../domain/entities/Movie";
-import { movieMapper } from "../../infrastructure/http/mappers/movieMapper";
-import { MovieRepository } from "./MovieRepository";
-import prisma from '../../infrastructure/database/prisma/client/prisma.service';
+import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
+import { movieMapper } from "../../infrastructure/http/mappers/movie-mapper";
+import { MovieRepository } from "./movie-repository";
 
 export class MovieRepositoryImpl implements MovieRepository {
+
+  constructor(readonly repositoryClient: PrismaService) {}
+  
   async getMovieByExternalId(externalId: string): Promise<MovieDTO | null> {
-    const movieData = await prisma.movie.findUnique({
+    const movieData = await this.repositoryClient.client.movie.findUnique({
       where: {
         externalId,
       },
@@ -18,7 +21,7 @@ export class MovieRepositoryImpl implements MovieRepository {
   }
 
   async save(movie: Movie): Promise<MovieDTO> {
-    const movieData = await prisma.movie.create({
+    const movieData = await this.repositoryClient.client.movie.create({
       data: {
         id: movie.getId(),
         externalId: movie.externalId,

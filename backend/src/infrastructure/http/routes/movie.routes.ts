@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { IMDBApiClient } from "../../gateways/IMDBApiClient";
-import { SearchMoviesUseCase } from "../../../application/useCases/SearchMoviesUseCase";
-import { MovieController } from "../controllers/MovieController";
+import { IMDBApiClient } from "../../gateways/imdb-api-client";
+import { SearchMoviesUseCase } from "../../../application/useCases/search-movie-use-case";
+import { MovieController } from "../controllers/movie-controller";
 
 const router = Router();
 

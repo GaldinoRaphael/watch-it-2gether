@@ -1,4 +1,4 @@
-import { VoteUseCase } from "../../../application/useCases/VoteUseCase";
+import { VoteUseCase } from "../../../application/useCases/vote-use-case";
 import { Request, Response } from "express";
 
 export class VoteController{

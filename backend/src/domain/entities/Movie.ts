@@ -1,5 +1,5 @@
 import { MovieId } from "../value-objects/MovieId";
-import { ExternalMovieProps } from "../../infrastructure/http/mappers/ImdbMovieMapper";
+import { ExternalMovieProps } from "../../infrastructure/http/mappers/imdb-movie-mapper";
 
 export class Movie {
     constructor(

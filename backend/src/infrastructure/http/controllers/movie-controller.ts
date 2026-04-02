@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { SearchMoviesUseCase } from "../../../application/useCases/SearchMoviesUseCase";
+import { SearchMoviesUseCase } from "../../../application/useCases/search-movie-use-case";
 
 export class MovieController {
     constructor(private searchMoviesUseCase: SearchMoviesUseCase) {}

@@ -1,13 +1,14 @@
 import { Commentary } from "../../domain/entities/Commentary";
 import { Vote } from "../../domain/entities/Vote";
-import { GroupId } from "../../domain/value-objects/GroupId";
-import { MovieId } from "../../domain/value-objects/MovieId";
-import { VoteRepository } from "./VoteRepository";
-import prisma from '../../infrastructure/database/prisma/client/prisma.service';
+import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
+import { VoteRepository } from "./vote-repository";
 
 export class VoteRepositoryImpl implements VoteRepository {
+
+    constructor(readonly repositoryClient: PrismaService) {}
+
     async saveComplete(newVote: Vote, newCommentary: Commentary): Promise<unknown> {
-        return await prisma.vote.create({data: {
+        return await this.repositoryClient.client.vote.create({data: {
             id: newVote.getId(),
             group: { connect: { id: newVote.getGroupId() } },
             user: { connect: { id: newVote.getUserId() } },
