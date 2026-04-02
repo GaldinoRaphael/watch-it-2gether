@@ -1,8 +1,9 @@
 export class MovieDTO {
   constructor(
-    public readonly id: string,
-    public readonly title: string,
-    public readonly year: string,
-    public readonly rating?: number,
+        readonly id: string,
+        readonly externalId: string,
+        readonly title: string,
+        readonly year: string,
+        readonly posterUrl?: string,
   ) {}
 }

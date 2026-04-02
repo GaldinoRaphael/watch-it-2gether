@@ -3,5 +3,6 @@ import { Movie } from "../../domain/entities/Movie";
 
 export interface MovieRepository {
     save(movie: Movie): Promise<MovieDTO>;
+    getMovieByExternalId(externalId: string): Promise<MovieDTO | null>;
 }
 

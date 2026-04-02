@@ -5,7 +5,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../src/infrastructure/database/prisma/generated"
 }
 
 datasource db {
@@ -33,6 +33,7 @@ model User {
   ownedGroups  Group[]
   votes        Vote[]
   groups       GroupMember[]
+  commentary   Commentary[]
 }
 
 model Group {
@@ -57,11 +58,23 @@ model GroupMember {
   @@unique([groupId, userId])
 }
 
+model Commentary {
+  id String @id @default(uuid())
+  userId String
+  voteId String
+  content String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+  vote Vote @relation(fields: [voteId], references: [id])
+}
+
 model Vote {
   id        String   @id @default(uuid())
   userId    String
   groupId   String
   movieId   String
+  commentary Commentary[]
   rating    Float
   createdAt DateTime @default(now())
 

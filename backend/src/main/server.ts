@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from "express"
 import movieRoutes from "../infrastructure/http/routes/movie.routes";
 import voteRoutes from "../infrastructure/http/routes/vote.routes";

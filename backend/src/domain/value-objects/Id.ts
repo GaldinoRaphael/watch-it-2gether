@@ -4,7 +4,7 @@ export class Id {
     private constructor(private readonly value: string) {}
 
     static create(value: string): Id {
-        if (!value || value.trim() === '') {
+        if (!value) {
             throw new Error('Id cannot be empty');
         }
         return new Id(value);
