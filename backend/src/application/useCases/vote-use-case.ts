@@ -1,5 +1,5 @@
-import { Movie } from "../../domain/entities/Movie";
-import { Vote } from "../../domain/entities/Vote";
+import { MovieEntity } from "../../domain/entities/movie-entity";
+import { VoteEntity } from "../../domain/entities/vote-entity";
 import { MovieRepository } from "../../ports/repositories/movie-repository";
 import { VoteRepository } from "../../ports/repositories/vote-repository";
 import { MovieGateway } from "../../domain/repositories/MovieGateway";
@@ -38,7 +38,7 @@ export class VoteUseCase {
         const movieInternalId = MovieId.create(movie.id);
 
         const newCommentary = Commentary.create(userInternalId, movieInternalId, commentary);
-        const newVote = Vote.create(userInternalId, groupInternalId, movieInternalId, rating, newCommentary.id);
+        const newVote = VoteEntity.create(userInternalId, groupInternalId, movieInternalId, rating, newCommentary.id);
         
         await this.voteRepository.saveComplete(newVote, newCommentary);
 
@@ -49,7 +49,7 @@ export class VoteUseCase {
         const imdbMovie = await this.movieGateway.getById(externalId);
         const movieData = ImdbMovieMapper.toDomain(imdbMovie);
 
-        const movie = Movie.create(
+        const movie = MovieEntity.create(
             movieData.externalId,
             movieData.title,
             movieData.year,

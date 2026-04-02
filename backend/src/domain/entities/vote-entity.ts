@@ -5,7 +5,7 @@ import { Commentary } from "./Commentary";
 import { CommentaryId } from "../value-objects/CommentaryId";
 import { GroupId } from "../value-objects/GroupId";
 
-export class Vote {
+export class VoteEntity {
     constructor(
         readonly id: VoteId,
         readonly userId: UserId,
@@ -20,8 +20,8 @@ export class Vote {
         }
     }
 
-    static create(userId: UserId, groupId: GroupId, movieId: MovieId, rating: number, commentaryId: CommentaryId): Vote {
-        return new Vote(VoteId.generate(), userId, groupId, movieId, rating, commentaryId);
+    static create(userId: UserId, groupId: GroupId, movieId: MovieId, rating: number, commentaryId: CommentaryId): VoteEntity {
+        return new VoteEntity(VoteId.generate(), userId, groupId, movieId, rating, commentaryId);
     }
 
     getId(): string {

@@ -1,8 +1,10 @@
+import { VoteDTO } from "../../application/dto/VoteDTO";
 import { Commentary } from "../../domain/entities/Commentary";
-import { Vote } from "../../domain/entities/Vote";
+import { VoteEntity } from "../../domain/entities/vote-entity";
 import { GroupId } from "../../domain/value-objects/GroupId";
 import { MovieId } from "../../domain/value-objects/MovieId";
+import { Repository } from "./repository";
 
-export interface VoteRepository {
-    saveComplete(newVote: Vote, newCommentary: Commentary): unknown;
+export interface VoteRepository extends Repository<VoteDTO> {
+    saveComplete(newVote: VoteEntity, newCommentary: Commentary): unknown;
 }

@@ -1,7 +1,7 @@
 import { CommentaryId } from "../value-objects/CommentaryId";
 import { MovieId } from "../value-objects/MovieId";
 import { UserId } from "../value-objects/UserId";
-import { Movie } from "./Movie";
+import { MovieEntity } from "./movie-entity";
 import { User } from "./User";
 
 export class Commentary {

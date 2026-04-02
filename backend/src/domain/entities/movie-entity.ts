@@ -1,7 +1,7 @@
 import { MovieId } from "../value-objects/MovieId";
 import { ExternalMovieProps } from "../../infrastructure/http/mappers/imdb-movie-mapper";
 
-export class Movie {
+export class MovieEntity {
     constructor(
         readonly id: MovieId,
         readonly externalId: string,
@@ -17,8 +17,8 @@ export class Movie {
         title: string,
         year: string,
         posterUrl?: string,
-    ): Movie {
-        return new Movie(
+    ): MovieEntity {
+        return new MovieEntity(
             MovieId.generate(),
             externalId,
             title,

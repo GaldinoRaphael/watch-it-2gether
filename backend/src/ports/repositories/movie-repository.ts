@@ -1,8 +1,8 @@
 import { MovieDTO } from "../../application/dto/MovieDTO";
-import { Movie } from "../../domain/entities/Movie";
+import { MovieEntity } from "../../domain/entities/movie-entity";
+import { Repository } from "./repository";
 
-export interface MovieRepository {
-    save(movie: Movie): Promise<MovieDTO>;
+export interface MovieRepository extends Repository<MovieDTO> {
     getMovieByExternalId(externalId: string): Promise<MovieDTO | null>;
 }
 
