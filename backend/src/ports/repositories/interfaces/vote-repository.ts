@@ -1,6 +1,6 @@
 
 import { VoteDTO } from "../../../application/dto/VoteDTO";
-import { Commentary } from "../../../domain/entities/Commentary";
+import { Commentary } from "../../../domain/entities/commentary-entity";
 import { VoteEntity } from "../../../domain/entities/vote-entity";
 import { Repository } from "./repository";
 

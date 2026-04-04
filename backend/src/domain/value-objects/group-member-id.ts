@@ -1,4 +1,4 @@
-import { Id } from "./Id";
+import { Id } from "./id";
 
 export class GroupMemberId {
   constructor(private readonly id: Id) {}

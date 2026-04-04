@@ -1,5 +1,5 @@
-import { MovieId } from "../value-objects/MovieId";
-import { ExternalMovieProps } from "../../infrastructure/http/mappers/imdb-movie-mapper";
+import { MovieId } from "../value-objects/movie-id";
+import { assertDefined, assertNonEmptyString, assertValidDateString } from "./entity-validation";
 
 export class MovieEntity {
     constructor(
@@ -10,7 +10,14 @@ export class MovieEntity {
         readonly posterUrl?: string,
         readonly createdAt: string = new Date().toISOString(),
         readonly provider = 'api.imdbapi.dev/'
-    ) { }
+    ) {
+        assertDefined(id, "Movie id");
+        assertNonEmptyString(externalId, "Movie externalId");
+        assertNonEmptyString(title, "Movie title");
+        assertNonEmptyString(year, "Movie year");
+        assertValidDateString(createdAt, "Movie createdAt");
+        assertNonEmptyString(provider, "Movie provider");
+    }
 
     static create(
         externalId: string,

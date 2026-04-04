@@ -1,5 +1,5 @@
-import { CommentaryId } from "../../domain/value-objects/CommentaryId";
-import { VoteId } from "../../domain/value-objects/VoteId";
+import { CommentaryId } from "../../domain/value-objects/commentary-id";
+import { VoteId } from "../../domain/value-objects/vote-id";
 import { VoteRepository } from "../../ports/repositories/interfaces/vote-repository";
 import { VoteDTO } from "../dto/VoteDTO";
 

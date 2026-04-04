@@ -1,5 +1,6 @@
-import { GroupId } from "../value-objects/GroupId";
-import { User } from "./User";
+import { GroupId } from "../value-objects/group-id";
+import { assertDefined, assertNonEmptyString, assertValidDateString } from "./entity-validation";
+import { User } from "./user";
 
 export class Group {
     constructor(
@@ -7,7 +8,12 @@ export class Group {
         public readonly name: string,
         public readonly owner: User,
         public readonly createdAt: string,
-    ) {}
+    ) {
+        assertDefined(id, "Group id");
+        assertNonEmptyString(name, "Group name");
+        assertDefined(owner, "Group owner");
+        assertValidDateString(createdAt, "Group createdAt");
+    }
 
     static create(name: string, owner: User): Group {
         const id = GroupId.generate();

@@ -1,5 +1,5 @@
 import { VoteDTO } from "../../application/dto/VoteDTO";
-import { Commentary } from "../../domain/entities/Commentary";
+import { Commentary } from "../../domain/entities/commentary-entity";
 import { VoteEntity } from "../../domain/entities/vote-entity";
 import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
 import { VoteMapper } from "../../infrastructure/http/mappers/vote-mapper";

@@ -1,6 +1,7 @@
-import { CommentaryId } from "../value-objects/CommentaryId";
-import { UserId } from "../value-objects/UserId";
-import { VoteId } from "../value-objects/VoteId";
+import { CommentaryId } from "../value-objects/commentary-id";
+import { UserId } from "../value-objects/user-id";
+import { VoteId } from "../value-objects/vote-id";
+import { assertDefined, assertNonEmptyString, assertValidDateString } from "./entity-validation";
 
 export class Commentary {
     constructor(
@@ -10,6 +11,11 @@ export class Commentary {
         public readonly content: string,
         public readonly createdAt: string,
     ) {
+        assertDefined(id, "Commentary id");
+        assertDefined(userId, "Commentary userId");
+        assertDefined(voteId, "Commentary voteId");
+        assertNonEmptyString(content, "Commentary content");
+        assertValidDateString(createdAt, "Commentary createdAt");
     }
 
     static create(userId: UserId, voteId: VoteId, content: string, id = CommentaryId.generate()): Commentary {
