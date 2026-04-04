@@ -1,8 +1,8 @@
 import { MovieDTO } from "../../application/dto/MovieDTO";
-import { MovieEntity } from "../../domain/entities/movie-entity";
 import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
 import { movieMapper } from "../../infrastructure/http/mappers/movie-mapper";
-import { MovieRepository } from "./movie-repository";
+import { MovieRepository } from "./interfaces/movie-repository";
+
 
 export class MovieRepositoryImpl implements MovieRepository {
 

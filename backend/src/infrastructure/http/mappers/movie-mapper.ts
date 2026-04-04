@@ -1,7 +1,19 @@
 import { MovieDTO } from "../../../application/dto/MovieDTO";
+import { MovieEntity } from "../../../domain/entities/movie-entity";
 import { Movie } from "../../database/prisma/generated";
 
 export class movieMapper {
+    static entityToDTO(movie: MovieEntity) {
+        return new MovieDTO(
+            movie.getId(),
+            movie.externalId,
+            movie.title,
+            movie.year,
+            movie.posterUrl ?? undefined,
+            movie.getCreatedAt()
+        );
+    }
+
     static toDTO(movie: Movie): MovieDTO {
         return new MovieDTO(
             movie.id,

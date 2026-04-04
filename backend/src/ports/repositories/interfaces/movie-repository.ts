@@ -1,5 +1,4 @@
-import { MovieDTO } from "../../application/dto/MovieDTO";
-import { MovieEntity } from "../../domain/entities/movie-entity";
+import { MovieDTO } from "../../../application/dto/MovieDTO";
 import { Repository } from "./repository";
 
 export interface MovieRepository extends Repository<MovieDTO> {

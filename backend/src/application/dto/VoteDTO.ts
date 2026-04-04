@@ -6,6 +6,7 @@ export class VoteDTO {
         readonly movieId: string,
         readonly rating: number,
         readonly commentaryId: string,
+        readonly commentary: string,
         readonly createdAt: string = new Date().toISOString(),
     ) {
     }

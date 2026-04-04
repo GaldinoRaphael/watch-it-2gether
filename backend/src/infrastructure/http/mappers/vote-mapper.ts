@@ -1,9 +1,24 @@
 import { VoteDTO } from "../../../application/dto/VoteDTO";
-import { Vote } from "../../database/prisma/generated";
+import { Commentary, Vote } from "../../database/prisma/generated";
+
+type VoteWithCommentary = Vote & {
+    commentary: Commentary[];
+};
 
 export class VoteMapper {
-    static modelToDto(vote: Vote): VoteDTO{
-        return new VoteDTO(vote.id, vote.userId, vote.groupId, vote.movieId, vote.rating, vote.createdAt.toISOString());
+    static modelToDto(vote: VoteWithCommentary): VoteDTO{
+        const commentary = vote.commentary[0];
+
+        return new VoteDTO(
+            vote.id,
+            vote.userId,
+            vote.groupId,
+            vote.movieId,
+            vote.rating,
+            commentary?.id ?? "",
+            commentary?.content ?? "",
+            vote.createdAt.toISOString(),
+        );
     }
 
     static dtoToModel(voteDTO: VoteDTO): Vote {
