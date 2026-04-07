@@ -1,7 +1,7 @@
 import { GroupMemberId } from "../value-objects/group-member-id";
 import { GroupId } from "../value-objects/group-id";
 import { UserId } from "../value-objects/user-id";
-import { assertDefined, assertValidDateString } from "./entity-validation";
+import { assertDefined, assertValidDateString } from "./validations/entity-validation";
 
 export class GroupMember {
     constructor(

@@ -1,5 +1,5 @@
 import { UserId } from "../value-objects/user-id";
-import { assertDefined, assertEmailFormat, assertNonEmptyString, assertValidDateString } from "./entity-validation";
+import { assertDefined, assertEmailFormat, assertNonEmptyString, assertValidDateString } from "./validations/entity-validation";
 
 export class User {
     constructor(

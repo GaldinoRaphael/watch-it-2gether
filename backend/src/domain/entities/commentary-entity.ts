@@ -1,7 +1,7 @@
 import { CommentaryId } from "../value-objects/commentary-id";
 import { UserId } from "../value-objects/user-id";
 import { VoteId } from "../value-objects/vote-id";
-import { assertDefined, assertNonEmptyString, assertValidDateString } from "./entity-validation";
+import { assertDefined, assertNonEmptyString, assertValidDateString } from "./validations/entity-validation";
 
 export class Commentary {
     constructor(

@@ -1,5 +1,5 @@
 import { GroupId } from "../value-objects/group-id";
-import { assertDefined, assertNonEmptyString, assertValidDateString } from "./entity-validation";
+import { assertDefined, assertNonEmptyString, assertValidDateString } from "./validations/entity-validation";
 import { User } from "./user";
 
 export class Group {

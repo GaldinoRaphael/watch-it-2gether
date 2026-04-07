@@ -3,7 +3,7 @@ import { UserId } from "../value-objects/user-id";
 import { MovieId } from "../value-objects/movie-id";
 import { CommentaryId } from "../value-objects/commentary-id";
 import { GroupId } from "../value-objects/group-id";
-import { assertDefined, assertValidDateString } from "./entity-validation";
+import { assertDefined, assertValidDateString } from "./validations/entity-validation";
 
 export class VoteEntity {
     constructor(

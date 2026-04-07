@@ -1,5 +1,5 @@
 import { MovieId } from "../value-objects/movie-id";
-import { assertDefined, assertNonEmptyString, assertValidDateString } from "./entity-validation";
+import { assertDefined, assertNonEmptyString, assertValidDateString } from "./validations/entity-validation";
 
 export class MovieEntity {
     constructor(
