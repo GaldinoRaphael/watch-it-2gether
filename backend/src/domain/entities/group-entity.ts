@@ -1,12 +1,12 @@
 import { GroupId } from "../value-objects/group-id";
 import { assertDefined, assertNonEmptyString, assertValidDateString } from "./validations/entity-validation";
-import { User } from "./user";
+import { UserEntity } from "./user-entity";
 
-export class Group {
+export class GroupEntity {
     constructor(
         public readonly id: GroupId,
         public readonly name: string,
-        public readonly owner: User,
+        public readonly owner: UserEntity,
         public readonly createdAt: string,
     ) {
         assertDefined(id, "Group id");
@@ -15,9 +15,9 @@ export class Group {
         assertValidDateString(createdAt, "Group createdAt");
     }
 
-    static create(name: string, owner: User): Group {
+    static create(name: string, owner: UserEntity): GroupEntity {
         const id = GroupId.generate();
-        return new Group(id, name, owner, new Date().toISOString());
+        return new GroupEntity(id, name, owner, new Date().toISOString());
     }
 
     getId(): string {

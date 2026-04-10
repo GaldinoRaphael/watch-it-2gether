@@ -24,7 +24,7 @@ export class movieMapper {
         );
     }
 
-    static dtoToModel(movieDTO: MovieDTO): Movie {
+    static toDomain(movieDTO: MovieDTO): Movie {
         return {
             id: movieDTO.id,
             externalId: movieDTO.externalId,
@@ -36,3 +36,4 @@ export class movieMapper {
         };
     }
 }
+

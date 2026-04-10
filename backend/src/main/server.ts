@@ -6,12 +6,14 @@ import voteRoutes from "../infrastructure/http/routes/vote.routes";
 import { prismaService } from '../infrastructure/database/prisma/client/prisma.service';
 import swaggerUi from "swagger-ui-express";
 import openapiSpecification from '../docs/swagger';
+import userRoutes from '../infrastructure/http/routes/user.routes';
 
 const app = express();
 app.use(express.json());
 app.use(groupRoutes);
 app.use(movieRoutes);
 app.use(voteRoutes);
+app.use(userRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 

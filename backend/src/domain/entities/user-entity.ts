@@ -1,7 +1,7 @@
 import { UserId } from "../value-objects/user-id";
 import { assertDefined, assertEmailFormat, assertNonEmptyString, assertValidDateString } from "./validations/entity-validation";
 
-export class User {
+export class UserEntity {
     constructor(
         readonly id: UserId,
         readonly name: string,
@@ -19,8 +19,8 @@ export class User {
     }
   }
 
-    static create(name: string, email: string, passwordHash: string): User {
-      return new User(UserId.generate(), name, email, new Date().toISOString(), passwordHash);
+    static create(name: string, email: string, passwordHash: string): UserEntity {
+      return new UserEntity(UserId.generate(), name, email, new Date().toISOString(), passwordHash);
     }
 
     getId(): string {

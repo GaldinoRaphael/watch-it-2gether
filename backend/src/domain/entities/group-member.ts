@@ -3,7 +3,7 @@ import { GroupId } from "../value-objects/group-id";
 import { UserId } from "../value-objects/user-id";
 import { assertDefined, assertValidDateString } from "./validations/entity-validation";
 
-export class GroupMember {
+export class GroupMemberEntity {
     constructor(
         public readonly id: GroupMemberId,
         public readonly groupId: GroupId,
@@ -16,8 +16,8 @@ export class GroupMember {
         assertValidDateString(joinedAt, "GroupMember joinedAt");
     }
 
-    static create(groupId: GroupId, userId: UserId): GroupMember {
-        return new GroupMember(GroupMemberId.generate(), groupId, userId, new Date().toISOString());
+    static create(groupId: GroupId, userId: UserId): GroupMemberEntity {
+        return new GroupMemberEntity(GroupMemberId.generate(), groupId, userId, new Date().toISOString());
     }
 
     getId(): string {
