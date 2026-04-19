@@ -16,19 +16,25 @@ export class UserMapper {
 
     static toResponseDTO(user: UserEntity): UserResponseDTO {
         return new UserResponseDTO(
-            user.getId(),
-            user.name,
-            user.email,
-            user.createdAt
+            {
+                id: user.getId(),
+                name: user.name,
+                email: user.email,
+                createdAt: user.createdAt
+            },
+            ""
         );
     }
 
     static dtoToResponseDTO(userDTO: UserDTO): UserResponseDTO {
         return new UserResponseDTO(
-            userDTO.id,
-            userDTO.name,
-            userDTO.email,
-            userDTO.createdAt
+            {
+                id: userDTO.id,
+                name: userDTO.name,
+                email: userDTO.email,
+                createdAt: userDTO.createdAt
+            },
+            ""
         );
     }
 

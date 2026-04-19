@@ -6,4 +6,8 @@ export class Bcrypter implements IPasswordHasher {
        const rounds = 10;
        return bcrypt.hash(password, rounds);
     }
+
+    compare(password: string, hash: string): Promise<boolean> {
+        return bcrypt.compare(password, hash);
+    }
 }

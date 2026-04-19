@@ -16,7 +16,6 @@ export class RegisterUseCase {
 
     async execute({ name, email, password }: RegisterInput) {
         const passwordHash = await this.passwordHasher.hash(password);
-        const userDTO = await this.userRepository.create(name, email, passwordHash);
-        return UserMapper.dtoToResponseDTO(userDTO);
+        return await this.userRepository.create(name, email, passwordHash);
     }
 }
