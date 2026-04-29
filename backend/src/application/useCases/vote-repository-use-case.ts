@@ -1,6 +1,6 @@
 import { CommentaryId } from "../../domain/value-objects/commentary-id";
 import { VoteId } from "../../domain/value-objects/vote-id";
-import { VoteRepository } from "../../ports/repositories/interfaces/vote-repository";
+import { VoteRepository } from "../../ports/repositories/vote-repository";
 import { VoteDTO } from "../dto/VoteDTO";
 
 export interface CreateVoteInput {

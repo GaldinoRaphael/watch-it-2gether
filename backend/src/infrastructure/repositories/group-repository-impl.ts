@@ -1,25 +1,24 @@
-import { GroupDTO } from "../../application/dto/GroupDTO";
 import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
-import { groupMapper } from "../../infrastructure/http/mappers/group-mapper";
-import { GroupRepository } from "./interfaces/group-repository";
+import { GroupRepository } from "../../ports/repositories/group-repository";
+import { Group } from "../database/prisma/generated";
 
 export class GroupRepositoryImpl implements GroupRepository {
     constructor(readonly repositoryClient: PrismaService) {}
 
-    async getByID(id: string): Promise<GroupDTO | null> {
+    async getByID(id: string): Promise<Group | null> {
         const group = await this.repositoryClient.client.group.findUnique({
             where: { id },
         });
 
-        return group ? groupMapper.toDTO(group) : null;
+        return group ? group : null;
     }
 
-    async getAll(): Promise<GroupDTO[]> {
+    async getAll(): Promise<Group[]> {
         const groups = await this.repositoryClient.client.group.findMany();
-        return groups.map(groupMapper.toDTO);
+        return groups;
     }
 
-    async save(entity: GroupDTO): Promise<GroupDTO> {
+    async save(entity: Group): Promise<Group> {
         const group = await this.repositoryClient.client.group.create({
             data: {
                 id: entity.id,
@@ -29,10 +28,10 @@ export class GroupRepositoryImpl implements GroupRepository {
             },
         });
 
-        return groupMapper.toDTO(group);
+        return group;
     }
 
-    async update(id: string, entity: GroupDTO): Promise<GroupDTO> {
+    async update(id: string, entity: Group): Promise<Group> {
         const group = await this.repositoryClient.client.group.update({
             where: { id },
             data: {
@@ -42,7 +41,7 @@ export class GroupRepositoryImpl implements GroupRepository {
             },
         });
 
-        return groupMapper.toDTO(group);
+        return group;
     }
 
     async delete(id: string): Promise<void> {

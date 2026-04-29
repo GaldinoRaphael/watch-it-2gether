@@ -1,6 +1,5 @@
-import { UserMapper } from "../../infrastructure/http/mappers/user-mapper";
 import { IPasswordHasher } from "../../ports/cryptography/password-hasher";
-import { UserRepository } from "../../ports/repositories/interfaces/user-repository";
+import { UserRepository } from "../../ports/repositories/user-repository";
 
 interface RegisterInput {
     name: string;

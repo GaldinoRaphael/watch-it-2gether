@@ -1,38 +1,46 @@
-import { VoteDTO } from "../../application/dto/VoteDTO";
 import { Commentary } from "../../domain/entities/commentary-entity";
 import { VoteEntity } from "../../domain/entities/vote-entity";
 import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
 import { VoteMapper } from "../../infrastructure/http/mappers/vote-mapper";
-import { VoteRepository } from "./interfaces/vote-repository";
+import { VoteRepository } from "../../ports/repositories/vote-repository";
+import { Vote } from "../database/prisma/generated";
 
 export class VoteRepositoryImpl implements VoteRepository {
 
     constructor(readonly repositoryClient: PrismaService) {}
 
 
-    async getByID(id: string): Promise<VoteDTO | null> {
+    async getByID(id: string): Promise<Vote | null> {
         const vote = await this.repositoryClient.client.vote.findUnique({ where: { id }, include: { commentary: true } });
-        return vote ? VoteMapper.modelToDto(vote) : null;
+
+        if(!vote) {
+            return null;
+        }
+        return vote;
     }
-    async getAll(): Promise<VoteDTO[]> {
+
+    async getAll(): Promise<Vote[]> {
         const votes = await this.repositoryClient.client.vote.findMany({ include: { commentary: true } });
-        return votes.map(VoteMapper.modelToDto);
+        return votes;
     }
-    async save(entity: VoteDTO): Promise<VoteDTO> {
+
+    async save(entity: Vote): Promise<Vote> {
         const savedVote = await this.repositoryClient.client.vote.create({
-            data: VoteMapper.dtoToModel(entity),
+            data: entity,
             include: { commentary: true },
         });
-        return VoteMapper.modelToDto(savedVote);
+        return savedVote;
     }
-    async update(id: string, entity: VoteDTO): Promise<VoteDTO> {
+
+    async update(id: string, entity: Vote): Promise<Vote> {
         const updatedVote = await this.repositoryClient.client.vote.update({
             where: { id },
-            data: VoteMapper.dtoToModel(entity),
+            data: entity,
             include: { commentary: true },
         });
-        return VoteMapper.modelToDto(updatedVote);
+        return updatedVote;
     }
+
     async delete(id: string): Promise<void> {
         await this.repositoryClient.client.$transaction([
             this.repositoryClient.client.commentary.deleteMany({ where: { voteId: id } }),
@@ -40,8 +48,8 @@ export class VoteRepositoryImpl implements VoteRepository {
         ]);
     }
 
-    async saveComplete(newVote: VoteEntity, newCommentary: Commentary): Promise<unknown> {
-        return await this.repositoryClient.client.vote.create({data: {
+    async saveComplete(newVote: VoteEntity, newCommentary: Commentary): Promise<Vote> {
+        const voteSaved = await this.repositoryClient.client.vote.create({data: {
             id: newVote.getId(),
             group: { connect: { id: newVote.getGroupId() } },
             user: { connect: { id: newVote.getUserId() } },
@@ -56,10 +64,12 @@ export class VoteRepositoryImpl implements VoteRepository {
                     createdAt: newCommentary.createdAt
                 }
             }
-        }});  
+        }, include: { commentary: true } });  
+
+        return voteSaved;
     }
 
-    async updateComplete(voteId: string, rating: number, updatedCommentary: Commentary): Promise<VoteDTO> {
+    async updateComplete(voteId: string, rating: number, updatedCommentary: Commentary): Promise<Vote> {
         const voteUpdated = await this.repositoryClient.client.vote.update({
             where: { id: voteId },
             data: {
@@ -76,6 +86,6 @@ export class VoteRepositoryImpl implements VoteRepository {
             include: { commentary: true },
         });
 
-        return VoteMapper.modelToDto(voteUpdated);
+        return voteUpdated;
     }   
 }

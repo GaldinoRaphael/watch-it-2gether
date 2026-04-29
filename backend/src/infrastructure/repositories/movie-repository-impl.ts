@@ -1,29 +1,32 @@
-import { MovieDTO } from "../../application/dto/MovieDTO";
 import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
-import { movieMapper } from "../../infrastructure/http/mappers/movie-mapper";
-import { MovieRepository } from "./interfaces/movie-repository";
+import { MovieRepository } from "../../ports/repositories/movie-repository";
+import { Movie } from "../database/prisma/generated";
 
 
 export class MovieRepositoryImpl implements MovieRepository {
 
   constructor(readonly repositoryClient: PrismaService) {}
 
-  async getByID(id: string): Promise<MovieDTO> {
+  async getByID(id: string): Promise<Movie | null> {
     const movie = await this.repositoryClient.client.movie.findUnique({
       where: {
         id,
       },
     });
 
-    return movie ? movieMapper.toDTO(movie) : Promise.reject(new Error("Movie not found"));
+    if (!movie) {
+      return null;
+    }
+
+    return movie;
   }
 
-  async getAll(): Promise<MovieDTO[]> {
+  async getAll(): Promise<Movie[]> {
     const movies = await this.repositoryClient.client.movie.findMany();
-    return movies.map(movieMapper.toDTO);
+    return movies;
   }
 
-  async update(id: string, entity: MovieDTO): Promise<MovieDTO> {
+  async update(id: string, entity: Movie): Promise<Movie> {
     const movie = await this.repositoryClient.client.movie.update({
       where: {
         id,
@@ -37,7 +40,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       },
     });
 
-    return movieMapper.toDTO(movie);
+    return movie;
   }
 
   async delete(id: string): Promise<void> {
@@ -48,32 +51,33 @@ export class MovieRepositoryImpl implements MovieRepository {
     });
   }
   
-  async getMovieByExternalId(externalId: string): Promise<MovieDTO | null> {
+  async getMovieByExternalId(externalId: string): Promise<Movie | null> {
     const movieData = await this.repositoryClient.client.movie.findUnique({
       where: {
         externalId,
       },
     });
 
-    if (!movieData) return null;
+    if (!movieData){ 
+      return null
+    };
 
-    return movieMapper.toDTO(movieData);
+    return movieData;
   }
 
-  async save(movieDTO: MovieDTO): Promise<MovieDTO> {
+  async save(Movie: Movie): Promise<Movie> {
     const movieData = await this.repositoryClient.client.movie.create({
       data: {
-        id: movieDTO.id,
-        externalId: movieDTO.externalId,
-        title: movieDTO.title,
-        year: movieDTO.year,
-        posterUrl: movieDTO.posterUrl ?? undefined,
-        createdAt: movieDTO.createdAt ?? new Date().toISOString(),
+        id: Movie.id,
+        externalId: Movie.externalId,
+        title: Movie.title,
+        year: Movie.year,
+        posterUrl: Movie.posterUrl ?? undefined,
+        createdAt: Movie.createdAt ?? new Date().toISOString(),
       },
     });
 
-    console.log("Saved movie to database:", movieData);
 
-    return movieMapper.toDTO(movieData);
+    return movieData;
   }
 }

@@ -7,10 +7,11 @@ import { Commentary } from "../../domain/entities/commentary-entity";
 import { GroupId } from "../../domain/value-objects/group-id";
 import { MovieId } from "../../domain/value-objects/movie-id";
 import { VoteId } from "../../domain/value-objects/vote-id";
-import { MovieRepository } from "../../ports/repositories/interfaces/movie-repository";
-import { VoteRepository } from "../../ports/repositories/interfaces/vote-repository";
+
 import { VoteDTO } from "../dto/VoteDTO";
 import { movieMapper } from "../../infrastructure/http/mappers/movie-mapper";
+import { MovieRepository } from "../../ports/repositories/movie-repository";
+import { VoteRepository } from "../../ports/repositories/vote-repository";
 
 interface Input {
     userId: string;
@@ -28,7 +29,7 @@ export class VoteUseCase {
         private movieGateway: MovieGateway){
     }
 
-    async execute({ userId, groupId, externalId, rating, commentary, voteId = ""}: Input) {
+    async execute({ userId, groupId, externalId, rating, commentary, voteId = ""}: Input): Promise<VoteDTO> {
 
         let existingVote = voteId ? await this.voteRepository.getByID(voteId) : null;
 
@@ -51,9 +52,9 @@ export class VoteUseCase {
         const newCommentary = Commentary.create(userInternalId, voteInternalId, commentary);
         const newVote = new VoteEntity(voteInternalId, userInternalId, groupInternalId, movieInternalId, rating, newCommentary.id);
         
-        await this.voteRepository.saveComplete(newVote, newCommentary);
+        const savedVote = await this.voteRepository.saveComplete(newVote, newCommentary);
 
-        return newVote;
+        return savedVote;
     }
 
     async updateExistingVote(existingVote: VoteDTO, rating: number, commentary: string) {

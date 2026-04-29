@@ -1,6 +1,6 @@
 import { MovieDTO } from "../dto/MovieDTO";
 import { MovieId } from "../../domain/value-objects/movie-id";
-import { MovieRepository } from "../../ports/repositories/interfaces/movie-repository";
+import { MovieRepository } from "../../ports/repositories/movie-repository";
 
 export interface CreateMovieInput {
     id?: string;

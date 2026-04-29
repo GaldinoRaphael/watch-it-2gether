@@ -1,6 +1,7 @@
-import { GroupDTO } from "../dto/GroupDTO";
+import { GroupEntity } from "../../domain/entities/group-entity";
 import { GroupId } from "../../domain/value-objects/group-id";
-import { GroupRepository } from "../../ports/repositories/interfaces/group-repository";
+import { Group } from "../../infrastructure/database/prisma/generated";
+import { GroupRepository } from "../../ports/repositories/group-repository";
 
 export interface CreateGroupInput {
     id?: string;
@@ -18,7 +19,7 @@ export interface UpdateGroupInput {
 export class GroupRepositoryUseCase {
     constructor(private readonly groupRepository: GroupRepository) {}
 
-    async getById(id: string): Promise<GroupDTO> {
+    async getById(id: string): Promise<Group> {
         const group = await this.groupRepository.getByID(id);
 
         if (!group) {
@@ -28,13 +29,13 @@ export class GroupRepositoryUseCase {
         return group;
     }
 
-    async getAll(): Promise<GroupDTO[]> {
+    async getAll(): Promise<Group[]> {
         return this.groupRepository.getAll();
     }
 
-    async create(input: CreateGroupInput): Promise<GroupDTO> {
-        const group = new GroupDTO(
-            input.id ?? GroupId.generate().getValue(),
+    async create(input: CreateGroupInput): Promise<Group> {
+        const group = new GroupEntity(
+            GroupId.generate(),
             input.name,
             input.ownerId,
             input.createdAt ?? new Date().toISOString(),
@@ -43,10 +44,10 @@ export class GroupRepositoryUseCase {
         return this.groupRepository.save(group);
     }
 
-    async update(id: string, input: UpdateGroupInput): Promise<GroupDTO> {
+    async update(id: string, input: UpdateGroupInput): Promise<Group> {
         const currentGroup = await this.getById(id);
 
-        const group = new GroupDTO(
+        const group = new GroupEntity(
             id,
             input.name ?? currentGroup.name,
             input.ownerId ?? currentGroup.ownerId,

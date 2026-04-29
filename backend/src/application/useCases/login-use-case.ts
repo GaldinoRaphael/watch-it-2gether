@@ -1,6 +1,6 @@
 import { Bcrypter } from "../../infrastructure/criptography/bcrypter";
 import  jwt  from "jsonwebtoken";
-import { UserRepository } from "../../ports/repositories/interfaces/user-repository";
+import { UserRepository } from "../../ports/repositories/user-repository";
 
 interface Input {
     email: string;
