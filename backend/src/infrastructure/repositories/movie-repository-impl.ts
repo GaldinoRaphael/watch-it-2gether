@@ -1,6 +1,6 @@
-import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
-import { MovieRepository } from "../../ports/repositories/movie-repository";
-import { Movie } from "../database/prisma/generated";
+import type { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
+import type { MovieRepository } from "../../ports/repositories/movie-repository";
+import type { Movie } from "../database/prisma/generated";
 
 
 export class MovieRepositoryImpl implements MovieRepository {

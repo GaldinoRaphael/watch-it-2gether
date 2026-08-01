@@ -1,17 +1,19 @@
 import { MovieEntity } from "../../domain/entities/movie-entity";
 import { VoteEntity } from "../../domain/entities/vote-entity";
-import { MovieGateway } from "../../domain/repositories/MovieGateway";
+import type { MovieGateway } from "../../domain/repositories/MovieGateway";
 import { ImdbMovieMapper } from "../../infrastructure/http/mappers/imdb-movie-mapper";
 import { UserId } from "../../domain/value-objects/user-id";
 import { Commentary } from "../../domain/entities/commentary-entity";
 import { GroupId } from "../../domain/value-objects/group-id";
 import { MovieId } from "../../domain/value-objects/movie-id";
 import { VoteId } from "../../domain/value-objects/vote-id";
-
-import { VoteDTO } from "../dto/VoteDTO";
+import type { VoteDTO } from "../dto/VoteDTO";
 import { movieMapper } from "../../infrastructure/http/mappers/movie-mapper";
-import { MovieRepository } from "../../ports/repositories/movie-repository";
-import { VoteRepository } from "../../ports/repositories/vote-repository";
+import { VoteMapper } from "../../infrastructure/http/mappers/vote-mapper";
+import type { MovieRepository } from "../../ports/repositories/movie-repository";
+import type { VoteRepository } from "../../ports/repositories/vote-repository";
+import type { Vote } from "../../infrastructure/database/prisma/generated";
+import type { Commentary as PrismaCommentary } from "../../infrastructure/database/prisma/generated";
 
 interface Input {
     userId: string;
@@ -29,18 +31,19 @@ export class VoteUseCase {
         private movieGateway: MovieGateway){
     }
 
-    async execute({ userId, groupId, externalId, rating, commentary, voteId = ""}: Input): Promise<VoteDTO> {
+    async execute({ userId, groupId, externalId, rating, commentary, voteId = "" }: Input): Promise<VoteDTO> {
+        const existingVote = voteId ? await this.voteRepository.getByID(voteId) : null;
 
-        let existingVote = voteId ? await this.voteRepository.getByID(voteId) : null;
-
-        if(existingVote) {
-            const updatedVote = await this.updateExistingVote(existingVote, rating, commentary);
-            return updatedVote;
+        if (existingVote) {
+            const existingVoteDto = VoteMapper.modelToDto(
+                existingVote as Vote & { commentary: PrismaCommentary[] },
+            );
+            return this.updateExistingVote(existingVoteDto, rating, commentary);
         }
-        
+
         let movie = await this.movieRepository.getMovieByExternalId(externalId);
 
-        if(!movie){
+        if (!movie) {
             movie = await this.searchMovieInExternalApiAndSave(externalId);
         }
 
@@ -50,15 +53,21 @@ export class VoteUseCase {
         const voteInternalId = VoteId.generate();
 
         const newCommentary = Commentary.create(userInternalId, voteInternalId, commentary);
-        const newVote = new VoteEntity(voteInternalId, userInternalId, groupInternalId, movieInternalId, rating, newCommentary.id);
-        
-        const savedVote = await this.voteRepository.saveComplete(newVote, newCommentary);
+        const newVote = new VoteEntity(
+            voteInternalId,
+            userInternalId,
+            groupInternalId,
+            movieInternalId,
+            rating,
+            newCommentary.id,
+        );
 
-        return savedVote;
+        const savedVote = await this.voteRepository.saveComplete(newVote, newCommentary);
+        return VoteMapper.modelToDto(savedVote as Vote & { commentary: PrismaCommentary[] });
     }
 
-    async updateExistingVote(existingVote: VoteDTO, rating: number, commentary: string) {
-        return await this.voteRepository.updateComplete(
+    async updateExistingVote(existingVote: VoteDTO, rating: number, commentary: string): Promise<VoteDTO> {
+        const updated = await this.voteRepository.updateComplete(
             existingVote.id,
             rating,
             Commentary.restore(
@@ -67,11 +76,14 @@ export class VoteUseCase {
                 existingVote.id,
                 commentary,
                 new Date().toISOString(),
-            )
+            ),
         );
+        return VoteMapper.modelToDto(updated as Vote & { commentary: PrismaCommentary[] });
     }
 
-    async searchMovieInExternalApiAndSave(externalId: string) {
+    async searchMovieInExternalApiAndSave(
+        externalId: string,
+    ): Promise<{ id: string; externalId: string; title: string; year: string; posterUrl: string | null; provider: string | null; createdAt: Date }> {
         const imdbMovie = await this.movieGateway.getById(externalId);
         const movieData = ImdbMovieMapper.toDomain(imdbMovie);
 
@@ -79,11 +91,10 @@ export class VoteUseCase {
             movieData.externalId,
             movieData.title,
             movieData.year,
-            movieData.poster
+            movieData.poster,
         );
 
         const movieDto = movieMapper.entityToDTO(movie);
-    
-        return await this.movieRepository.save(movieDto);
+        return this.movieRepository.save(movieMapper.toDomain(movieDto));
     }
 }

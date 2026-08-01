@@ -1,6 +1,6 @@
 import { MovieDTO } from "../../../application/dto/MovieDTO";
-import { MovieEntity } from "../../../domain/entities/movie-entity";
-import { Movie } from "../../database/prisma/generated";
+import type { MovieEntity } from "../../../domain/entities/movie-entity";
+import type { Movie } from "../../database/prisma/generated";
 
 export class movieMapper {
     static entityToDTO(movie: MovieEntity) {
@@ -31,8 +31,8 @@ export class movieMapper {
             title: movieDTO.title,
             year: movieDTO.year,
             posterUrl: movieDTO.posterUrl ?? null,
-            createdAt: new Date(movieDTO.createdAt) ?? null,
-            provider: 'api.imdbapi.dev/'
+            createdAt: new Date(movieDTO.createdAt),
+            provider: "api.imdbapi.dev/"
         };
     }
 }

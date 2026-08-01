@@ -1,4 +1,4 @@
-import { MovieGateway } from "../../domain/repositories/MovieGateway";
+import type { MovieGateway } from "../../domain/repositories/MovieGateway";
 
 export class SearchMoviesUseCase {
     constructor(

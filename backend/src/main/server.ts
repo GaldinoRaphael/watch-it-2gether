@@ -20,23 +20,24 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 const PORT = process.env.PORT || 3000;
 
 const server = app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.warn(`Server is running on port ${PORT}`);
 });
 
-async function shutdown(signal: string) {
-  console.log(`\nReceived ${signal}. Shutting down...`);
+function shutdown(signal: string): void {
+  console.warn(`\nReceived ${signal}. Shutting down...`);
 
-  server.close(async () => {
-    try {
-      await prismaService.disconnect();
-    } catch (err) {
-      console.error("Error during disconnect:", err);
-    } finally {
-      process.exit(0);
+  server.close((err) => {
+    if (err) {
+      console.error("Error closing server:", err);
     }
+    prismaService.disconnect().catch((disconnectErr: unknown) => {
+      console.error("Error during disconnect:", disconnectErr);
+    }).finally(() => {
+      process.exit(0);
+    });
   });
 }
 
-process.on("SIGINT", shutdown);
-process.on("SIGTERM", shutdown);
+process.on("SIGINT", () => { shutdown("SIGINT"); });
+process.on("SIGTERM", () => { shutdown("SIGTERM"); });
 

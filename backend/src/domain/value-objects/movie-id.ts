@@ -1,4 +1,4 @@
-import { Id } from "./id";
+import { Id } from "./Id";
 
 export class MovieId {
   constructor(private readonly id: Id) {}

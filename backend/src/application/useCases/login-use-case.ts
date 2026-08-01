@@ -1,6 +1,6 @@
-import { Bcrypter } from "../../infrastructure/criptography/bcrypter";
-import  jwt  from "jsonwebtoken";
-import { UserRepository } from "../../ports/repositories/user-repository";
+import type { IPasswordHasher } from "../../ports/cryptography/password-hasher";
+import jwt from "jsonwebtoken";
+import type { UserRepository } from "../../ports/repositories/user-repository";
 
 interface Input {
     email: string;
@@ -10,7 +10,7 @@ interface Input {
 export class LoginUseCase {
     constructor(
         private readonly userRepository: UserRepository,
-        private readonly passwordHasher: Bcrypter) {}
+        private readonly passwordHasher: IPasswordHasher) {}
 
     async execute({ email, password }: Input){
 

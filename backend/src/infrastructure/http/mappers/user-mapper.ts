@@ -1,7 +1,7 @@
 import { UserDTO } from "../../../application/dto/UserDTO";   
 import { UserResponseDTO } from "../../../application/dto/response/UserResponseDTO";
-import { UserEntity } from "../../../domain/entities/user-entity";
-import { User } from "../../database/prisma/generated";
+import type { UserEntity } from "../../../domain/entities/user-entity";
+import type { User } from "../../database/prisma/generated";
 
 
 export class UserMapper {

@@ -1,4 +1,4 @@
-import { User } from "../../infrastructure/database/prisma/generated";
+import type { User } from "../../infrastructure/database/prisma/generated";
 
 export interface UserRepository {
     create(name: string, email: string, passwordHash: string): Promise<User>;

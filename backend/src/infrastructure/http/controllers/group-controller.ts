@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import {
+import type { Request, Response } from "express";
+import type {
     CreateGroupInput,
     GroupRepositoryUseCase,
     UpdateGroupInput,
@@ -26,7 +26,7 @@ export class GroupController {
         }
     }
 
-    async createGroup(req: Request<{}, {}, CreateGroupInput>, res: Response) {
+    async createGroup(req: Request<object, object, CreateGroupInput>, res: Response) {
         try {
             const group = await this.groupRepositoryUseCase.create(req.body);
             return res.status(201).json(group);
@@ -35,7 +35,7 @@ export class GroupController {
         }
     }
 
-    async updateGroup(req: Request<{ id: string }, {}, UpdateGroupInput>, res: Response) {
+    async updateGroup(req: Request<{ id: string }, object, UpdateGroupInput>, res: Response) {
         try {
             const group = await this.groupRepositoryUseCase.update(String(req.params.id), req.body);
             return res.json(group);

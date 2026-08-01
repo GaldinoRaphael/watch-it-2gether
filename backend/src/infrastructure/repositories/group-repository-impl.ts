@@ -1,6 +1,6 @@
-import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
-import { GroupRepository } from "../../ports/repositories/group-repository";
-import { Group } from "../database/prisma/generated";
+import type { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
+import type { GroupRepository } from "../../ports/repositories/group-repository";
+import type { Group } from "../database/prisma/generated";
 
 export class GroupRepositoryImpl implements GroupRepository {
     constructor(readonly repositoryClient: PrismaService) {}

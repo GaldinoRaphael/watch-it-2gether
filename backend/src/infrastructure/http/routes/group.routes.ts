@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { GroupRepositoryUseCase } from "../../../application/useCases/group-repository-use-case";
-import { GroupRepositoryImpl } from "../../../ports/repositories/group-repository-impl";
+import { GroupRepositoryImpl } from "../../repositories/group-repository-impl";
 import { prismaService } from "../../database/prisma/client/prisma.service";
 import { GroupController } from "../controllers/group-controller";
 

@@ -4,7 +4,7 @@ import { MovieRepositoryUseCase } from "../../../application/useCases/movie-repo
 import { SearchMoviesUseCase } from "../../../application/useCases/search-movie-use-case";
 import { MovieController } from "../controllers/movie-controller";
 import { prismaService } from "../../database/prisma/client/prisma.service";
-import { MovieRepositoryImpl } from "../../../ports/repositories/movie-repository-impl";
+import { MovieRepositoryImpl } from "../../repositories/movie-repository-impl";
 
 const router = Router();
 

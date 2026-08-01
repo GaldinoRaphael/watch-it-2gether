@@ -1,5 +1,5 @@
 import { VoteDTO } from "../../../application/dto/VoteDTO";
-import { Commentary, Vote } from "../../database/prisma/generated";
+import type { Commentary, Vote } from "../../database/prisma/generated";
 
 type VoteWithCommentary = Vote & {
     commentary: Commentary[];

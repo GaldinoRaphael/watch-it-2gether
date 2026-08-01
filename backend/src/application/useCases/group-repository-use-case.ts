@@ -1,7 +1,5 @@
-import { GroupEntity } from "../../domain/entities/group-entity";
-import { GroupId } from "../../domain/value-objects/group-id";
-import { Group } from "../../infrastructure/database/prisma/generated";
-import { GroupRepository } from "../../ports/repositories/group-repository";
+import type { Group } from "../../infrastructure/database/prisma/generated";
+import type { GroupRepository } from "../../ports/repositories/group-repository";
 
 export interface CreateGroupInput {
     id?: string;
@@ -34,27 +32,23 @@ export class GroupRepositoryUseCase {
     }
 
     async create(input: CreateGroupInput): Promise<Group> {
-        const group = new GroupEntity(
-            GroupId.generate(),
-            input.name,
-            input.ownerId,
-            input.createdAt ?? new Date().toISOString(),
-        );
-
-        return this.groupRepository.save(group);
+        return this.groupRepository.save({
+            id: crypto.randomUUID(),
+            name: input.name,
+            ownerId: input.ownerId,
+            createdAt: new Date(input.createdAt ?? new Date()),
+        });
     }
 
     async update(id: string, input: UpdateGroupInput): Promise<Group> {
         const currentGroup = await this.getById(id);
 
-        const group = new GroupEntity(
-            id,
-            input.name ?? currentGroup.name,
-            input.ownerId ?? currentGroup.ownerId,
-            input.createdAt ?? currentGroup.createdAt,
-        );
-
-        return this.groupRepository.update(id, group);
+        return this.groupRepository.update(id, {
+            ...currentGroup,
+            name: input.name ?? currentGroup.name,
+            ownerId: input.ownerId ?? currentGroup.ownerId,
+            createdAt: input.createdAt ? new Date(input.createdAt) : currentGroup.createdAt,
+        });
     }
 
     async delete(id: string): Promise<void> {

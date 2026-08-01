@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -16,7 +16,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
         req.user = {  id: decoded.userId, email: decoded.email };
 
         return next();
-    } catch (error) {
+    } catch {
         return res.status(401).json({ error: 'Token de autenticação inválido' });
     }
 }

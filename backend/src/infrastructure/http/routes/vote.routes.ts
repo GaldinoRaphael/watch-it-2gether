@@ -3,8 +3,8 @@ import { VoteRepositoryUseCase } from "../../../application/useCases/vote-reposi
 import { VoteController } from "../controllers/vote-controller";
 import { VoteUseCase } from "../../../application/useCases/vote-use-case";
 import { IMDBApiClient } from "../../gateways/imdb-api-client";
-import { MovieRepositoryImpl } from "../../../ports/repositories/movie-repository-impl";
-import { VoteRepositoryImpl } from "../../../ports/repositories/vote-repository-impl";
+import { MovieRepositoryImpl } from "../../repositories/movie-repository-impl";
+import { VoteRepositoryImpl } from "../../repositories/vote-repository-impl";
 import { prismaService } from "../../database/prisma/client/prisma.service";
 
 const router = Router();

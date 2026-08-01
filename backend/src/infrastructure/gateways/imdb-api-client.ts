@@ -1,45 +1,46 @@
 import axios from "axios";
 import { MovieSummaryDTO } from "../../application/dto/MovieSummaryDTO";
-import { MovieGateway } from "../../domain/repositories/MovieGateway";
+import type { MovieGateway } from "../../domain/repositories/MovieGateway";
+import type { ImdbMovieResponseDTO } from "../../application/dto/response/ImdbMovieResponseDTO";
+
+interface ImdbSearchResultItem {
+  id: string;
+  primaryTitle: string;
+  startYear: string;
+  primaryImage?: { url: string };
+}
 
 const instance = axios.create({
-    baseURL: 'https://api.imdbapi.dev/',
+  baseURL: "https://api.imdbapi.dev/",
 });
 
 export class IMDBApiClient implements MovieGateway {
+  async search(query: string): Promise<MovieSummaryDTO[]> {
+    try {
+      const response = await instance.get<{ titles: ImdbSearchResultItem[] }>("/search/titles", {
+        params: { query },
+      });
 
-    async search(query: string): Promise<MovieSummaryDTO[]> {
-        try {
-            console.log('Searching movies with query:', query);
-            const response = await instance.get('/search/titles', {
-                params: {
-                    query: query
-                }
-            })
-
-            console.log('search', response.data);
-
-            const moviesSummary: MovieSummaryDTO[] = response.data.titles.map((item: any) => {
-                return new MovieSummaryDTO(
-                    item.id,
-                    item.primaryTitle,
-                    item.startYear,
-                    item.primaryImage.url
-                );
-            });
-            console.log('moviesSummary', moviesSummary);
-            return moviesSummary;
-        } catch (error) {
-            throw new Error("Error fetching data from IMDB API");
-        }
+      return response.data.titles.map(
+        (item) =>
+          new MovieSummaryDTO(
+            item.id,
+            item.primaryTitle,
+            item.startYear,
+            item.primaryImage?.url ?? "",
+          ),
+      );
+    } catch {
+      throw new Error("Error fetching data from IMDB API");
     }
+  }
 
-    async getById(externalId: string): Promise<any> {
-        try {
-            const response = await instance.get(`/titles/${externalId}`);
-            return response.data;
-        } catch (error) {
-            throw new Error("Error fetching data from IMDB API");
-        }
+  async getById(externalId: string): Promise<ImdbMovieResponseDTO> {
+    try {
+      const response = await instance.get<ImdbMovieResponseDTO>(`/titles/${externalId}`);
+      return response.data;
+    } catch {
+      throw new Error("Error fetching data from IMDB API");
     }
+  }
 }

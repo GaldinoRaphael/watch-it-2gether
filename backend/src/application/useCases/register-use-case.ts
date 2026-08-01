@@ -1,5 +1,5 @@
-import { IPasswordHasher } from "../../ports/cryptography/password-hasher";
-import { UserRepository } from "../../ports/repositories/user-repository";
+import type { IPasswordHasher } from "../../ports/cryptography/password-hasher";
+import type { UserRepository } from "../../ports/repositories/user-repository";
 
 interface RegisterInput {
     name: string;

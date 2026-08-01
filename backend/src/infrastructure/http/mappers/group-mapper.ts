@@ -1,5 +1,5 @@
 import { GroupDTO } from "../../../application/dto/GroupDTO";
-import { Group as PrismaGroup } from "../../database/prisma/generated";
+import type { Group as PrismaGroup } from "../../database/prisma/generated";
 
 export class groupMapper {
     static toDTO(group: PrismaGroup): GroupDTO {

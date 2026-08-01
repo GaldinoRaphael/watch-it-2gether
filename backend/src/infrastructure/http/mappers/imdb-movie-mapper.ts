@@ -1,4 +1,4 @@
-import { ImdbMovieResponseDTO } from "../../../application/dto/response/ImdbMovieResponseDTO";
+import type { ImdbMovieResponseDTO } from "../../../application/dto/response/ImdbMovieResponseDTO";
 
 export type ExternalMovieProps = {
   provider: string;

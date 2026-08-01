@@ -1,4 +1,4 @@
-import { Id } from "./id";
+import { Id } from "./Id";
 
 export class VoteId {
   constructor(private readonly id: Id) {}

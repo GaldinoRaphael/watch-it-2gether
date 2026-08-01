@@ -1,7 +1,10 @@
 import { CommentaryId } from "../../domain/value-objects/commentary-id";
 import { VoteId } from "../../domain/value-objects/vote-id";
-import { VoteRepository } from "../../ports/repositories/vote-repository";
+import type { VoteRepository } from "../../ports/repositories/vote-repository";
 import { VoteDTO } from "../dto/VoteDTO";
+import { VoteMapper } from "../../infrastructure/http/mappers/vote-mapper";
+import type { Vote } from "../../infrastructure/database/prisma/generated";
+import type { Commentary } from "../../infrastructure/database/prisma/generated";
 
 export interface CreateVoteInput {
     id?: string;
@@ -34,11 +37,12 @@ export class VoteRepositoryUseCase {
             throw new Error("Vote not found");
         }
 
-        return vote;
+        return VoteMapper.modelToDto(vote as Vote & { commentary: Commentary[] });
     }
 
     async getAll(): Promise<VoteDTO[]> {
-        return this.voteRepository.getAll();
+        const votes = await this.voteRepository.getAll();
+        return votes.map((v) => VoteMapper.modelToDto(v as Vote & { commentary: Commentary[] }));
     }
 
     async create(input: CreateVoteInput): Promise<VoteDTO> {
@@ -53,7 +57,8 @@ export class VoteRepositoryUseCase {
             input.createdAt ?? new Date().toISOString(),
         );
 
-        return this.voteRepository.save(vote);
+        const saved = await this.voteRepository.save(VoteMapper.dtoToModel(vote));
+        return VoteMapper.modelToDto(saved as Vote & { commentary: Commentary[] });
     }
 
     async update(id: string, input: UpdateVoteInput): Promise<VoteDTO> {
@@ -70,7 +75,8 @@ export class VoteRepositoryUseCase {
             input.createdAt ?? currentVote.createdAt,
         );
 
-        return this.voteRepository.update(id, vote);
+        const updated = await this.voteRepository.update(id, VoteMapper.dtoToModel(vote));
+        return VoteMapper.modelToDto(updated as Vote & { commentary: Commentary[] });
     }
 
     async delete(id: string): Promise<void> {

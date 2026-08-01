@@ -1,9 +1,9 @@
-import { Commentary } from "../../domain/entities/commentary-entity";
-import { VoteEntity } from "../../domain/entities/vote-entity";
-import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
-import { VoteMapper } from "../../infrastructure/http/mappers/vote-mapper";
-import { VoteRepository } from "../../ports/repositories/vote-repository";
-import { Vote } from "../database/prisma/generated";
+import type { Commentary } from "../../domain/entities/commentary-entity";
+import type { VoteEntity } from "../../domain/entities/vote-entity";
+import type { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
+
+import type { VoteRepository } from "../../ports/repositories/vote-repository";
+import type { Vote } from "../database/prisma/generated";
 
 export class VoteRepositoryImpl implements VoteRepository {
 

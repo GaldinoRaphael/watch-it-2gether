@@ -1,4 +1,4 @@
-import { UserDTO } from "./UserDTO";
+import type { UserDTO } from "./UserDTO";
 
 export class UserAuthentictedDTO {
     constructor(

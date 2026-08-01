@@ -1,10 +1,10 @@
-import { VoteUseCase } from "../../../application/useCases/vote-use-case";
-import {
+import type { VoteUseCase } from "../../../application/useCases/vote-use-case";
+import type {
     CreateVoteInput,
     UpdateVoteInput,
     VoteRepositoryUseCase,
 } from "../../../application/useCases/vote-repository-use-case";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 export class VoteController{
     constructor(
@@ -12,7 +12,7 @@ export class VoteController{
         private readonly voteRepositoryUseCase: VoteRepositoryUseCase,
     ){}
 
-    async voteMovie(req: Request<{ id?: string }, {}, { userId: string; groupId: string; externalId: string; rating: number; commentary: string; voteId?: string }>, res: Response){
+    async voteMovie(req: Request<{ id?: string }, object, { userId: string; groupId: string; externalId: string; rating: number; commentary: string; voteId?: string }>, res: Response) {
         try {
             const { userId, groupId, externalId, rating, commentary, voteId } = req.body;
             const result = await this.voteUseCase.execute({
@@ -47,7 +47,7 @@ export class VoteController{
         }
     }
 
-    async createVote(req: Request<{}, {}, CreateVoteInput>, res: Response) {
+    async createVote(req: Request<object, object, CreateVoteInput>, res: Response) {
         try {
             const vote = await this.voteRepositoryUseCase.create(req.body);
             return res.status(201).json(vote);
@@ -56,7 +56,7 @@ export class VoteController{
         }
     }
 
-    async updateVote(req: Request<{ id: string }, {}, UpdateVoteInput>, res: Response) {
+    async updateVote(req: Request<{ id: string }, object, UpdateVoteInput>, res: Response) {
         try {
             const vote = await this.voteRepositoryUseCase.update(String(req.params.id), req.body);
             return res.json(vote);

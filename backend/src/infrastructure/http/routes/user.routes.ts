@@ -2,7 +2,7 @@ import { Router } from "express";
 import { UserController } from "../controllers/user-controller";
 import { RegisterUseCase } from "../../../application/useCases/register-use-case";
 import { Bcrypter } from "../../criptography/bcrypter";
-import { UserRepositoryImpl } from "../../../ports/repositories/user-repository";
+import { UserRepositoryImpl } from "../../repositories/user-repository";
 import { prismaService } from "../../database/prisma/client/prisma.service";
 import { LoginUseCase } from "../../../application/useCases/login-use-case";
 

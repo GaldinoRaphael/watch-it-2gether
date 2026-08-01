@@ -1,8 +1,8 @@
 import { VoteId } from "../value-objects/vote-id";
-import { UserId } from "../value-objects/user-id";
-import { MovieId } from "../value-objects/movie-id";
-import { CommentaryId } from "../value-objects/commentary-id";
-import { GroupId } from "../value-objects/group-id";
+import type { UserId } from "../value-objects/user-id";
+import type { MovieId } from "../value-objects/movie-id";
+import type { CommentaryId } from "../value-objects/commentary-id";
+import type { GroupId } from "../value-objects/group-id";
 import { assertDefined, assertValidDateString } from "./validations/entity-validation";
 
 export class VoteEntity {

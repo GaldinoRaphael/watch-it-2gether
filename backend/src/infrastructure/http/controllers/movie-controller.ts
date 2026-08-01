@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
-import {
+import type { Request, Response } from "express";
+import type {
     CreateMovieInput,
     MovieRepositoryUseCase,
     UpdateMovieInput,
 } from "../../../application/useCases/movie-repository-use-case";
-import { SearchMoviesUseCase } from "../../../application/useCases/search-movie-use-case";
+import type { SearchMoviesUseCase } from "../../../application/useCases/search-movie-use-case";
 
 export class MovieController {
     constructor(
@@ -14,8 +14,9 @@ export class MovieController {
 
     async search(req: Request, res: Response) {
         try {
+            const query = req.query.query;
             const movies = await this.searchMoviesUseCase.execute(
-                String(req.query.query)
+                typeof query === "string" ? query : "",
             );
             return res.json(movies);
         } catch (error) {
@@ -25,7 +26,6 @@ export class MovieController {
 
     async getById(req: Request, res: Response) {
         try {
-            console.log("Getting movie by ID", req.params.id);
             const externalId = String(req.params.id);
             const movie = await this.searchMoviesUseCase.getById(externalId);
             return res.json(movie);
@@ -61,7 +61,7 @@ export class MovieController {
         }
     }
 
-    async createStoredMovie(req: Request<{}, {}, CreateMovieInput>, res: Response) {
+    async createStoredMovie(req: Request<object, object, CreateMovieInput>, res: Response) {
         try {
             const movie = await this.movieRepositoryUseCase.create(req.body);
             return res.status(201).json(movie);
@@ -70,7 +70,7 @@ export class MovieController {
         }
     }
 
-    async updateStoredMovie(req: Request<{ id: string }, {}, UpdateMovieInput>, res: Response) {
+    async updateStoredMovie(req: Request<{ id: string }, object, UpdateMovieInput>, res: Response) {
         try {
             const movie = await this.movieRepositoryUseCase.update(String(req.params.id), req.body);
             return res.json(movie);

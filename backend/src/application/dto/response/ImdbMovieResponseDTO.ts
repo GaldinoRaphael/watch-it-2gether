@@ -1,6 +1,6 @@
 export interface ImdbMovieResponseDTO {
   id: string;
-  type: 'movie' | 'tvSeries' | 'tvMiniSeries' | string;
+  type: string;
 
   primaryTitle: string;
   originalTitle?: string;

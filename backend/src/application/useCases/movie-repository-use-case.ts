@@ -1,6 +1,7 @@
 import { MovieDTO } from "../dto/MovieDTO";
 import { MovieId } from "../../domain/value-objects/movie-id";
-import { MovieRepository } from "../../ports/repositories/movie-repository";
+import type { MovieRepository } from "../../ports/repositories/movie-repository";
+import { movieMapper } from "../../infrastructure/http/mappers/movie-mapper";
 
 export interface CreateMovieInput {
     id?: string;
@@ -29,11 +30,12 @@ export class MovieRepositoryUseCase {
             throw new Error("Movie not found");
         }
 
-        return movie;
+        return movieMapper.toDTO(movie);
     }
 
     async getAll(): Promise<MovieDTO[]> {
-        return this.movieRepository.getAll();
+        const movies = await this.movieRepository.getAll();
+        return movies.map((m) => movieMapper.toDTO(m));
     }
 
     async getByExternalId(externalId: string): Promise<MovieDTO> {
@@ -43,11 +45,11 @@ export class MovieRepositoryUseCase {
             throw new Error("Movie not found");
         }
 
-        return movie;
+        return movieMapper.toDTO(movie);
     }
 
     async create(input: CreateMovieInput): Promise<MovieDTO> {
-        const movie = new MovieDTO(
+        const dto = new MovieDTO(
             input.id ?? MovieId.generate().getValue(),
             input.externalId,
             input.title,
@@ -56,13 +58,14 @@ export class MovieRepositoryUseCase {
             input.createdAt ?? new Date().toISOString(),
         );
 
-        return this.movieRepository.save(movie);
+        const saved = await this.movieRepository.save(movieMapper.toDomain(dto));
+        return movieMapper.toDTO(saved);
     }
 
     async update(id: string, input: UpdateMovieInput): Promise<MovieDTO> {
         const currentMovie = await this.getById(id);
 
-        const movie = new MovieDTO(
+        const dto = new MovieDTO(
             id,
             input.externalId ?? currentMovie.externalId,
             input.title ?? currentMovie.title,
@@ -71,7 +74,8 @@ export class MovieRepositoryUseCase {
             input.createdAt ?? currentMovie.createdAt,
         );
 
-        return this.movieRepository.update(id, movie);
+        const updated = await this.movieRepository.update(id, movieMapper.toDomain(dto));
+        return movieMapper.toDTO(updated);
     }
 
     async delete(id: string): Promise<void> {

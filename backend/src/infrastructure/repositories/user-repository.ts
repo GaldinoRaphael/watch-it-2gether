@@ -1,7 +1,7 @@
-import { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
-import { UserMapper } from "../../infrastructure/http/mappers/user-mapper";
-import { UserRepository } from "../../ports/repositories/user-repository";
-import { User } from "../database/prisma/generated";
+import type { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
+
+import type { UserRepository } from "../../ports/repositories/user-repository";
+import type { User } from "../database/prisma/generated";
 
 export class UserRepositoryImpl implements UserRepository {
 
