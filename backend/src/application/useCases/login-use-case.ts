@@ -26,8 +26,11 @@ export class LoginUseCase {
             throw new Error("Credenciais inválidas");
         }
 
-        const token = jwt.sign({ userId: user.id, email: user.email }
-            , process.env.JWT_SECRET || "secret_key", {expiresIn: "7d"});
+        const token = jwt.sign(
+            { userId: user.id, email: user.email },
+            process.env.JWT_SECRET!,
+            { expiresIn: "7d" },
+        );
 
         return { token, user: { id: user.id, name: user.name, email: user.email } };
     }

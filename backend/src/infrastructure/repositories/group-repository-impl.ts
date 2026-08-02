@@ -24,7 +24,7 @@ export class GroupRepositoryImpl implements GroupRepository {
                 id: entity.id,
                 name: entity.name,
                 owner: { connect: { id: entity.ownerId } },
-                createdAt: entity.createdAt ?? new Date().toISOString(),
+                createdAt: entity.createdAt ?? new Date(),
             },
         });
 
@@ -37,7 +37,7 @@ export class GroupRepositoryImpl implements GroupRepository {
             data: {
                 name: entity.name,
                 owner: { connect: { id: entity.ownerId } },
-                createdAt: entity.createdAt ?? new Date().toISOString(),
+                createdAt: entity.createdAt ?? new Date(),
             },
         });
 

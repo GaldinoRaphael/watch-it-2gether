@@ -32,7 +32,7 @@ export class movieMapper {
             year: movieDTO.year,
             posterUrl: movieDTO.posterUrl ?? null,
             createdAt: new Date(movieDTO.createdAt),
-            provider: "api.imdbapi.dev/"
+            provider: "api.imdbapi.dev"
         };
     }
 }

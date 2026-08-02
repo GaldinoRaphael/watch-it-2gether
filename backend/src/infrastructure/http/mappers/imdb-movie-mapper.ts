@@ -13,13 +13,13 @@ export type ExternalMovieProps = {
 export class ImdbMovieMapper {
   static toDomain(dto: ImdbMovieResponseDTO): ExternalMovieProps {
     return {
-      provider: 'IMDBApi',
+      provider: "api.imdbapi.dev",
       externalId: dto.id,
       title: dto?.primaryTitle,
       year: String(dto?.startYear),
       poster: dto?.primaryImage?.url,
       plot: dto?.plot,
-      imdbRating: dto.rating?.aggregateRating
+      imdbRating: dto.rating?.aggregateRating,
     };
   }
 }

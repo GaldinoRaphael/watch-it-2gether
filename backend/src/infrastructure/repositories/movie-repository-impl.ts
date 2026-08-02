@@ -28,15 +28,13 @@ export class MovieRepositoryImpl implements MovieRepository {
 
   async update(id: string, entity: Movie): Promise<Movie> {
     const movie = await this.repositoryClient.client.movie.update({
-      where: {
-        id,
-      },
+      where: { id },
       data: {
         externalId: entity.externalId,
         title: entity.title,
         year: entity.year,
         posterUrl: entity.posterUrl ?? undefined,
-        createdAt: entity.createdAt ?? new Date().toISOString(),
+        createdAt: entity.createdAt ?? new Date(),
       },
     });
 
@@ -53,30 +51,23 @@ export class MovieRepositoryImpl implements MovieRepository {
   
   async getMovieByExternalId(externalId: string): Promise<Movie | null> {
     const movieData = await this.repositoryClient.client.movie.findUnique({
-      where: {
-        externalId,
-      },
+      where: { externalId },
     });
 
-    if (!movieData){ 
-      return null
-    };
-
-    return movieData;
+    return movieData ?? null;
   }
 
-  async save(Movie: Movie): Promise<Movie> {
+  async save(movie: Movie): Promise<Movie> {
     const movieData = await this.repositoryClient.client.movie.create({
       data: {
-        id: Movie.id,
-        externalId: Movie.externalId,
-        title: Movie.title,
-        year: Movie.year,
-        posterUrl: Movie.posterUrl ?? undefined,
-        createdAt: Movie.createdAt ?? new Date().toISOString(),
+        id: movie.id,
+        externalId: movie.externalId,
+        title: movie.title,
+        year: movie.year,
+        posterUrl: movie.posterUrl ?? undefined,
+        createdAt: movie.createdAt ?? new Date(),
       },
     });
-
 
     return movieData;
   }

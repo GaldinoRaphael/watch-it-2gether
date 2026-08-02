@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import type { Group } from "../../infrastructure/database/prisma/generated";
 import type { GroupRepository } from "../../ports/repositories/group-repository";
 
@@ -33,7 +34,7 @@ export class GroupRepositoryUseCase {
 
     async create(input: CreateGroupInput): Promise<Group> {
         return this.groupRepository.save({
-            id: crypto.randomUUID(),
+            id: randomUUID(),
             name: input.name,
             ownerId: input.ownerId,
             createdAt: new Date(input.createdAt ?? new Date()),

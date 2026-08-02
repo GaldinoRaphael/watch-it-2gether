@@ -20,7 +20,7 @@ export class MovieController {
             );
             return res.json(movies);
         } catch (error) {
-            res.status(500).json({ error: 'Internal Server Error', errorMessage: (error as Error).message });
+            return res.status(500).json({ error: "Internal Server Error", errorMessage: (error as Error).message });
         }
     }
 

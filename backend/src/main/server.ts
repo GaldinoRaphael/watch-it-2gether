@@ -1,20 +1,26 @@
-import 'dotenv/config';
-import express from "express"
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
 import groupRoutes from "../infrastructure/http/routes/group.routes";
 import movieRoutes from "../infrastructure/http/routes/movie.routes";
 import voteRoutes from "../infrastructure/http/routes/vote.routes";
-import { prismaService } from '../infrastructure/database/prisma/client/prisma.service';
+import { prismaService } from "../infrastructure/database/prisma/client/prisma.service";
 import swaggerUi from "swagger-ui-express";
-import openapiSpecification from '../docs/swagger';
-import userRoutes from '../infrastructure/http/routes/user.routes';
+import openapiSpecification from "../docs/swagger";
+import userRoutes from "../infrastructure/http/routes/user.routes";
+
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in environment variables");
+}
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(groupRoutes);
 app.use(movieRoutes);
 app.use(voteRoutes);
 app.use(userRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 
 
 const PORT = process.env.PORT || 3000;

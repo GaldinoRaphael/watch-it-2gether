@@ -9,7 +9,7 @@ export class MovieEntity {
         readonly year: string,
         readonly posterUrl?: string,
         readonly createdAt: string = new Date().toISOString(),
-        readonly provider = 'api.imdbapi.dev/'
+        readonly provider = "api.imdbapi.dev"
     ) {
         assertDefined(id, "Movie id");
         assertNonEmptyString(externalId, "Movie externalId");
