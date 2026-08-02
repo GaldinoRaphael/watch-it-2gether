@@ -20,7 +20,6 @@ export class UserRepositoryImpl implements UserRepository {
 
         return user;
     }
-    
     async create(name: string, email: string, passwordHash: string): Promise<User> {
         const user = await this.repositoryClient.client.user.create({
             data: {
@@ -31,6 +30,10 @@ export class UserRepositoryImpl implements UserRepository {
         });
         
         return user;
+    }
+
+    async findById(id: string): Promise<User | null> {
+        return this.repositoryClient.client.user.findUnique({ where: { id } });
     }
 
 }

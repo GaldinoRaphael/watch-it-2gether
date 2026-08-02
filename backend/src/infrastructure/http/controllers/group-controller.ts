@@ -35,9 +35,9 @@ export class GroupController {
         }
     }
 
-    async updateGroup(req: Request<{ id: string }, object, UpdateGroupInput>, res: Response) {
+    async updateGroup(req: Request, res: Response) {
         try {
-            const group = await this.groupRepositoryUseCase.update(String(req.params.id), req.body);
+            const group = await this.groupRepositoryUseCase.update(String(req.params.id), req.body as UpdateGroupInput);
             return res.json(group);
         } catch (error) {
             return this.handleError(res, error);

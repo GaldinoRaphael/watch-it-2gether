@@ -6,6 +6,9 @@ import { IMDBApiClient } from "../../gateways/imdb-api-client";
 import { MovieRepositoryImpl } from "../../repositories/movie-repository-impl";
 import { VoteRepositoryImpl } from "../../repositories/vote-repository-impl";
 import { prismaService } from "../../database/prisma/client/prisma.service";
+import { authMiddleware } from "../middleware/auth-middleware";
+import { validate } from "../middleware/validate-middleware";
+import { createVoteSchema, updateVoteSchema, voteMovieSchema } from "../schemas/vote.schema";
 
 const router = Router();
 
@@ -34,6 +37,28 @@ const controller = new VoteController(voteUseCase, voteRepositoryUseCase)
  *                 $ref: '#/components/schemas/Vote'
  */
 router.get('/votes', (req, res) => controller.getVotes(req, res));
+
+/**
+ * @openapi
+ * /groups/{groupId}/votes:
+ *   get:
+ *     summary: Lista os votos de um grupo ordenados por rating
+ *     tags:
+ *       - Votes
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: groupId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID do grupo
+ *     responses:
+ *       200:
+ *         description: Lista de votos do grupo retornada com sucesso
+ */
+router.get('/groups/:groupId/votes', authMiddleware, (req, res) => controller.getVotesByGroup(req, res));
 
 /**
  * @openapi
@@ -92,7 +117,7 @@ router.get('/votes/:id', (req, res) => controller.getVoteById(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/votes', (req, res) => controller.createVote(req, res));
+router.post('/votes', authMiddleware, validate(createVoteSchema), (req, res) => controller.createVote(req, res));
 
 /**
  * @openapi
@@ -128,7 +153,7 @@ router.post('/votes', (req, res) => controller.createVote(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/votes/:id', (req, res) => controller.updateVote(req, res));
+router.put('/votes/:id', authMiddleware, validate(updateVoteSchema), (req, res) => controller.updateVote(req, res));
 
 /**
  * @openapi
@@ -154,7 +179,7 @@ router.put('/votes/:id', (req, res) => controller.updateVote(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/votes/:id', (req, res) => controller.deleteVote(req, res));
+router.delete('/votes/:id', authMiddleware, (req, res) => controller.deleteVote(req, res));
 
 /**
  * @openapi
@@ -183,7 +208,7 @@ router.delete('/votes/:id', (req, res) => controller.deleteVote(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/vote', (req, res) => controller.voteMovie(req, res));
+router.post('/vote', authMiddleware, validate(voteMovieSchema), (req, res) => controller.voteMovie(req, res));
 
 /**
  * @openapi
@@ -219,6 +244,6 @@ router.post('/vote', (req, res) => controller.voteMovie(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/vote/:id', (req, res) => controller.voteMovie(req, res));
+router.put('/vote/:id', authMiddleware, validate(voteMovieSchema), (req, res) => controller.voteMovie(req, res));
 
 export default router;

@@ -18,7 +18,8 @@ This is the Node.js + TypeScript backend for the **Watch-it-2gether** project, u
    Create a `.env` file in the root of the `backend/` directory and fill in your credentials:
    ```env
    DATABASE_URL="postgresql://POSTGRES_USER:POSTGRES_PASSWORD@localhost:5432/POSTGRES_DB?schema=public"
-   
+   JWT_SECRET=your_jwt_secret_here
+
    POSTGRES_USER=your_user
    POSTGRES_PASSWORD=your_password
    POSTGRES_DB=your_db_name

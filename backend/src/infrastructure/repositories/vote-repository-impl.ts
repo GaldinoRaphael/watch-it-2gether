@@ -87,5 +87,13 @@ export class VoteRepositoryImpl implements VoteRepository {
         });
 
         return voteUpdated;
-    }   
+    }
+
+    async getByGroupId(groupId: string): Promise<Vote[]> {
+        return this.repositoryClient.client.vote.findMany({
+            where: { groupId },
+            include: { commentary: true },
+            orderBy: { rating: "desc" },
+        });
+    }
 }

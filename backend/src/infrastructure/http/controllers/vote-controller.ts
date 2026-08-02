@@ -56,9 +56,9 @@ export class VoteController{
         }
     }
 
-    async updateVote(req: Request<{ id: string }, object, UpdateVoteInput>, res: Response) {
+    async updateVote(req: Request, res: Response) {
         try {
-            const vote = await this.voteRepositoryUseCase.update(String(req.params.id), req.body);
+            const vote = await this.voteRepositoryUseCase.update(String(req.params.id), req.body as UpdateVoteInput);
             return res.json(vote);
         } catch (error) {
             return this.handleError(res, error);
@@ -69,6 +69,15 @@ export class VoteController{
         try {
             await this.voteRepositoryUseCase.delete(String(req.params.id));
             return res.status(204).send();
+        } catch (error) {
+            return this.handleError(res, error);
+        }
+    }
+
+    async getVotesByGroup(req: Request, res: Response) {
+        try {
+            const votes = await this.voteRepositoryUseCase.getByGroupId(String(req.params.groupId));
+            return res.json(votes);
         } catch (error) {
             return this.handleError(res, error);
         }

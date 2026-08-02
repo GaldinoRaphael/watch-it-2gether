@@ -83,4 +83,9 @@ export class VoteRepositoryUseCase {
         await this.getById(id);
         await this.voteRepository.delete(id);
     }
+
+    async getByGroupId(groupId: string): Promise<VoteDTO[]> {
+        const votes = await this.voteRepository.getByGroupId(groupId);
+        return votes.map((v) => VoteMapper.modelToDto(v as Vote & { commentary: Commentary[] }));
+    }
 }

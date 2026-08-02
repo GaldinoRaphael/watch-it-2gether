@@ -70,9 +70,9 @@ export class MovieController {
         }
     }
 
-    async updateStoredMovie(req: Request<{ id: string }, object, UpdateMovieInput>, res: Response) {
+    async updateStoredMovie(req: Request, res: Response) {
         try {
-            const movie = await this.movieRepositoryUseCase.update(String(req.params.id), req.body);
+            const movie = await this.movieRepositoryUseCase.update(String(req.params.id), req.body as UpdateMovieInput);
             return res.json(movie);
         } catch (error) {
             return this.handleError(res, error);

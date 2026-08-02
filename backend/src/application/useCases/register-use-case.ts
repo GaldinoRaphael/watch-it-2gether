@@ -14,6 +14,12 @@ export class RegisterUseCase {
     ) {}
 
     async execute({ name, email, password }: RegisterInput) {
+        const existing = await this.userRepository.findByEmail(email);
+
+        if (existing) {
+            throw new Error("Email already in use");
+        }
+
         const passwordHash = await this.passwordHasher.hash(password);
         return await this.userRepository.create(name, email, passwordHash);
     }
