@@ -25,15 +25,16 @@ model Movie {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  name         String
-  email        String        @unique
-  passwordHash String
-  createdAt    DateTime      @default(now())
-  ownedGroups  Group[]
-  votes        Vote[]
-  groups       GroupMember[]
-  commentary   Commentary[]
+  id             String        @id @default(uuid())
+  name           String
+  email          String        @unique
+  passwordHash   String
+  createdAt      DateTime      @default(now())
+  ownedGroups    Group[]
+  votes          Vote[]
+  groups         GroupMember[]
+  commentary     Commentary[]
+  createdInvites GroupInvite[]
 }
 
 model Group {
@@ -44,6 +45,7 @@ model Group {
   members   GroupMember[]
   createdAt DateTime      @default(now())
   vote      Vote[]
+  invites   GroupInvite[]
 }
 
 model GroupMember {
@@ -59,10 +61,10 @@ model GroupMember {
 }
 
 model Commentary {
-  id String @id @default(uuid())
-  userId String
-  voteId String
-  content String
+  id        String   @id @default(uuid())
+  userId    String
+  voteId    String
+  content   String
   createdAt DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id])
@@ -70,17 +72,34 @@ model Commentary {
 }
 
 model Vote {
-  id        String   @id @default(uuid())
-  userId    String
-  groupId   String
-  movieId   String
+  id         String       @id @default(uuid())
+  userId     String
+  groupId    String
+  movieId    String
   commentary Commentary[]
-  rating    Float
-  createdAt DateTime @default(now())
+  rating     Float
+  createdAt  DateTime     @default(now())
 
   user  User  @relation(fields: [userId], references: [id])
   group Group @relation(fields: [groupId], references: [id])
   movie Movie @relation(fields: [movieId], references: [id])
 
   @@unique([userId, groupId, movieId])
+}
+
+model GroupInvite {
+  id    String @id @default(uuid())
+  token String @unique
+
+  groupId     String
+  invitedById String
+
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+
+  maxUses Int?
+  uses    Int  @default(0)
+
+  group     Group @relation(fields: [groupId], references: [id])
+  invitedBy User  @relation(fields: [invitedById], references: [id])
 }
