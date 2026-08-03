@@ -2,12 +2,10 @@ import type { PrismaService } from "../../infrastructure/database/prisma/client/
 import type { MovieRepository } from "../../ports/repositories/movie-repository";
 import type { Movie } from "../database/prisma/generated";
 
-
 export class MovieRepositoryImpl implements MovieRepository {
-
   constructor(readonly repositoryClient: PrismaService) {}
 
-  async getByID(id: string): Promise<Movie | null> {
+  async findByID(id: string): Promise<Movie | null> {
     const movie = await this.repositoryClient.client.movie.findUnique({
       where: {
         id,
@@ -48,7 +46,7 @@ export class MovieRepositoryImpl implements MovieRepository {
       },
     });
   }
-  
+
   async getMovieByExternalId(externalId: string): Promise<Movie | null> {
     const movieData = await this.repositoryClient.client.movie.findUnique({
       where: { externalId },

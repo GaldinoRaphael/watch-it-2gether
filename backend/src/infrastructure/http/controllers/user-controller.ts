@@ -8,11 +8,16 @@ export class UserController {
   constructor(
     private readonly registerUseCase: RegisterUseCase,
     private readonly loginUseCase: LoginUseCase,
-    private readonly userProfileUseCase: UserProfileUseCase) {}
+    private readonly userProfileUseCase: UserProfileUseCase,
+  ) {}
 
   async registerUser(req: Request, res: Response) {
     try {
-      const { name, email, password } = req.body as { name: string; email: string; password: string };
+      const { name, email, password } = req.body as {
+        name: string;
+        email: string;
+        password: string;
+      };
       await this.registerUseCase.execute({ name, email, password });
       const userAuthenticatedDTO = await this.loginUseCase.execute({ email, password });
       return res.status(201).json(userAuthenticatedDTO);
@@ -22,18 +27,18 @@ export class UserController {
   }
 
   async loginUser(req: Request, res: Response) {
-      try {
-        const { email, password } = req.body as { email: string; password: string };
-        const userAuthenticatedDTO = await this.loginUseCase.execute({ email, password });
-        return res.status(200).json(userAuthenticatedDTO);
-      } catch (error) {
-        return this.handleError(res, error);
-      }
+    try {
+      const { email, password } = req.body as { email: string; password: string };
+      const userAuthenticatedDTO = await this.loginUseCase.execute({ email, password });
+      return res.status(200).json(userAuthenticatedDTO);
+    } catch (error) {
+      return this.handleError(res, error);
+    }
   }
 
   async getProfile(req: Request, res: Response) {
     try {
-      const profile = await this.userProfileUseCase.getProfile(req.user.id);
+      const profile = await this.userProfileUseCase.getProfile(req.user!.id);
       return res.json(profile);
     } catch (error) {
       return this.handleError(res, error);

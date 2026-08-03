@@ -10,12 +10,14 @@ This is the Node.js + TypeScript backend for the **Watch-it-2gether** project, u
 ## 🛠️ Initial Setup
 
 1. **Install Dependencies:**
+
    ```bash
    npm install
    ```
 
 2. **Environment Variables:**
    Create a `.env` file in the root of the `backend/` directory and fill in your credentials:
+
    ```env
    DATABASE_URL="postgresql://POSTGRES_USER:POSTGRES_PASSWORD@localhost:5432/POSTGRES_DB?schema=public"
    JWT_SECRET=your_jwt_secret_here
@@ -34,13 +36,17 @@ This is the Node.js + TypeScript backend for the **Watch-it-2gether** project, u
 ## 💻 Running the Project
 
 ### Development Mode
+
 Start the server with auto-reload (using nodemon and ts-node):
+
 ```bash
 npm run dev
 ```
 
 ### Production Build
+
 To compile the TypeScript code and start the production server:
+
 ```bash
 npm run compile
 npm start
@@ -53,5 +59,9 @@ npm start
 - `npx prisma migrate reset`: Drops and recreates the database from scratch (Warning: deletes all data).
 
 ---
+
 **Note:** The `src/infrastructure/database/generated` folder and the `.env` file are excluded from Git for security and environment integrity.
+
+```
+
 ```

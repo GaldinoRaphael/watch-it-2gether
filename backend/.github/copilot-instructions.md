@@ -6,16 +6,16 @@ API REST em **Node.js + TypeScript** para a aplicação Watch It 2gether, onde u
 
 ## Stack
 
-| Camada | Tecnologia |
-|---|---|
-| Runtime | Node.js + TypeScript 5 |
-| Framework HTTP | Express 5 |
-| ORM | Prisma 7 (adapter `@prisma/adapter-pg`) |
-| Banco de dados | PostgreSQL |
-| Autenticação | JWT (`jsonwebtoken`) |
-| Hash de senha | bcrypt (`Bcrypter`) |
-| HTTP externo | Axios (cliente IMDB API) |
-| Documentação | Swagger (swagger-jsdoc + swagger-ui-express) |
+| Camada         | Tecnologia                                   |
+| -------------- | -------------------------------------------- |
+| Runtime        | Node.js + TypeScript 5                       |
+| Framework HTTP | Express 5                                    |
+| ORM            | Prisma 7 (adapter `@prisma/adapter-pg`)      |
+| Banco de dados | PostgreSQL                                   |
+| Autenticação   | JWT (`jsonwebtoken`)                         |
+| Hash de senha  | bcrypt (`Bcrypter`)                          |
+| HTTP externo   | Axios (cliente IMDB API)                     |
+| Documentação   | Swagger (swagger-jsdoc + swagger-ui-express) |
 
 ## Estrutura de diretórios
 
@@ -58,19 +58,19 @@ prisma/
 
 ## Rotas disponíveis
 
-| Método | Rota | Descrição |
-|---|---|---|
-| POST | `/user/register` | Cadastro de usuário |
-| POST | `/user/login` | Login (retorna JWT) |
-| GET | `/groups` | Lista todos os grupos |
-| GET | `/groups/:id` | Busca grupo por ID |
-| POST | `/groups` | Cria grupo |
-| GET | `/movies` | Lista filmes |
-| GET | `/movies/search` | Busca filme na IMDB API |
-| GET | `/votes` | Lista votos |
-| GET | `/votes/:id` | Busca voto por ID |
-| POST | `/votes` | Registra voto |
-| GET | `/api-docs` | Documentação Swagger UI |
+| Método | Rota             | Descrição               |
+| ------ | ---------------- | ----------------------- |
+| POST   | `/user/register` | Cadastro de usuário     |
+| POST   | `/user/login`    | Login (retorna JWT)     |
+| GET    | `/groups`        | Lista todos os grupos   |
+| GET    | `/groups/:id`    | Busca grupo por ID      |
+| POST   | `/groups`        | Cria grupo              |
+| GET    | `/movies`        | Lista filmes            |
+| GET    | `/movies/search` | Busca filme na IMDB API |
+| GET    | `/votes`         | Lista votos             |
+| GET    | `/votes/:id`     | Busca voto por ID       |
+| POST   | `/votes`         | Registra voto           |
+| GET    | `/api-docs`      | Documentação Swagger UI |
 
 ## Convenções de código
 
@@ -91,8 +91,8 @@ npm start        # node ./dist/server.js
 
 ## Variáveis de ambiente
 
-| Variável | Uso |
-|---|---|
-| `PORT` | Porta do servidor (padrão: 3000) |
-| `JWT_SECRET` | Segredo para assinar/verificar tokens JWT |
-| `DATABASE_URL` | Connection string do PostgreSQL |
+| Variável       | Uso                                       |
+| -------------- | ----------------------------------------- |
+| `PORT`         | Porta do servidor (padrão: 3000)          |
+| `JWT_SECRET`   | Segredo para assinar/verificar tokens JWT |
+| `DATABASE_URL` | Connection string do PostgreSQL           |

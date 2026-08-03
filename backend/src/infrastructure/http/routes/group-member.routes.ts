@@ -37,31 +37,6 @@ router.get("/groups/:groupId/members", authMiddleware, (req, res) =>
 /**
  * @openapi
  * /groups/{groupId}/members:
- *   post:
- *     summary: Entra em um grupo (usuário autenticado)
- *     tags:
- *       - GroupMembers
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: groupId
- *         required: true
- *         schema:
- *           type: string
- *     responses:
- *       201:
- *         description: Membro adicionado com sucesso
- *       409:
- *         description: Usuário já é membro do grupo
- */
-router.post("/groups/:groupId/members", authMiddleware, (req, res) =>
-  controller.joinGroup(req, res),
-);
-
-/**
- * @openapi
- * /groups/{groupId}/members:
  *   delete:
  *     summary: Sair de um grupo (usuário autenticado remove a si mesmo)
  *     tags:

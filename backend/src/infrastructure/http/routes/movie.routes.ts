@@ -11,7 +11,12 @@ import { validate } from "../middleware/validate-middleware";
 import { createMovieSchema, updateMovieSchema } from "../schemas/movie.schema";
 
 // Protects IMDB API quota
-const searchLimiter = rateLimit({ windowMs: 60 * 1000, limit: 30, standardHeaders: true, legacyHeaders: false });
+const searchLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
 const router = Router();
 
@@ -51,7 +56,7 @@ const controller = new MovieController(searchMoviesUseCase, movieRepositoryUseCa
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/movies/search', searchLimiter, (req, res) => controller.search(req, res));
+router.get("/movies/search", searchLimiter, (req, res) => controller.search(req, res));
 
 /**
  * @openapi
@@ -70,7 +75,7 @@ router.get('/movies/search', searchLimiter, (req, res) => controller.search(req,
  *               items:
  *                 $ref: '#/components/schemas/Movie'
  */
-router.get('/movies/db', (req, res) => controller.getStoredMovies(req, res));
+router.get("/movies/db", (req, res) => controller.getStoredMovies(req, res));
 
 /**
  * @openapi
@@ -100,7 +105,9 @@ router.get('/movies/db', (req, res) => controller.getStoredMovies(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/movies/db/external/:externalId', (req, res) => controller.getStoredMovieByExternalId(req, res));
+router.get("/movies/db/external/:externalId", (req, res) =>
+  controller.getStoredMovieByExternalId(req, res),
+);
 
 /**
  * @openapi
@@ -130,7 +137,7 @@ router.get('/movies/db/external/:externalId', (req, res) => controller.getStored
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/movies/db/:id', (req, res) => controller.getStoredMovieById(req, res));
+router.get("/movies/db/:id", (req, res) => controller.getStoredMovieById(req, res));
 
 /**
  * @openapi
@@ -159,7 +166,9 @@ router.get('/movies/db/:id', (req, res) => controller.getStoredMovieById(req, re
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/movies/db', authMiddleware, validate(createMovieSchema), (req, res) => controller.createStoredMovie(req, res));
+router.post("/movies/db", authMiddleware, validate(createMovieSchema), (req, res) =>
+  controller.createStoredMovie(req, res),
+);
 
 /**
  * @openapi
@@ -195,7 +204,9 @@ router.post('/movies/db', authMiddleware, validate(createMovieSchema), (req, res
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/movies/db/:id', authMiddleware, validate(updateMovieSchema), (req, res) => controller.updateStoredMovie(req, res));
+router.put("/movies/db/:id", authMiddleware, validate(updateMovieSchema), (req, res) =>
+  controller.updateStoredMovie(req, res),
+);
 
 /**
  * @openapi
@@ -221,7 +232,9 @@ router.put('/movies/db/:id', authMiddleware, validate(updateMovieSchema), (req, 
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/movies/db/:id', authMiddleware, (req, res) => controller.deleteStoredMovie(req, res));
+router.delete("/movies/db/:id", authMiddleware, (req, res) =>
+  controller.deleteStoredMovie(req, res),
+);
 
 /**
  * @openapi
@@ -251,6 +264,6 @@ router.delete('/movies/db/:id', authMiddleware, (req, res) => controller.deleteS
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/movies/:id', (req, res) => controller.getById(req, res));
+router.get("/movies/:id", (req, res) => controller.getById(req, res));
 
 export default router;

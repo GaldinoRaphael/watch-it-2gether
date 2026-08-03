@@ -3,37 +3,36 @@ import type { MovieEntity } from "../../../domain/entities/movie-entity";
 import type { Movie } from "../../database/prisma/generated";
 
 export class movieMapper {
-    static entityToDTO(movie: MovieEntity) {
-        return new MovieDTO(
-            movie.getId(),
-            movie.externalId,
-            movie.title,
-            movie.year,
-            movie.posterUrl ?? undefined,
-            movie.getCreatedAt()
-        );
-    }
+  static entityToDTO(movie: MovieEntity) {
+    return new MovieDTO(
+      movie.getId(),
+      movie.externalId,
+      movie.title,
+      movie.year,
+      movie.posterUrl ?? undefined,
+      movie.getCreatedAt(),
+    );
+  }
 
-    static toDTO(movie: Movie): MovieDTO {
-        return new MovieDTO(
-            movie.id,
-            movie.externalId,
-            movie.title,
-            movie.year,
-            movie.posterUrl ?? undefined
-        );
-    }
+  static toDTO(movie: Movie): MovieDTO {
+    return new MovieDTO(
+      movie.id,
+      movie.externalId,
+      movie.title,
+      movie.year,
+      movie.posterUrl ?? undefined,
+    );
+  }
 
-    static toDomain(movieDTO: MovieDTO): Movie {
-        return {
-            id: movieDTO.id,
-            externalId: movieDTO.externalId,
-            title: movieDTO.title,
-            year: movieDTO.year,
-            posterUrl: movieDTO.posterUrl ?? null,
-            createdAt: new Date(movieDTO.createdAt),
-            provider: "api.imdbapi.dev"
-        };
-    }
+  static toDomain(movieDTO: MovieDTO): Movie {
+    return {
+      id: movieDTO.id,
+      externalId: movieDTO.externalId,
+      title: movieDTO.title,
+      year: movieDTO.year,
+      posterUrl: movieDTO.posterUrl ?? null,
+      createdAt: new Date(movieDTO.createdAt),
+      provider: "api.imdbapi.dev",
+    };
+  }
 }
-

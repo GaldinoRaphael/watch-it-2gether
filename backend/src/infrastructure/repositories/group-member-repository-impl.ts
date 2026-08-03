@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { PrismaService } from "../database/prisma/client/prisma.service";
-import type { GroupMemberRepository } from "../../ports/repositories/group-member-repository";
+import type { GroupMemberRepository } from "./group-member-repository";
 import type { GroupMember } from "../database/prisma/generated";
 
 export class GroupMemberRepositoryImpl implements GroupMemberRepository {
@@ -18,7 +18,7 @@ export class GroupMemberRepositoryImpl implements GroupMemberRepository {
     });
   }
 
-  async create(groupId: string, userId: string): Promise<GroupMember> {
+  async addMemberToGroup(groupId: string, userId: string): Promise<GroupMember> {
     return this.repositoryClient.client.groupMember.create({
       data: {
         id: randomUUID(),

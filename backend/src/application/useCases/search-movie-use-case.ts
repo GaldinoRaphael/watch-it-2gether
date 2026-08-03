@@ -1,15 +1,13 @@
 import type { MovieGateway } from "../../domain/repositories/MovieGateway";
 
 export class SearchMoviesUseCase {
-    constructor(
-        private readonly movieGateway: MovieGateway
-    ) {}
+  constructor(private readonly movieGateway: MovieGateway) {}
 
-    async execute(query: string) {
-        return this.movieGateway.search(query);
-    }
-    
-    async getById(externalId: string) {
-        return this.movieGateway.getById(externalId);
-    }
+  async execute(query: string) {
+    return this.movieGateway.search(query);
+  }
+
+  async getById(externalId: string) {
+    return this.movieGateway.getById(externalId);
+  }
 }

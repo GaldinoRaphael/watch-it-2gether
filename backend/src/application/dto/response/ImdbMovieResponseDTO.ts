@@ -28,7 +28,6 @@ export interface ImdbMovieResponseDTO {
   interests?: ImdbInterestDTO[];
 }
 
-
 export interface ImdbImageDTO {
   url: string;
   width: number;

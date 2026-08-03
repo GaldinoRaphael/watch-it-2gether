@@ -19,4 +19,3 @@ export class MovieId {
     return this.id.equals(other.id);
   }
 }
-

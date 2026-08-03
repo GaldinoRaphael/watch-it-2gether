@@ -16,85 +16,104 @@ import type { Vote } from "../../infrastructure/database/prisma/generated";
 import type { Commentary as PrismaCommentary } from "../../infrastructure/database/prisma/generated";
 
 interface Input {
-    userId: string;
-    groupId: string;
-    externalId: string;
-    rating: number;
-    commentary: string;
-    voteId?: string;
+  userId: string;
+  groupId: string;
+  externalId: string;
+  rating: number;
+  commentary: string;
+  voteId?: string;
 }
 
 export class VoteUseCase {
-    constructor(
-        private voteRepository: VoteRepository,
-        private movieRepository: MovieRepository,
-        private movieGateway: MovieGateway){
+  constructor(
+    private voteRepository: VoteRepository,
+    private movieRepository: MovieRepository,
+    private movieGateway: MovieGateway,
+  ) {}
+
+  async execute({
+    userId,
+    groupId,
+    externalId,
+    rating,
+    commentary,
+    voteId = "",
+  }: Input): Promise<VoteDTO> {
+    const existingVote = voteId ? await this.voteRepository.findByID(voteId) : null;
+
+    if (existingVote) {
+      const existingVoteDto = VoteMapper.modelToDto(
+        existingVote as Vote & { commentary: PrismaCommentary[] },
+      );
+      return this.updateExistingVote(existingVoteDto, rating, commentary);
     }
 
-    async execute({ userId, groupId, externalId, rating, commentary, voteId = "" }: Input): Promise<VoteDTO> {
-        const existingVote = voteId ? await this.voteRepository.getByID(voteId) : null;
+    let movie = await this.movieRepository.getMovieByExternalId(externalId);
 
-        if (existingVote) {
-            const existingVoteDto = VoteMapper.modelToDto(
-                existingVote as Vote & { commentary: PrismaCommentary[] },
-            );
-            return this.updateExistingVote(existingVoteDto, rating, commentary);
-        }
-
-        let movie = await this.movieRepository.getMovieByExternalId(externalId);
-
-        if (!movie) {
-            movie = await this.searchMovieInExternalApiAndSave(externalId);
-        }
-
-        const userInternalId = UserId.create(userId);
-        const groupInternalId = GroupId.create(groupId);
-        const movieInternalId = MovieId.create(movie.id);
-        const voteInternalId = VoteId.generate();
-
-        const newCommentary = Commentary.create(userInternalId, voteInternalId, commentary);
-        const newVote = new VoteEntity(
-            voteInternalId,
-            userInternalId,
-            groupInternalId,
-            movieInternalId,
-            rating,
-            newCommentary.id,
-        );
-
-        const savedVote = await this.voteRepository.saveComplete(newVote, newCommentary);
-        return VoteMapper.modelToDto(savedVote as Vote & { commentary: PrismaCommentary[] });
+    if (!movie) {
+      movie = await this.searchMovieInExternalApiAndSave(externalId);
     }
 
-    async updateExistingVote(existingVote: VoteDTO, rating: number, commentary: string): Promise<VoteDTO> {
-        const updated = await this.voteRepository.updateComplete(
-            existingVote.id,
-            rating,
-            Commentary.restore(
-                existingVote.commentaryId,
-                existingVote.userId,
-                existingVote.id,
-                commentary,
-                new Date().toISOString(),
-            ),
-        );
-        return VoteMapper.modelToDto(updated as Vote & { commentary: PrismaCommentary[] });
-    }
+    const userInternalId = UserId.create(userId);
+    const groupInternalId = GroupId.create(groupId);
+    const movieInternalId = MovieId.create(movie.id);
+    const voteInternalId = VoteId.generate();
 
-    async searchMovieInExternalApiAndSave(
-        externalId: string,
-    ): Promise<{ id: string; externalId: string; title: string; year: string; posterUrl: string | null; provider: string | null; createdAt: Date }> {
-        const imdbMovie = await this.movieGateway.getById(externalId);
-        const movieData = ImdbMovieMapper.toDomain(imdbMovie);
+    const newCommentary = Commentary.create(userInternalId, voteInternalId, commentary);
+    const newVote = new VoteEntity(
+      voteInternalId,
+      userInternalId,
+      groupInternalId,
+      movieInternalId,
+      rating,
+      newCommentary.id,
+    );
 
-        const movie = MovieEntity.create(
-            movieData.externalId,
-            movieData.title,
-            movieData.year,
-            movieData.poster,
-        );
+    const savedVote = await this.voteRepository.saveComplete(newVote, newCommentary);
+    return VoteMapper.modelToDto(savedVote as Vote & { commentary: PrismaCommentary[] });
+  }
 
-        const movieDto = movieMapper.entityToDTO(movie);
-        return this.movieRepository.save(movieMapper.toDomain(movieDto));
-    }
+  async updateExistingVote(
+    existingVote: VoteDTO,
+    rating: number,
+    commentary: string,
+  ): Promise<VoteDTO> {
+    const updated = await this.voteRepository.updateComplete(
+      existingVote.id,
+      rating,
+      Commentary.restore(
+        existingVote.commentaryId,
+        existingVote.userId,
+        existingVote.id,
+        commentary,
+        new Date().toISOString(),
+      ),
+    );
+    return VoteMapper.modelToDto(updated as Vote & { commentary: PrismaCommentary[] });
+  }
+
+  async searchMovieInExternalApiAndSave(
+    externalId: string,
+  ): Promise<{
+    id: string;
+    externalId: string;
+    title: string;
+    year: string;
+    posterUrl: string | null;
+    provider: string | null;
+    createdAt: Date;
+  }> {
+    const imdbMovie = await this.movieGateway.getById(externalId);
+    const movieData = ImdbMovieMapper.toDomain(imdbMovie);
+
+    const movie = MovieEntity.create(
+      movieData.externalId,
+      movieData.title,
+      movieData.year,
+      movieData.poster,
+    );
+
+    const movieDto = movieMapper.entityToDTO(movie);
+    return this.movieRepository.save(movieMapper.toDomain(movieDto));
+  }
 }

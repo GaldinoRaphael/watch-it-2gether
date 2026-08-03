@@ -13,21 +13,10 @@ export class GroupMemberController {
     }
   }
 
-  async joinGroup(req: Request, res: Response) {
-    try {
-      const groupId = String(req.params.groupId);
-      const userId = req.user.id;
-      const member = await this.groupMemberUseCase.joinGroup(groupId, userId);
-      return res.status(201).json(member);
-    } catch (error) {
-      return this.handleError(res, error);
-    }
-  }
-
   async leaveGroup(req: Request, res: Response) {
     try {
       const groupId = String(req.params.groupId);
-      await this.groupMemberUseCase.leaveGroup(groupId, req.user.id);
+      await this.groupMemberUseCase.leaveGroup(groupId, req.user!.id);
       return res.status(204).send();
     } catch (error) {
       return this.handleError(res, error);
@@ -39,8 +28,11 @@ export class GroupMemberController {
     if (errorMessage.toLowerCase().includes("already a member")) {
       return res.status(409).json({ error: "Conflict", errorMessage });
     }
-    const statusCode = errorMessage.toLowerCase().includes("not found") ||
-      errorMessage.toLowerCase().includes("not a member") ? 404 : 500;
+    const statusCode =
+      errorMessage.toLowerCase().includes("not found") ||
+      errorMessage.toLowerCase().includes("not a member")
+        ? 404
+        : 500;
     return res.status(statusCode).json({
       error: statusCode === 404 ? "Not Found" : "Internal Server Error",
       errorMessage,

@@ -6,11 +6,13 @@ import { GroupController } from "../controllers/group-controller";
 import { authMiddleware } from "../middleware/auth-middleware";
 import { validate } from "../middleware/validate-middleware";
 import { createGroupSchema, updateGroupSchema } from "../schemas/group.schema";
+import { GroupMemberRepositoryImpl } from "../../repositories/group-member-repository-impl";
 
 const router = Router();
 
 const groupRepository = new GroupRepositoryImpl(prismaService);
-const groupRepositoryUseCase = new GroupRepositoryUseCase(groupRepository);
+const groupMemberRepository = new GroupMemberRepositoryImpl(prismaService);
+const groupRepositoryUseCase = new GroupRepositoryUseCase(groupRepository, groupMemberRepository);
 const controller = new GroupController(groupRepositoryUseCase);
 
 /**
@@ -30,7 +32,7 @@ const controller = new GroupController(groupRepositoryUseCase);
  *               items:
  *                 $ref: '#/components/schemas/Group'
  */
-router.get('/groups', (req, res) => controller.getGroups(req, res));
+router.get("/groups", (req, res) => controller.getGroups(req, res));
 
 /**
  * @openapi
@@ -60,7 +62,7 @@ router.get('/groups', (req, res) => controller.getGroups(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/groups/:id', (req, res) => controller.getGroupById(req, res));
+router.get("/groups/:id", (req, res) => controller.getGroupById(req, res));
 
 /**
  * @openapi
@@ -89,7 +91,9 @@ router.get('/groups/:id', (req, res) => controller.getGroupById(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post('/groups', authMiddleware, validate(createGroupSchema), (req, res) => controller.createGroup(req, res));
+router.post("/groups", authMiddleware, (req, res) =>
+  controller.createGroup(req, res),
+);
 
 /**
  * @openapi
@@ -125,7 +129,9 @@ router.post('/groups', authMiddleware, validate(createGroupSchema), (req, res) =
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.put('/groups/:id', authMiddleware, validate(updateGroupSchema), (req, res) => controller.updateGroup(req, res));
+router.put("/groups/:id", authMiddleware, validate(updateGroupSchema), (req, res) =>
+  controller.updateGroup(req, res),
+);
 
 /**
  * @openapi
@@ -151,6 +157,6 @@ router.put('/groups/:id', authMiddleware, validate(updateGroupSchema), (req, res
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.delete('/groups/:id', authMiddleware, (req, res) => controller.deleteGroup(req, res));
+router.delete("/groups/:id", authMiddleware, (req, res) => controller.deleteGroup(req, res));
 
 export default router;

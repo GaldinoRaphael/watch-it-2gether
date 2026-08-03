@@ -2,7 +2,6 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 import { PrismaClient } from "../generated";
 
-
 export class PrismaService {
   private _prisma: PrismaClient;
 
@@ -22,17 +21,13 @@ export class PrismaService {
 
     return new PrismaClient({
       adapter,
-      log:
-        process.env.NODE_ENV === "development"
-          ? ["query", "error", "warn"]
-          : ["error"],
+      log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
     });
   };
 
-  get client(){
+  get client() {
     return this._prisma;
   }
-
 
   async disconnect() {
     await this._prisma.$disconnect();

@@ -1,13 +1,18 @@
 import { UserId } from "../value-objects/user-id";
-import { assertDefined, assertEmailFormat, assertNonEmptyString, assertValidDateString } from "./validations/entity-validation";
+import {
+  assertDefined,
+  assertEmailFormat,
+  assertNonEmptyString,
+  assertValidDateString,
+} from "./validations/entity-validation";
 
 export class UserEntity {
-    constructor(
-        readonly id: UserId,
-        readonly name: string,
-        readonly email: string,
+  constructor(
+    readonly id: UserId,
+    readonly name: string,
+    readonly email: string,
     readonly createdAt: string = new Date().toISOString(),
-        readonly passwordHash?: string
+    readonly passwordHash?: string,
   ) {
     assertDefined(id, "User id");
     assertNonEmptyString(name, "User name");
@@ -19,11 +24,11 @@ export class UserEntity {
     }
   }
 
-    static create(name: string, email: string, passwordHash: string): UserEntity {
-      return new UserEntity(UserId.generate(), name, email, new Date().toISOString(), passwordHash);
-    }
+  static create(name: string, email: string, passwordHash: string): UserEntity {
+    return new UserEntity(UserId.generate(), name, email, new Date().toISOString(), passwordHash);
+  }
 
-    getId(): string {
-      return this.id.getValue();
-    }
+  getId(): string {
+    return this.id.getValue();
+  }
 }

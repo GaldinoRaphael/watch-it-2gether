@@ -4,31 +4,36 @@ import type { UserId } from "../value-objects/user-id";
 import { assertDefined, assertValidDateString } from "./validations/entity-validation";
 
 export class GroupMemberEntity {
-    constructor(
-        public readonly id: GroupMemberId,
-        public readonly groupId: GroupId,
-        public readonly userId: UserId,
-        public readonly joinedAt: string,
-    ) {
-        assertDefined(id, "GroupMember id");
-        assertDefined(groupId, "GroupMember groupId");
-        assertDefined(userId, "GroupMember userId");
-        assertValidDateString(joinedAt, "GroupMember joinedAt");
-    }
+  constructor(
+    public readonly id: GroupMemberId,
+    public readonly groupId: GroupId,
+    public readonly userId: UserId,
+    public readonly joinedAt: string,
+  ) {
+    assertDefined(id, "GroupMember id");
+    assertDefined(groupId, "GroupMember groupId");
+    assertDefined(userId, "GroupMember userId");
+    assertValidDateString(joinedAt, "GroupMember joinedAt");
+  }
 
-    static create(groupId: GroupId, userId: UserId): GroupMemberEntity {
-        return new GroupMemberEntity(GroupMemberId.generate(), groupId, userId, new Date().toISOString());
-    }
+  static create(groupId: GroupId, userId: UserId): GroupMemberEntity {
+    return new GroupMemberEntity(
+      GroupMemberId.generate(),
+      groupId,
+      userId,
+      new Date().toISOString(),
+    );
+  }
 
-    getId(): string {
-        return this.id.getValue();
-    }
+  getId(): string {
+    return this.id.getValue();
+  }
 
-    getGroupId(): string {
-        return this.groupId.getValue();
-    }
+  getGroupId(): string {
+    return this.groupId.getValue();
+  }
 
-    getUserId(): string {
-        return this.userId.getValue();
-    }
+  getUserId(): string {
+    return this.userId.getValue();
+  }
 }
