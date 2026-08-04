@@ -1,6 +1,6 @@
-import { GroupMemberRepository } from "../../infrastructure/repositories/group-member-repository";
-import { GroupInviteRepository } from "../../ports/repositories/group-invite-repository";
-import { GroupRepository } from "../../ports/repositories/group-repository";
+import { GroupInviteRepository } from "../../../ports/repositories/group-invite-repository";
+import { GroupMemberRepository } from "../../../ports/repositories/group-member-repository";
+import { GroupRepository } from "../../../ports/repositories/group-repository";
 
 export class AcceptGroupInviteUseCase {
   constructor(

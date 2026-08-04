@@ -1,5 +1,5 @@
-import { GroupInviteRepository } from "../../ports/repositories/group-invite-repository";
-import { GroupRepository } from "../../ports/repositories/group-repository";
+import { GroupInviteRepository } from "../../../ports/repositories/group-invite-repository";
+import { GroupRepository } from "../../../ports/repositories/group-repository";
 
 const frontendUrl = process.env.FRONTEND_URL || "";
 

@@ -1,5 +1,5 @@
 import type { GroupMember } from "../../infrastructure/database/prisma/generated";
-import type { GroupMemberRepository } from "../../infrastructure/repositories/group-member-repository";
+import type { GroupMemberRepository } from "../../ports/repositories/group-member-repository";
 
 export class GroupMemberUseCase {
   constructor(private readonly groupMemberRepository: GroupMemberRepository) {}
@@ -7,7 +7,7 @@ export class GroupMemberUseCase {
   async getMembers(groupId: string): Promise<GroupMember[]> {
     return this.groupMemberRepository.findByGroupId(groupId);
   }
-  
+
   async leaveGroup(groupId: string, userId: string): Promise<void> {
     const existing = await this.groupMemberRepository.findByGroupAndUser(groupId, userId);
 

@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import type { Group } from "../../infrastructure/database/prisma/generated";
 import type { GroupRepository } from "../../ports/repositories/group-repository";
-import { GroupMemberRepository } from "../../infrastructure/repositories/group-member-repository";
+import { GroupMemberRepository } from "../../ports/repositories/group-member-repository";
 
 export interface CreateGroupInput {
   id?: string;
@@ -42,7 +42,7 @@ export class GroupRepositoryUseCase {
     });
 
     await this.groupMemberRepository.addMemberToGroup(group.id, group.ownerId);
-    
+
     return group;
   }
 
