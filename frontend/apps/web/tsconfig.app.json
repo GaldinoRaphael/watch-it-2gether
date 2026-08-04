@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "noEmit": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@watch-it/domain": ["../../packages/domain/src"],
+      "@watch-it/application": ["../../packages/application/src"],
+      "@watch-it/infrastructure": ["../../packages/infrastructure/src"],
+      "@watch-it/ui": ["../../packages/ui/src"],
+      "@watch-it/design-system": ["../../packages/design-system/src"],
+      "@watch-it/shared": ["../../packages/shared/src"]
+    }
+  },
+  "include": ["src"]
+}
