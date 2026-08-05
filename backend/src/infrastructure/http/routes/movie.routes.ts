@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { rateLimit } from "express-rate-limit";
-import { IMDBApiClient } from "../../gateways/imdb-api-client";
 import { MovieRepositoryUseCase } from "../../../application/useCases/movie-repository-use-case";
 import { SearchMoviesUseCase } from "../../../application/useCases/search-movie-use-case";
 import { MovieController } from "../controllers/movie-controller";
@@ -9,6 +8,7 @@ import { MovieRepositoryImpl } from "../../repositories/movie-repository-impl";
 import { authMiddleware } from "../middleware/auth-middleware";
 import { validate } from "../middleware/validate-middleware";
 import { createMovieSchema, updateMovieSchema } from "../schemas/movie.schema";
+import { TMDBApiClient } from "../../gateways/tmdb-api-client";
 
 // Protects IMDB API quota
 const searchLimiter = rateLimit({
@@ -20,7 +20,7 @@ const searchLimiter = rateLimit({
 
 const router = Router();
 
-const gateway = new IMDBApiClient();
+const gateway = new TMDBApiClient();
 const movieRepository = new MovieRepositoryImpl(prismaService);
 const searchMoviesUseCase = new SearchMoviesUseCase(gateway);
 const movieRepositoryUseCase = new MovieRepositoryUseCase(movieRepository);

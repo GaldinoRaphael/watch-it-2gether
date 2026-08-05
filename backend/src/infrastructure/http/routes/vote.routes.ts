@@ -2,19 +2,19 @@ import { Router } from "express";
 import { VoteRepositoryUseCase } from "../../../application/useCases/vote-repository-use-case";
 import { VoteController } from "../controllers/vote-controller";
 import { VoteUseCase } from "../../../application/useCases/vote-use-case";
-import { IMDBApiClient } from "../../gateways/imdb-api-client";
 import { MovieRepositoryImpl } from "../../repositories/movie-repository-impl";
 import { VoteRepositoryImpl } from "../../repositories/vote-repository-impl";
 import { prismaService } from "../../database/prisma/client/prisma.service";
 import { authMiddleware } from "../middleware/auth-middleware";
 import { validate } from "../middleware/validate-middleware";
 import { createVoteSchema, updateVoteSchema, voteMovieSchema } from "../schemas/vote.schema";
+import { TMDBApiClient } from "../../gateways/tmdb-api-client";
 
 const router = Router();
 
 const voteRepository = new VoteRepositoryImpl(prismaService);
 const movieRepository = new MovieRepositoryImpl(prismaService);
-const gateWay = new IMDBApiClient();
+const gateWay = new TMDBApiClient();
 const voteUseCase = new VoteUseCase(voteRepository, movieRepository, gateWay);
 const voteRepositoryUseCase = new VoteRepositoryUseCase(voteRepository);
 const controller = new VoteController(voteUseCase, voteRepositoryUseCase);
