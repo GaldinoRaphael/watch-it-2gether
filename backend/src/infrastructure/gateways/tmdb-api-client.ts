@@ -32,7 +32,7 @@ export class TMDBApiClient implements MovieGateway {
       return response.data.results.map(
         (item) =>
           new MovieSummaryDTO(
-            item.id,
+            String(item.id),
             item.original_title,
             item.release_date,
             item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "",
@@ -51,7 +51,7 @@ export class TMDBApiClient implements MovieGateway {
       });
       const item = response.data;
       return new MovieSummaryDTO(
-        item.id,
+        String(item.id),
         item.original_title,
         item.release_date,
         item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "",

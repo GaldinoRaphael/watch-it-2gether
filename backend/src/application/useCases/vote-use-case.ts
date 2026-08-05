@@ -1,7 +1,6 @@
 import { MovieEntity } from "../../domain/entities/movie-entity";
 import { VoteEntity } from "../../domain/entities/vote-entity";
 import type { MovieGateway } from "../../domain/repositories/MovieGateway";
-import { ImdbMovieMapper } from "../../infrastructure/http/mappers/imdb-movie-mapper";
 import { UserId } from "../../domain/value-objects/user-id";
 import { Commentary } from "../../domain/entities/commentary-entity";
 import { GroupId } from "../../domain/value-objects/group-id";
@@ -19,6 +18,8 @@ interface Input {
   userId: string;
   groupId: string;
   externalId: string;
+  movieTitle?: string;
+  posterUrl?: string;
   rating: number;
   commentary: string;
   voteId?: string;
@@ -35,6 +36,8 @@ export class VoteUseCase {
     userId,
     groupId,
     externalId,
+    movieTitle,
+    posterUrl,
     rating,
     commentary,
     voteId = "",
@@ -51,7 +54,7 @@ export class VoteUseCase {
     let movie = await this.movieRepository.getMovieByExternalId(externalId);
 
     if (!movie) {
-      movie = await this.searchMovieInExternalApiAndSave(externalId);
+      movie = await this.searchMovieInExternalApiAndSave(externalId, movieTitle, posterUrl);
     }
 
     const userInternalId = UserId.create(userId);
@@ -94,6 +97,8 @@ export class VoteUseCase {
 
   async searchMovieInExternalApiAndSave(
     externalId: string,
+    movieTitle?: string,
+    posterUrl?: string,
   ): Promise<{
     id: string;
     externalId: string;
@@ -103,14 +108,16 @@ export class VoteUseCase {
     provider: string | null;
     createdAt: Date;
   }> {
-    const imdbMovie = await this.movieGateway.getById(externalId);
-    const movieData = ImdbMovieMapper.toDomain(imdbMovie);
+    const movieData = await this.movieGateway.getById(externalId);
+
+    const normalizedTitle = movieTitle?.trim() ? movieTitle.trim() : movieData.title;
+    const normalizedPoster = posterUrl?.trim() ? posterUrl.trim() : movieData.posterUrl;
 
     const movie = MovieEntity.create(
-      movieData.externalId,
-      movieData.title,
+      String(movieData.id || externalId),
+      normalizedTitle,
       movieData.year,
-      movieData.poster,
+      normalizedPoster || undefined,
     );
 
     const movieDto = movieMapper.entityToDTO(movie);

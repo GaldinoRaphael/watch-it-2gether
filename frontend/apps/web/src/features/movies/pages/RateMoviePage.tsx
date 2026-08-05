@@ -39,8 +39,8 @@ export function RateMoviePage() {
       return;
     }
 
-    if (!rating || rating <= 0) {
-      setErrorMessage('Sua nota deve ser maior que zero.');
+    if (rating === null || rating < 0 || rating > 5) {
+      setErrorMessage('A nota deve estar entre 0 e 5.');
       setErrorOpen(true);
       return;
     }
@@ -50,6 +50,8 @@ export function RateMoviePage() {
         userId: user.id,
         groupId: safeGroupId,
         externalId: movie.externalId,
+        movieTitle: movie.title,
+        posterUrl: movie.posterUrl,
         rating,
         commentary,
       },

@@ -25,8 +25,8 @@ export class VoteEntity {
       throw new Error("Rating must be a valid number");
     }
 
-    if (rating < 1 || rating > 5) {
-      throw new Error("Rating must be between 1 and 5");
+    if (rating < 0 || rating > 5) {
+      throw new Error("Rating must be between 0 and 5");
     }
 
     if (!Number.isInteger(rating * 2)) {

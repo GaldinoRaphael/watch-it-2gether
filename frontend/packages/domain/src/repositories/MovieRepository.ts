@@ -4,6 +4,8 @@ export interface AddMovieToGroupInput {
   userId: string;
   groupId: string;
   externalId: string;
+  movieTitle?: string;
+  posterUrl?: string;
   rating: number;
   commentary?: string;
 }

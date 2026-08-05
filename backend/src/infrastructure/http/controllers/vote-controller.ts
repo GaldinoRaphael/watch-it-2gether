@@ -20,6 +20,8 @@ export class VoteController {
         userId: string;
         groupId: string;
         externalId: string;
+        movieTitle?: string;
+        posterUrl?: string;
         rating: number;
         commentary: string;
         voteId?: string;
@@ -28,11 +30,14 @@ export class VoteController {
     res: Response,
   ) {
     try {
-      const { userId, groupId, externalId, rating, commentary, voteId } = req.body;
+      const { userId, groupId, externalId, movieTitle, posterUrl, rating, commentary, voteId } =
+        req.body;
       const result = await this.voteUseCase.execute({
         userId,
         groupId,
-        externalId,
+        externalId: String(externalId),
+        movieTitle,
+        posterUrl,
         rating,
         commentary,
         voteId: req.params.id ?? voteId,
