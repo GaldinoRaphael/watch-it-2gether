@@ -22,6 +22,7 @@ export const voteMovieSchema = z.object({
   externalId: z.coerce.string().min(1),
   movieTitle: z.string().optional(),
   posterUrl: z.string().optional(),
+  provider: z.string().optional(),
   rating: z.number().min(0).max(5),
   commentary: z.string().optional().default(""),
 });

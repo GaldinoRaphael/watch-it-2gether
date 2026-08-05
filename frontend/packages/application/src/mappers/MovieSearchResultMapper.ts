@@ -9,6 +9,7 @@ export const MovieSearchResultMapper = {
       year: dto.year,
       posterUrl: dto.posterUrl,
       synopsis: dto.description ?? '',
+      provider: dto.provider ?? '',
     };
   },
 };

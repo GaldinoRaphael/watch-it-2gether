@@ -21,7 +21,8 @@ model Movie {
   provider   String?
   createdAt  DateTime @default(now())
 
-  votes Vote[]
+  votes            Vote[]
+  groupWatchedMovie GroupWatchedMovie[]
 }
 
 model User {
@@ -33,7 +34,6 @@ model User {
   ownedGroups    Group[]
   votes          Vote[]
   groups         GroupMember[]
-  commentary     Commentary[]
   createdInvites GroupInvite[]
 }
 
@@ -46,6 +46,7 @@ model Group {
   createdAt DateTime      @default(now())
   vote      Vote[]
   invites   GroupInvite[]
+  groupWatchedMovie GroupWatchedMovie[]
 }
 
 model GroupMember {
@@ -60,25 +61,14 @@ model GroupMember {
   @@unique([groupId, userId])
 }
 
-model Commentary {
-  id        String   @id @default(uuid())
-  userId    String
-  voteId    String
-  content   String
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id])
-  vote Vote @relation(fields: [voteId], references: [id])
-}
-
 model Vote {
-  id         String       @id @default(uuid())
+  id         String   @id @default(uuid())
   userId     String
   groupId    String
   movieId    String
-  commentary Commentary[]
+  commentary String   @default("")
   rating     Float
-  createdAt  DateTime     @default(now())
+  createdAt  DateTime @default(now())
 
   user  User  @relation(fields: [userId], references: [id])
   group Group @relation(fields: [groupId], references: [id])
@@ -102,4 +92,16 @@ model GroupInvite {
 
   group     Group @relation(fields: [groupId], references: [id])
   invitedBy User  @relation(fields: [invitedById], references: [id])
+}
+
+model GroupWatchedMovie {
+  id         String   @id @default(uuid())
+  groupId    String
+  movieId    String
+  includedAt DateTime @default(now())
+
+  group Group @relation(fields: [groupId], references: [id])
+  movie Movie @relation(fields: [movieId], references: [id])
+
+  @@unique([groupId, movieId])
 }

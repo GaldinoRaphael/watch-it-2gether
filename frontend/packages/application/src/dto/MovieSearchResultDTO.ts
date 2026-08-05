@@ -4,4 +4,5 @@ export interface MovieSearchResultDTO {
   year: string;
   posterUrl: string;
   description: string;
+  provider: string;
 }

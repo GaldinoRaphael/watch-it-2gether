@@ -23,7 +23,7 @@ export class MovieEntity {
     assertNonEmptyString(provider, "Movie provider");
   }
 
-  static create(externalId: string, title: string, year: string, posterUrl?: string): MovieEntity {
+  static create(externalId: string, title: string, year: string, posterUrl?: string, provider?: string): MovieEntity {
     return new MovieEntity(
       MovieId.generate(),
       externalId,
@@ -31,6 +31,7 @@ export class MovieEntity {
       year,
       posterUrl,
       new Date().toISOString(),
+      provider,
     );
   }
 

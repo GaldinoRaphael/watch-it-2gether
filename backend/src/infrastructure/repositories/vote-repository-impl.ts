@@ -1,4 +1,3 @@
-import type { Commentary } from "../../domain/entities/commentary-entity";
 import type { VoteEntity } from "../../domain/entities/vote-entity";
 import type { PrismaService } from "../../infrastructure/database/prisma/client/prisma.service";
 
@@ -9,100 +8,49 @@ export class VoteRepositoryImpl implements VoteRepository {
   constructor(readonly repositoryClient: PrismaService) {}
 
   async findByID(id: string): Promise<Vote | null> {
-    const vote = await this.repositoryClient.client.vote.findUnique({
-      where: { id },
-      include: { commentary: true },
-    });
-
-    if (!vote) {
-      return null;
-    }
-    return vote;
+    return this.repositoryClient.client.vote.findUnique({ where: { id } });
   }
 
   async getAll(): Promise<Vote[]> {
-    const votes = await this.repositoryClient.client.vote.findMany({
-      include: { commentary: true },
-    });
-    return votes;
+    return this.repositoryClient.client.vote.findMany();
   }
 
   async save(entity: Vote): Promise<Vote> {
-    const savedVote = await this.repositoryClient.client.vote.create({
-      data: entity,
-      include: { commentary: true },
-    });
-    return savedVote;
+    return this.repositoryClient.client.vote.create({ data: entity });
   }
 
   async update(id: string, entity: Vote): Promise<Vote> {
-    const updatedVote = await this.repositoryClient.client.vote.update({
-      where: { id },
-      data: entity,
-      include: { commentary: true },
-    });
-    return updatedVote;
+    return this.repositoryClient.client.vote.update({ where: { id }, data: entity });
   }
 
   async delete(id: string): Promise<void> {
-    await this.repositoryClient.client.$transaction([
-      this.repositoryClient.client.commentary.deleteMany({ where: { voteId: id } }),
-      this.repositoryClient.client.vote.delete({ where: { id } }),
-    ]);
+    await this.repositoryClient.client.vote.delete({ where: { id } });
   }
 
-  async saveComplete(newVote: VoteEntity, newCommentary: Commentary): Promise<Vote> {
-    const voteSaved = await this.repositoryClient.client.vote.create({
+  async saveComplete(newVote: VoteEntity, commentary: string): Promise<Vote> {
+    return this.repositoryClient.client.vote.create({
       data: {
         id: newVote.getId(),
         group: { connect: { id: newVote.getGroupId() } },
         user: { connect: { id: newVote.getUserId() } },
         movie: { connect: { id: newVote.getMovieId() } },
         rating: newVote.rating,
+        commentary,
         createdAt: newVote.createdAt,
-        commentary: {
-          create: {
-            id: newCommentary.getId(),
-            userId: newCommentary.userId.getValue(),
-            content: newCommentary.content,
-            createdAt: newCommentary.createdAt,
-          },
-        },
       },
-      include: { commentary: true },
     });
-
-    return voteSaved;
   }
 
-  async updateComplete(
-    voteId: string,
-    rating: number,
-    updatedCommentary: Commentary,
-  ): Promise<Vote> {
-    const voteUpdated = await this.repositoryClient.client.vote.update({
+  async updateComplete(voteId: string, rating: number, commentary: string): Promise<Vote> {
+    return this.repositoryClient.client.vote.update({
       where: { id: voteId },
-      data: {
-        rating: rating,
-        commentary: {
-          update: {
-            where: { id: updatedCommentary.getId() },
-            data: {
-              content: updatedCommentary.content,
-            },
-          },
-        },
-      },
-      include: { commentary: true },
+      data: { rating, commentary },
     });
-
-    return voteUpdated;
   }
 
   async getByGroupId(groupId: string): Promise<Vote[]> {
     return this.repositoryClient.client.vote.findMany({
       where: { groupId },
-      include: { commentary: true },
       orderBy: { rating: "desc" },
     });
   }

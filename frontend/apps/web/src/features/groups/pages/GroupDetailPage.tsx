@@ -5,32 +5,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { AddMovieCard } from '../components/AddMovieCard';
 import { GroupMovieCard } from '../components/GroupMovieCard';
 import { useGroup } from '../hooks/useGroup';
-
-const MOCK_MOVIES = [
-  {
-    id: 'movie-1',
-    title: 'Duna: Parte 2',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg',
-    rating: 4.7,
-  },
-  {
-    id: 'movie-2',
-    title: 'Pobres Criaturas',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/kCGlIMHnOm8JPXq3rXM6c5wMxcT.jpg',
-    rating: 4.5,
-  },
-  {
-    id: 'movie-3',
-    title: 'O Assassino',
-    posterUrl: 'https://image.tmdb.org/t/p/w500/e7Jvsry47JJQruuezjU2X1Z6J77.jpg',
-    rating: 3.8,
-  },
-];
+import { useWatchedMovies } from '../hooks/useWatchedMovies';
 
 export function GroupDetailPage() {
   const navigate = useNavigate();
   const { groupId } = useParams<{ groupId: string }>();
-  const { data: group, isLoading, isError } = useGroup(groupId);
+  const { data: group, isLoading: groupLoading, isError: groupError } = useGroup(groupId);
+  const { data: watchedMovies, isLoading: moviesLoading } = useWatchedMovies(groupId);
+
+  const isLoading = groupLoading || moviesLoading;
 
   if (!groupId) {
     return (
@@ -53,7 +36,7 @@ export function GroupDetailPage() {
     );
   }
 
-  if (isError || !group) {
+  if (groupError || !group) {
     return (
       <Typography variant="body1" sx={{ color: 'error.main' }}>
         Não foi possível carregar o grupo.
@@ -76,12 +59,11 @@ export function GroupDetailPage() {
       >
         <AddMovieCard onPress={() => navigate(`/groups/${groupId}/add-movie`)} />
 
-        {MOCK_MOVIES.map((movie) => (
+        {watchedMovies?.map((movie) => (
           <GroupMovieCard
             key={movie.id}
             title={movie.title}
             posterUrl={movie.posterUrl}
-            rating={movie.rating}
           />
         ))}
       </Box>

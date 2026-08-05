@@ -12,3 +12,6 @@ export { makeAddMovieToGroupUseCase } from './useCases/addMovieToGroupUseCase';
 export type { UserProfileDTO } from './dto/UserProfileDTO';
 export { UserProfileMapper } from './mappers/UserProfileMapper';
 export { makeGetProfileUseCase, makeGetTotalRatingsUseCase } from './useCases/profileUseCases';
+export type { WatchedMovieDTO } from './dto/WatchedMovieDTO';
+export { WatchedMovieMapper } from './mappers/WatchedMovieMapper';
+export { makeGetWatchedMoviesUseCase } from './useCases/watchedMovieUseCases';

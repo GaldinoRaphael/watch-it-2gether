@@ -3,9 +3,10 @@ import { MovieGateway } from "../../domain/repositories/MovieGateway";
 import { MovieSummaryDTO } from "../../application/dto/MovieSummaryDTO";
 
 const tmdbToken = process.env.TOKEN_TMDB;
+const tmdbBaseUrl = "https://api.themoviedb.org/3";
 
 const instance = axios.create({
-  baseURL: "https://api.themoviedb.org/3",
+  baseURL: tmdbBaseUrl,
   headers: tmdbToken
     ? {
         Authorization: `Bearer ${tmdbToken}`,
@@ -37,6 +38,7 @@ export class TMDBApiClient implements MovieGateway {
             item.release_date,
             item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "",
             item.overview || "",
+            tmdbBaseUrl ?? "",
           )
       );
     } catch {
@@ -56,6 +58,7 @@ export class TMDBApiClient implements MovieGateway {
         item.release_date,
         item.poster_path ? `https://image.tmdb.org/t/p/w500${item.poster_path}` : "",
         item.overview || "",
+        tmdbBaseUrl,
       );
     } catch {
       throw new Error("Error fetching data from TMDB API");

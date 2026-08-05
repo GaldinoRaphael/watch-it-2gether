@@ -5,6 +5,7 @@ import groupRoutes from "../infrastructure/http/routes/group.routes";
 import groupMemberRoutes from "../infrastructure/http/routes/group-member.routes";
 import movieRoutes from "../infrastructure/http/routes/movie.routes";
 import voteRoutes from "../infrastructure/http/routes/vote.routes";
+import groupWatchedMovieRoutes from "../infrastructure/http/routes/group-watched-movie.routes";
 import { prismaService } from "../infrastructure/database/prisma/client/prisma.service";
 import swaggerUi from "swagger-ui-express";
 import openapiSpecification from "../docs/swagger";
@@ -23,6 +24,7 @@ app.use(groupMemberRoutes);
 app.use(groupInviteRoutes);
 app.use(movieRoutes);
 app.use(voteRoutes);
+app.use(groupWatchedMovieRoutes);
 app.use(userRoutes);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 

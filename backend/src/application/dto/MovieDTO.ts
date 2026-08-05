@@ -6,5 +6,6 @@ export class MovieDTO {
     readonly year: string,
     readonly posterUrl?: string,
     readonly createdAt: string = new Date().toISOString(),
+    readonly provider?: string,
   ) {}
 }

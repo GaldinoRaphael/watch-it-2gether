@@ -1,10 +1,8 @@
-import { CommentaryId } from "../../domain/value-objects/commentary-id";
 import { VoteId } from "../../domain/value-objects/vote-id";
 import type { VoteRepository } from "../../ports/repositories/vote-repository";
 import { VoteDTO } from "../dto/VoteDTO";
 import { VoteMapper } from "../../infrastructure/http/mappers/vote-mapper";
 import type { Vote } from "../../infrastructure/database/prisma/generated";
-import type { Commentary } from "../../infrastructure/database/prisma/generated";
 
 export interface CreateVoteInput {
   id?: string;
@@ -12,7 +10,6 @@ export interface CreateVoteInput {
   groupId: string;
   movieId: string;
   rating: number;
-  commentaryId?: string;
   commentary?: string;
   createdAt?: string;
 }
@@ -22,7 +19,6 @@ export interface UpdateVoteInput {
   groupId?: string;
   movieId?: string;
   rating?: number;
-  commentaryId?: string;
   commentary?: string;
   createdAt?: string;
 }
@@ -37,12 +33,12 @@ export class VoteRepositoryUseCase {
       throw new Error("Vote not found");
     }
 
-    return VoteMapper.modelToDto(vote as Vote & { commentary: Commentary[] });
+    return VoteMapper.modelToDto(vote as Vote);
   }
 
   async getAll(): Promise<VoteDTO[]> {
     const votes = await this.voteRepository.getAll();
-    return votes.map((v) => VoteMapper.modelToDto(v as Vote & { commentary: Commentary[] }));
+    return votes.map((v) => VoteMapper.modelToDto(v as Vote));
   }
 
   async create(input: CreateVoteInput): Promise<VoteDTO> {
@@ -52,13 +48,12 @@ export class VoteRepositoryUseCase {
       input.groupId,
       input.movieId,
       input.rating,
-      input.commentaryId ?? CommentaryId.generate().getValue(),
       input.commentary ?? "",
       input.createdAt ?? new Date().toISOString(),
     );
 
     const saved = await this.voteRepository.save(VoteMapper.dtoToModel(vote));
-    return VoteMapper.modelToDto(saved as Vote & { commentary: Commentary[] });
+    return VoteMapper.modelToDto(saved as Vote);
   }
 
   async update(id: string, input: UpdateVoteInput): Promise<VoteDTO> {
@@ -70,13 +65,12 @@ export class VoteRepositoryUseCase {
       input.groupId ?? currentVote.groupId,
       input.movieId ?? currentVote.movieId,
       input.rating ?? currentVote.rating,
-      input.commentaryId ?? currentVote.commentaryId,
       input.commentary ?? currentVote.commentary,
       input.createdAt ?? currentVote.createdAt,
     );
 
     const updated = await this.voteRepository.update(id, VoteMapper.dtoToModel(vote));
-    return VoteMapper.modelToDto(updated as Vote & { commentary: Commentary[] });
+    return VoteMapper.modelToDto(updated as Vote);
   }
 
   async delete(id: string): Promise<void> {
@@ -86,6 +80,6 @@ export class VoteRepositoryUseCase {
 
   async getByGroupId(groupId: string): Promise<VoteDTO[]> {
     const votes = await this.voteRepository.getByGroupId(groupId);
-    return votes.map((v) => VoteMapper.modelToDto(v as Vote & { commentary: Commentary[] }));
+    return votes.map((v) => VoteMapper.modelToDto(v as Vote));
   }
 }

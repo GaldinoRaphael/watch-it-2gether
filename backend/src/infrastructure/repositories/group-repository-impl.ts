@@ -47,7 +47,6 @@ export class GroupRepositoryImpl implements GroupRepository {
   async delete(id: string): Promise<void> {
     await this.repositoryClient.client.$transaction([
       this.repositoryClient.client.groupMember.deleteMany({ where: { groupId: id } }),
-      this.repositoryClient.client.commentary.deleteMany({ where: { vote: { groupId: id } } }),
       this.repositoryClient.client.vote.deleteMany({ where: { groupId: id } }),
       this.repositoryClient.client.group.delete({ where: { id } }),
     ]);

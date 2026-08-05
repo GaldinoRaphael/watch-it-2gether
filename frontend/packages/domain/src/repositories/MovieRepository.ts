@@ -6,6 +6,7 @@ export interface AddMovieToGroupInput {
   externalId: string;
   movieTitle?: string;
   posterUrl?: string;
+  provider?: string;
   rating: number;
   commentary?: string;
 }

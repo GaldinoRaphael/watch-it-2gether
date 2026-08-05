@@ -4,6 +4,7 @@ export class MovieSummaryDTO {
     readonly title: string,
     readonly year: string,
     readonly posterUrl: string,
-    readonly description: string = ""
+    readonly description: string = "",
+    readonly provider: string = ""
   ) {}
 }

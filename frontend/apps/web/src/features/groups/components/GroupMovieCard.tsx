@@ -1,14 +1,13 @@
-import StarIcon from '@mui/icons-material/Star';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import MovieIcon from '@mui/icons-material/Movie';
 
 interface GroupMovieCardProps {
   title: string;
-  posterUrl: string;
-  rating: number;
+  posterUrl: string | null;
 }
 
-export function GroupMovieCard({ title, posterUrl, rating }: GroupMovieCardProps) {
+export function GroupMovieCard({ title, posterUrl }: GroupMovieCardProps) {
   return (
     <Box
       sx={{
@@ -33,29 +32,29 @@ export function GroupMovieCard({ title, posterUrl, rating }: GroupMovieCardProps
           borderColor: 'divider',
           mb: 1,
           bgcolor: 'background.default',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <Box
-          component="img"
-          src={posterUrl}
-          alt={`Poster de ${title}`}
-          sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
-        />
+        {posterUrl ? (
+          <Box
+            component="img"
+            src={posterUrl}
+            alt={`Poster de ${title}`}
+            sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+        ) : (
+          <MovieIcon sx={{ fontSize: 48, color: 'text.disabled' }} />
+        )}
       </Box>
 
       <Typography
         variant="subtitle2"
-        sx={{ color: 'text.primary', mb: 0.5, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+        sx={{ color: 'text.primary', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
       >
         {title}
       </Typography>
-
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-        <StarIcon sx={{ fontSize: 16, color: 'tertiary.main' }} />
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {rating.toFixed(1)}
-        </Typography>
-      </Box>
     </Box>
   );
 }

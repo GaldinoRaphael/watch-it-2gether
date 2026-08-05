@@ -11,6 +11,7 @@ export class movieMapper {
       movie.year,
       movie.posterUrl ?? undefined,
       movie.getCreatedAt(),
+      movie.provider,
     );
   }
 
@@ -32,7 +33,7 @@ export class movieMapper {
       year: movieDTO.year,
       posterUrl: movieDTO.posterUrl ?? null,
       createdAt: new Date(movieDTO.createdAt),
-      provider: "api.imdbapi.dev",
+      provider: movieDTO.provider ?? null,
     };
   }
 }

@@ -18,6 +18,7 @@ export const httpMovieRepository: MovieRepository = {
       externalId: String(input.externalId),
       movieTitle: input.movieTitle,
       posterUrl: input.posterUrl,
+      provider: input.provider,
       rating: input.rating,
       commentary: input.commentary ?? '',
     });

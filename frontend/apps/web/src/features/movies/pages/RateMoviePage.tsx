@@ -52,6 +52,7 @@ export function RateMoviePage() {
         externalId: movie.externalId,
         movieTitle: movie.title,
         posterUrl: movie.posterUrl,
+        provider: movie.provider,
         rating,
         commentary,
       },
