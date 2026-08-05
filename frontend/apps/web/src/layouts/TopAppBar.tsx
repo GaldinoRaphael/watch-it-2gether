@@ -4,8 +4,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Switch from '@mui/material/Switch';
+import Tooltip from '@mui/material/Tooltip';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 import MovieIcon from '@mui/icons-material/Movie';
+import { useThemeMode } from '../providers/ThemeProvider';
 
 const NAV_LINKS = [
   { label: 'Grupos', path: '/groups' },
@@ -15,6 +20,7 @@ const NAV_LINKS = [
 export function TopAppBar() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { mode, toggleColorMode } = useThemeMode();
 
   return (
     <AppBar
@@ -89,6 +95,19 @@ export function TopAppBar() {
             );
           })}
         </Box>
+
+        <Tooltip title={mode === 'dark' ? 'Modo claro' : 'Modo escuro'}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <LightModeIcon sx={{ fontSize: 18, color: 'text.disabled' }} />
+            <Switch
+              checked={mode === 'dark'}
+              onChange={toggleColorMode}
+              size="small"
+              inputProps={{ 'aria-label': 'Alternar modo escuro' }}
+            />
+            <DarkModeIcon sx={{ fontSize: 18, color: 'text.disabled' }} />
+          </Box>
+        </Tooltip>
 
         <IconButton sx={{ color: 'text.secondary' }} aria-label="Notificações">
           <NotificationsIcon />
