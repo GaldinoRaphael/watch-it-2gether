@@ -1,0 +1,23 @@
+import { MovieSearchResultMapper } from '@watch-it/application';
+import type { MovieSearchResultDTO } from '@watch-it/application';
+import type { AddMovieToGroupInput, MovieRepository } from '@watch-it/domain';
+import { httpClient } from '../http/httpClient';
+
+export const httpMovieRepository: MovieRepository = {
+  async search(query) {
+    const { data } = await httpClient.get<MovieSearchResultDTO[]>('/movies/search', {
+      params: { query },
+    });
+
+    return data.map(MovieSearchResultMapper.toDomain);
+  },
+  async addToGroup(input: AddMovieToGroupInput) {
+    await httpClient.post('/vote', {
+      userId: input.userId,
+      groupId: input.groupId,
+      externalId: input.externalId,
+      rating: input.rating,
+      commentary: input.commentary ?? '',
+    });
+  },
+};
