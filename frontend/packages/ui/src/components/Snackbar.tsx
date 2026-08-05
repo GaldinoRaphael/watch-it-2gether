@@ -7,6 +7,7 @@ export interface SnackbarProps {
   message: string;
   severity?: 'success' | 'error' | 'info' | 'warning';
   autoHideDuration?: number;
+  anchorOrigin?: { vertical: 'top' | 'bottom'; horizontal: 'left' | 'center' | 'right' };
 }
 
 export function Snackbar({
@@ -15,13 +16,14 @@ export function Snackbar({
   message,
   severity = 'success',
   autoHideDuration = 4000,
+  anchorOrigin = { vertical: 'top', horizontal: 'right' },
 }: SnackbarProps) {
   return (
     <MuiSnackbar
       open={open}
       autoHideDuration={autoHideDuration}
       onClose={onClose}
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      anchorOrigin={anchorOrigin}
     >
       <MuiAlert
         onClose={onClose}

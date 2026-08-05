@@ -5,8 +5,10 @@ export const httpClient = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Resolve baseURL lazily so environmentService.configure() can run first
+// Resolve baseURL lazily and inject auth token on every request
 httpClient.interceptors.request.use((config) => {
   config.baseURL = environmentService.apiBaseUrl;
+  const token = localStorage.getItem('auth_token');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
