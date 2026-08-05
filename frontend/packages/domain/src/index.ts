@@ -3,3 +3,4 @@ export type { Movie } from './entities/Movie';
 export type { Group, GroupMember } from './entities/Group';
 export type { Vote } from './entities/Vote';
 export { DomainError } from './errors/DomainError';
+export type { AuthRepository } from './repositories/AuthRepository';

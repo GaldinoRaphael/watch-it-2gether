@@ -1,2 +1,4 @@
-// DTOs, Mappers and Use Cases are added here as features are built
-export {};
+export type { AuthDTO } from './dto/AuthDTO';
+export { AuthMapper } from './mappers/AuthMapper';
+export { makeLoginUseCase } from './useCases/loginUseCase';
+export { makeRegisterUseCase } from './useCases/registerUseCase';

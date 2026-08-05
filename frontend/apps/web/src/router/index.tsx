@@ -5,38 +5,44 @@ import { RegisterPage } from '../pages/RegisterPage';
 import { GroupsPage } from '../pages/GroupsPage';
 import { ProfilePage } from '../pages/ProfilePage';
 import { NotFoundPage } from '../pages/NotFoundPage';
+import { AuthGuard } from '../features/auth/guards/AuthGuard';
+import { GuestGuard } from '../features/auth/guards/GuestGuard';
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <LoginPage />,
-  },
-  {
-    path: '/register',
-    element: <RegisterPage />,
-  },
-  {
-    path: '/',
-    element: <AppLayout />,
+    element: <GuestGuard />,
     children: [
-      { index: true, element: <Navigate to="/groups" replace /> },
-      { path: 'groups', element: <GroupsPage /> },
+      { path: '/login', element: <LoginPage /> },
+      { path: '/register', element: <RegisterPage /> },
+    ],
+  },
+  {
+    element: <AuthGuard />,
+    children: [
       {
-        path: 'groups/:groupId',
-        lazy: () =>
-          import('../pages/GroupDetailPage').then((m) => ({ Component: m.GroupDetailPage })),
+        path: '/',
+        element: <AppLayout />,
+        children: [
+          { index: true, element: <Navigate to="/groups" replace /> },
+          { path: 'groups', element: <GroupsPage /> },
+          {
+            path: 'groups/:groupId',
+            lazy: () =>
+              import('../pages/GroupDetailPage').then((m) => ({ Component: m.GroupDetailPage })),
+          },
+          {
+            path: 'groups/:groupId/add-movie',
+            lazy: () =>
+              import('../pages/AddMoviePage').then((m) => ({ Component: m.AddMoviePage })),
+          },
+          {
+            path: 'groups/:groupId/movie/:movieId',
+            lazy: () =>
+              import('../pages/MovieDetailPage').then((m) => ({ Component: m.MovieDetailPage })),
+          },
+          { path: 'profile', element: <ProfilePage /> },
+        ],
       },
-      {
-        path: 'groups/:groupId/add-movie',
-        lazy: () =>
-          import('../pages/AddMoviePage').then((m) => ({ Component: m.AddMoviePage })),
-      },
-      {
-        path: 'groups/:groupId/movie/:movieId',
-        lazy: () =>
-          import('../pages/MovieDetailPage').then((m) => ({ Component: m.MovieDetailPage })),
-      },
-      { path: 'profile', element: <ProfilePage /> },
     ],
   },
   { path: '*', element: <NotFoundPage /> },
