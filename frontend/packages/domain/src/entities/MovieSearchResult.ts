@@ -3,4 +3,5 @@ export interface MovieSearchResult {
   title: string;
   year: string;
   posterUrl: string;
+  synopsis: string;
 }

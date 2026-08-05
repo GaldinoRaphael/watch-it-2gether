@@ -35,10 +35,16 @@ export class IMDBApiClient implements MovieGateway {
     }
   }
 
-  async getById(externalId: string): Promise<ImdbMovieResponseDTO> {
+  async getById(externalId: string): Promise<MovieSummaryDTO> {
     try {
-      const response = await instance.get<ImdbMovieResponseDTO>(`/titles/${externalId}`);
-      return response.data;
+      const response = await instance.get<ImdbSearchResultItem>(`/titles/${externalId}`);
+      const item = response.data;
+      return new MovieSummaryDTO(
+        item.id,
+        item.primaryTitle,
+        item.startYear,
+        item.primaryImage?.url ?? "",
+      );
     } catch {
       throw new Error("Error fetching data from IMDB API");
     }

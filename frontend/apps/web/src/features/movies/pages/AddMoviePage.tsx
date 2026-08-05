@@ -2,49 +2,28 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Snackbar } from '@watch-it/ui';
-import { useAuth } from '../../../providers/AuthContext';
+import type { MovieSearchResult } from '@watch-it/domain';
 import { MovieSearchInput } from '../components/MovieSearchInput';
 import { SearchResultItem } from '../components/SearchResultItem';
-import { useAddMovieToGroup } from '../hooks/useAddMovieToGroup';
 import { useMovieSearch } from '../hooks/useMovieSearch';
 
 export function AddMoviePage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { groupId } = useParams<{ groupId: string }>();
   const [query, setQuery] = useState('');
-  const [errorOpen, setErrorOpen] = useState(false);
 
-  const safeGroupId = groupId ?? '';
   const { data, isLoading, isError } = useMovieSearch(query);
-  const { mutate: addMovie, isPending, variables } = useAddMovieToGroup(safeGroupId);
 
-  const currentAddingExternalId = useMemo(() => variables?.externalId ?? '', [variables]);
+  function handleSelectMovie(movie: MovieSearchResult) {
+    if (!groupId) return;
 
-  function handleAddMovie(externalId: string) {
-    if (!user?.id || !safeGroupId) {
-      setErrorOpen(true);
-      return;
-    }
-
-    addMovie(
-      {
-        userId: user.id,
-        groupId: safeGroupId,
-        externalId,
-        rating: 0,
-        commentary: '',
+    navigate(`/groups/${groupId}/add-movie/rate`, {
+      state: {
+        movie,
       },
-      {
-        onSuccess: () => {
-          navigate(`/groups/${safeGroupId}`);
-        },
-        onError: () => setErrorOpen(true),
-      },
-    );
+    });
   }
 
   return (
@@ -120,18 +99,10 @@ export function AddMoviePage() {
             <SearchResultItem
               key={movie.externalId}
               movie={movie}
-              onPress={() => handleAddMovie(movie.externalId)}
-              loading={isPending && currentAddingExternalId === movie.externalId}
+              onPress={() => handleSelectMovie(movie)}
             />
           ))}
       </Box>
-
-      <Snackbar
-        open={errorOpen}
-        onClose={() => setErrorOpen(false)}
-        message="Não foi possível adicionar o filme."
-        severity="error"
-      />
     </Box>
   );
 }

@@ -36,6 +36,11 @@ export const router = createBrowserRouter([
               import('../pages/AddMoviePage').then((m) => ({ Component: m.AddMoviePage })),
           },
           {
+            path: 'groups/:groupId/add-movie/rate',
+            lazy: () =>
+              import('../pages/RateMoviePage').then((m) => ({ Component: m.RateMoviePage })),
+          },
+          {
             path: 'groups/:groupId/movie/:movieId',
             lazy: () =>
               import('../pages/MovieDetailPage').then((m) => ({ Component: m.MovieDetailPage })),

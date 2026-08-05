@@ -8,6 +8,7 @@ export const MovieSearchResultMapper = {
       title: dto.title,
       year: dto.year,
       posterUrl: dto.posterUrl,
+      synopsis: dto.description ?? '',
     };
   },
 };

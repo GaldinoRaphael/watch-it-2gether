@@ -6,7 +6,10 @@ import { BottomNav } from './BottomNav';
 
 export function AppLayout() {
   const { pathname } = useLocation();
-  const isTaskFocusedRoute = Boolean(matchPath('/groups/:groupId/add-movie', pathname));
+  const isTaskFocusedRoute = Boolean(
+    matchPath('/groups/:groupId/add-movie', pathname) ||
+      matchPath('/groups/:groupId/add-movie/rate', pathname),
+  );
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', bgcolor: 'background.default' }}>

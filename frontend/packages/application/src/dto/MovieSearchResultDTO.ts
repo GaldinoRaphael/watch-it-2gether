@@ -3,4 +3,5 @@ export interface MovieSearchResultDTO {
   title: string;
   year: string;
   posterUrl: string;
+  description: string;
 }
