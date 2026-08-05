@@ -5,3 +5,6 @@ export { makeRegisterUseCase } from './useCases/registerUseCase';
 export type { GroupDTO } from './dto/GroupDTO';
 export { GroupMapper } from './mappers/GroupMapper';
 export { makeListGroupsUseCase, makeGetGroupUseCase, makeCreateGroupUseCase } from './useCases/groupUseCases';
+export type { UserProfileDTO } from './dto/UserProfileDTO';
+export { UserProfileMapper } from './mappers/UserProfileMapper';
+export { makeGetProfileUseCase, makeGetTotalRatingsUseCase } from './useCases/profileUseCases';
