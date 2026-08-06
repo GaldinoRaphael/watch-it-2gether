@@ -1,6 +1,9 @@
 import type { GroupWatchedMovie, Movie } from "../database/prisma/generated";
 import type { PrismaService } from "../database/prisma/client/prisma.service";
-import type { GroupWatchedMovieRepository } from "../../ports/repositories/group-watched-movie-repository";
+import type {
+  GroupWatchedMovieRepository,
+  GroupWatchedMovieWithMovieAndAverage,
+} from "../../ports/repositories/group-watched-movie-repository";
 import { GroupWatchedMovieId } from "../../domain/value-objects/group-watched-movie-id";
 
 export class GroupWatchedMovieRepositoryImpl implements GroupWatchedMovieRepository {
@@ -36,11 +39,34 @@ export class GroupWatchedMovieRepositoryImpl implements GroupWatchedMovieReposit
     });
   }
 
-  async getByGroupIdWithMovie(groupId: string): Promise<(GroupWatchedMovie & { movie: Movie })[]> {
-    return this.repositoryClient.client.groupWatchedMovie.findMany({
+  async getByGroupIdWithMovie(groupId: string): Promise<GroupWatchedMovieWithMovieAndAverage[]> {
+    const watchedMovies = await this.repositoryClient.client.groupWatchedMovie.findMany({
       where: { groupId },
       include: { movie: true },
       orderBy: { includedAt: "desc" },
     });
+
+    if (watchedMovies.length === 0) {
+      return [];
+    }
+
+    const movieIds = watchedMovies.map((record) => record.movieId);
+    const voteAverages = await this.repositoryClient.client.vote.groupBy({
+      by: ["movieId"],
+      where: {
+        groupId,
+        movieId: { in: movieIds },
+      },
+      _avg: { rating: true },
+    });
+
+    const averageByMovieId = new Map(
+      voteAverages.map((entry) => [entry.movieId, entry._avg.rating ?? null]),
+    );
+
+    return watchedMovies.map((record) => ({
+      ...record,
+      voteAverage: averageByMovieId.get(record.movieId) ?? null,
+    }));
   }
 }

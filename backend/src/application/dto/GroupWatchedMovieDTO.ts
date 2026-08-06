@@ -9,5 +9,6 @@ export class GroupWatchedMovieDTO {
     readonly externalId: string,
     readonly posterUrl: string | null,
     readonly provider: string | null,
+    readonly averageRating: number | null,
   ) {}
 }

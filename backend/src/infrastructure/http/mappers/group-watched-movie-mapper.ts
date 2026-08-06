@@ -1,8 +1,8 @@
 import { GroupWatchedMovieDTO } from "../../../application/dto/GroupWatchedMovieDTO";
-import type { GroupWatchedMovie, Movie } from "../../database/prisma/generated";
+import type { GroupWatchedMovieWithMovieAndAverage } from "../../../ports/repositories/group-watched-movie-repository";
 
 export class GroupWatchedMovieMapper {
-  static modelToDto(record: GroupWatchedMovie & { movie: Movie }): GroupWatchedMovieDTO {
+  static modelToDto(record: GroupWatchedMovieWithMovieAndAverage): GroupWatchedMovieDTO {
     return new GroupWatchedMovieDTO(
       record.id,
       record.groupId,
@@ -13,6 +13,7 @@ export class GroupWatchedMovieMapper {
       record.movie.externalId,
       record.movie.posterUrl,
       record.movie.provider,
+      record.voteAverage,
     );
   }
 }

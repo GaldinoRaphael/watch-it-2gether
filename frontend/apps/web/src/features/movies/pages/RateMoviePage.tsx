@@ -1,7 +1,6 @@
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -9,7 +8,7 @@ import Collapse from '@mui/material/Collapse';
 import { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { MovieSearchResult } from '@watch-it/domain';
-import { Snackbar } from '@watch-it/ui';
+import { RatingStars, Snackbar } from '@watch-it/ui';
 import { useAuth } from '../../../providers/AuthContext';
 import { useAddMovieToGroup } from '../hooks/useAddMovieToGroup';
 
@@ -175,13 +174,7 @@ export function RateMoviePage() {
         <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
           Sua Nota
         </Typography>
-        <Rating
-          name="movie-rating"
-          value={rating}
-          precision={0.5}
-          onChange={(_, value) => setRating(value)}
-          sx={{ '& .MuiRating-iconFilled': { color: 'tertiary.main' } }}
-        />
+        <RatingStars value={rating ?? 0} onChange={setRating} size="lg" />
         <Typography variant="h3" sx={{ color: 'tertiary.main', mt: 1 }}>
           {(rating ?? 0).toFixed(1)}
         </Typography>

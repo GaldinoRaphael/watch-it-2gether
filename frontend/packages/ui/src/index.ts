@@ -6,3 +6,5 @@ export { Alert } from './components/Alert';
 export type { AlertProps } from './components/Alert';
 export { Snackbar } from './components/Snackbar';
 export type { SnackbarProps } from './components/Snackbar';
+export { RatingStars } from './components/RatingStars';
+export type { RatingStarsProps } from './components/RatingStars';

@@ -8,4 +8,5 @@ export interface WatchedMovieDTO {
   externalId: string;
   posterUrl: string | null;
   provider: string | null;
+  averageRating: number | null;
 }

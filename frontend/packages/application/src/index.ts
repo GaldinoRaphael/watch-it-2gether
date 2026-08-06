@@ -15,3 +15,6 @@ export { makeGetProfileUseCase, makeGetTotalRatingsUseCase } from './useCases/pr
 export type { WatchedMovieDTO } from './dto/WatchedMovieDTO';
 export { WatchedMovieMapper } from './mappers/WatchedMovieMapper';
 export { makeGetWatchedMoviesUseCase } from './useCases/watchedMovieUseCases';
+export type { GroupVoteDTO } from './dto/GroupVoteDTO';
+export { GroupVoteMapper } from './mappers/GroupVoteMapper';
+export { makeGetGroupVotesUseCase } from './useCases/groupVoteUseCases';

@@ -13,6 +13,7 @@ export const WatchedMovieMapper = {
       externalId: dto.externalId,
       posterUrl: dto.posterUrl,
       provider: dto.provider,
+      averageRating: dto.averageRating,
     };
   },
 };

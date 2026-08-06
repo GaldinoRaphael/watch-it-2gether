@@ -11,3 +11,4 @@ export type { GroupRepository } from './repositories/GroupRepository';
 export type { MovieRepository, AddMovieToGroupInput } from './repositories/MovieRepository';
 export type { UserRepository } from './repositories/UserRepository';
 export type { WatchedMovieRepository } from './repositories/WatchedMovieRepository';
+export type { VoteRepository } from './repositories/VoteRepository';

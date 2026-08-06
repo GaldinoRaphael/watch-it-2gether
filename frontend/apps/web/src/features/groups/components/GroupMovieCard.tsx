@@ -1,13 +1,15 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MovieIcon from '@mui/icons-material/Movie';
+import { RatingStars } from '@watch-it/ui';
 
 interface GroupMovieCardProps {
   title: string;
   posterUrl: string | null;
+  averageRating: number | null;
 }
 
-export function GroupMovieCard({ title, posterUrl }: GroupMovieCardProps) {
+export function GroupMovieCard({ title, posterUrl, averageRating }: GroupMovieCardProps) {
   return (
     <Box
       sx={{
@@ -55,6 +57,16 @@ export function GroupMovieCard({ title, posterUrl }: GroupMovieCardProps) {
       >
         {title}
       </Typography>
+
+      <Box sx={{ mt: 0.5, display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
+        {averageRating === null ? (
+          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+            Sem avaliações
+          </Typography>
+        ) : (
+          <RatingStars value={averageRating} size="sm" readOnly showLabel filledColor="warning.main" />
+        )}
+      </Box>
     </Box>
   );
 }

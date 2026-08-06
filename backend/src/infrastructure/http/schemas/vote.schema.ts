@@ -1,10 +1,18 @@
 import { z } from "zod";
 
+const ratingStepSchema = z
+  .number()
+  .min(0)
+  .max(5)
+  .refine((rating) => Number.isInteger(rating * 2), {
+    message: "Rating must use 0.5 increments",
+  });
+
 export const createVoteSchema = z.object({
   userId: z.string().uuid(),
   groupId: z.string().uuid(),
   movieId: z.string().uuid(),
-  rating: z.number().min(0).max(5),
+  rating: ratingStepSchema,
   commentary: z.string().optional(),
 });
 
@@ -12,7 +20,7 @@ export const updateVoteSchema = z.object({
   userId: z.string().uuid().optional(),
   groupId: z.string().uuid().optional(),
   movieId: z.string().uuid().optional(),
-  rating: z.number().min(0).max(5).optional(),
+  rating: ratingStepSchema.optional(),
   commentary: z.string().optional(),
 });
 
@@ -23,6 +31,6 @@ export const voteMovieSchema = z.object({
   movieTitle: z.string().optional(),
   posterUrl: z.string().optional(),
   provider: z.string().optional(),
-  rating: z.number().min(0).max(5),
+  rating: ratingStepSchema,
   commentary: z.string().optional().default(""),
 });

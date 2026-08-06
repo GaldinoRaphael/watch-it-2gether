@@ -5,3 +5,4 @@ export { httpGroupRepository } from './repositories/httpGroupRepository';
 export { httpMovieRepository } from './repositories/httpMovieRepository';
 export { httpUserRepository } from './repositories/httpUserRepository';
 export { httpWatchedMovieRepository } from './repositories/httpWatchedMovieRepository';
+export { httpVoteRepository } from './repositories/httpVoteRepository';
