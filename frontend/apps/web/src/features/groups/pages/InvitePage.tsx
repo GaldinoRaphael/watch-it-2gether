@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import GroupIcon from '@mui/icons-material/Group';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Snackbar } from '@watch-it/ui';
+import { Alert, Button, Snackbar } from '@watch-it/ui';
 import { useAuth } from '../../../providers/AuthContext';
 import { useAcceptGroupInvite, useGroupInvite } from '../hooks/useGroupInvite';
 import { useState } from 'react';
@@ -101,9 +101,15 @@ export function InvitePage() {
               {data.group.numberOfMembers} {data.group.numberOfMembers === 1 ? 'membro' : 'membros'} atualmente
             </Typography>
 
+            {!authToken && (
+              <Alert severity="info">
+                Você precisa estar logado para aceitar este convite. Após o login, você será redirecionado de volta automaticamente.
+              </Alert>
+            )}
+
             {!authToken ? (
               <Button
-                label="Entrar para aceitar"
+                label="Fazer login"
                 variant="primary"
                 onPress={() => navigate('/login', { state: { redirectTo: `/invite/${token}` } })}
               />
@@ -118,11 +124,13 @@ export function InvitePage() {
           </>
         )}
 
-        <Button
-          label="Voltar para grupos"
-          variant="ghost"
-          onPress={() => navigate('/groups')}
-        />
+        {authToken && (
+          <Button
+            label="Voltar para grupos"
+            variant="ghost"
+            onPress={() => navigate('/groups')}
+          />
+        )}
       </Box>
 
       <Snackbar

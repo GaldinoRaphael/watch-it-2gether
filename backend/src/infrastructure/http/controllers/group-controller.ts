@@ -42,6 +42,7 @@ export class GroupController {
       const group = await this.groupRepositoryUseCase.update(
         String(req.params.id),
         req.body as UpdateGroupInput,
+        req.user!.id,
       );
       return res.json(group);
     } catch (error) {
@@ -51,7 +52,7 @@ export class GroupController {
 
   async deleteGroup(req: Request, res: Response) {
     try {
-      await this.groupRepositoryUseCase.delete(String(req.params.id));
+      await this.groupRepositoryUseCase.delete(String(req.params.id), req.user!.id);
       return res.status(204).send();
     } catch (error) {
       return this.handleError(res, error);
@@ -60,11 +61,14 @@ export class GroupController {
 
   private handleError(res: Response, error: unknown) {
     const errorMessage = (error as Error).message;
-    const statusCode = errorMessage.toLowerCase().includes("not found") ? 404 : 500;
+    const lower = errorMessage.toLowerCase();
+    const statusCode = lower.includes("not found") ? 404 : lower.includes("forbidden") ? 403 : 500;
+    const publicMessage =
+      statusCode === 500 && process.env.NODE_ENV === "production" ? "Internal Server Error" : errorMessage;
 
     return res.status(statusCode).json({
-      error: statusCode === 404 ? "Not Found" : "Internal Server Error",
-      errorMessage,
+      error: statusCode === 404 ? "Not Found" : statusCode === 403 ? "Forbidden" : "Internal Server Error",
+      errorMessage: publicMessage,
     });
   }
 }

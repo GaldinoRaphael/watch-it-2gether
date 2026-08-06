@@ -1,7 +1,6 @@
 import type { MovieSearchResult } from '../entities/MovieSearchResult';
 
 export interface AddMovieToGroupInput {
-  userId: string;
   groupId: string;
   externalId: string;
   movieTitle?: string;

@@ -70,7 +70,6 @@ export function PendingVotesPage() {
     if (!user?.id || !groupId || !currentMovie) return;
     submitVote(
       {
-        userId: user.id,
         groupId,
         externalId: currentMovie.externalId,
         movieTitle: currentMovie.title,

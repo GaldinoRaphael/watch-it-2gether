@@ -50,8 +50,12 @@ export class GroupRepositoryUseCase {
     return group;
   }
 
-  async update(id: string, input: UpdateGroupInput): Promise<Group> {
+  async update(id: string, input: UpdateGroupInput, requesterId: string): Promise<Group> {
     const currentGroup = await this.getById(id);
+
+    if (currentGroup.ownerId !== requesterId) {
+      throw new Error("Forbidden: only the group owner can update this group");
+    }
 
     return this.groupRepository.update(id, {
       ...currentGroup,
@@ -61,8 +65,13 @@ export class GroupRepositoryUseCase {
     });
   }
 
-  async delete(id: string): Promise<void> {
-    await this.getById(id);
+  async delete(id: string, requesterId: string): Promise<void> {
+    const group = await this.getById(id);
+
+    if (group.ownerId !== requesterId) {
+      throw new Error("Forbidden: only the group owner can delete this group");
+    }
+
     await this.groupRepository.delete(id);
   }
 }

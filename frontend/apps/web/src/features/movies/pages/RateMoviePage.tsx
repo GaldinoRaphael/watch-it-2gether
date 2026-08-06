@@ -46,7 +46,6 @@ export function RateMoviePage() {
 
     addMovieAndVote(
       {
-        userId: user.id,
         groupId: safeGroupId,
         externalId: movie.externalId,
         movieTitle: movie.title,

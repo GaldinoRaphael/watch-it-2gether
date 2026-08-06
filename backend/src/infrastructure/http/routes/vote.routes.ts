@@ -38,7 +38,7 @@ const controller = new VoteController(voteUseCase, voteRepositoryUseCase);
  *               items:
  *                 $ref: '#/components/schemas/Vote'
  */
-router.get("/votes", (req, res) => controller.getVotes(req, res));
+router.get("/votes", authMiddleware, (req, res) => controller.getVotes(req, res));
 
 /**
  * @openapi
@@ -92,7 +92,7 @@ router.get("/groups/:groupId/votes", authMiddleware, (req, res) =>
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get("/votes/:id", (req, res) => controller.getVoteById(req, res));
+router.get("/votes/:id", authMiddleware, (req, res) => controller.getVoteById(req, res));
 
 /**
  * @openapi

@@ -17,7 +17,6 @@ export class VoteController {
       { id?: string },
       object,
       {
-        userId: string;
         groupId: string;
         externalId: string;
         movieTitle?: string;
@@ -31,10 +30,10 @@ export class VoteController {
     res: Response,
   ) {
     try {
-      const { userId, groupId, externalId, movieTitle, posterUrl, provider, rating, commentary, voteId } =
+      const { groupId, externalId, movieTitle, posterUrl, provider, rating, commentary, voteId } =
         req.body;
       const result = await this.voteUseCase.execute({
-        userId,
+        userId: req.user!.id,
         groupId,
         externalId: String(externalId),
         movieTitle,
@@ -82,6 +81,7 @@ export class VoteController {
       const vote = await this.voteRepositoryUseCase.update(
         String(req.params.id),
         req.body as UpdateVoteInput,
+        req.user!.id,
       );
       return res.json(vote);
     } catch (error) {
@@ -91,7 +91,7 @@ export class VoteController {
 
   async deleteVote(req: Request, res: Response) {
     try {
-      await this.voteRepositoryUseCase.delete(String(req.params.id));
+      await this.voteRepositoryUseCase.delete(String(req.params.id), req.user!.id);
       return res.status(204).send();
     } catch (error) {
       return this.handleError(res, error);
@@ -109,11 +109,14 @@ export class VoteController {
 
   private handleError(res: Response, error: unknown) {
     const errorMessage = (error as Error).message;
-    const statusCode = errorMessage.toLowerCase().includes("not found") ? 404 : 500;
+    const lower = errorMessage.toLowerCase();
+    const statusCode = lower.includes("not found") ? 404 : lower.includes("forbidden") ? 403 : 500;
+    const publicMessage =
+      statusCode === 500 && process.env.NODE_ENV === "production" ? "Internal Server Error" : errorMessage;
 
     return res.status(statusCode).json({
-      error: statusCode === 404 ? "Not Found" : "Internal Server Error",
-      errorMessage,
+      error: statusCode === 404 ? "Not Found" : statusCode === 403 ? "Forbidden" : "Internal Server Error",
+      errorMessage: publicMessage,
     });
   }
 }

@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { isAxiosError } from 'axios';
 import { makeRegisterUseCase } from '@watch-it/application';
 import { httpAuthRepository } from '@watch-it/infrastructure';
@@ -11,13 +11,15 @@ const registerUseCase = makeRegisterUseCase(httpAuthRepository);
 export function useRegister() {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   return useMutation({
     mutationFn: ({ name, email, password }: RegisterFormData) =>
       registerUseCase(name, email, password),
     onSuccess({ token, user }) {
       setAuth(token, user);
-      navigate('/groups', { state: { registered: true } });
+      const redirectTo = (location.state as { redirectTo?: string } | null)?.redirectTo;
+      navigate(redirectTo ?? '/groups', { state: { registered: true } });
     },
     onError(error) {
       // error message mapping happens in the component via isAxiosError

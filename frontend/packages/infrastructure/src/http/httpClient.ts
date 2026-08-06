@@ -12,3 +12,16 @@ httpClient.interceptors.request.use((config) => {
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
+
+// Auto-logout when a stored token is rejected by the server
+httpClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 && localStorage.getItem('auth_token')) {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('auth_user');
+      window.location.replace('/login');
+    }
+    return Promise.reject(error);
+  },
+);

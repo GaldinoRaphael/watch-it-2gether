@@ -25,7 +25,6 @@ export const updateVoteSchema = z.object({
 });
 
 export const voteMovieSchema = z.object({
-  userId: z.string().uuid(),
   groupId: z.string().uuid(),
   externalId: z.coerce.string().min(1),
   movieTitle: z.string().optional(),

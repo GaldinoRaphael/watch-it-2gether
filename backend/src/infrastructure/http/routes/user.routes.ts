@@ -19,6 +19,13 @@ const loginLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+const registerLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  limit: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 const router = Router();
 const repositorie = new UserRepositoryImpl(prismaService);
 const passwordHasher = new Bcrypter();
@@ -27,7 +34,7 @@ const login = new LoginUseCase(repositorie, passwordHasher);
 const userProfile = new UserProfileUseCase(repositorie);
 const controller = new UserController(register, login, userProfile);
 
-router.post("/user/register", validate(registerSchema), (req, res) =>
+router.post("/user/register", registerLimiter, validate(registerSchema), (req, res) =>
   controller.registerUser(req, res),
 );
 router.post("/user/login", loginLimiter, validate(loginSchema), (req, res) =>

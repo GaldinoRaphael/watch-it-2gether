@@ -4,7 +4,7 @@ import { environmentService } from '@watch-it/infrastructure';
 import { App } from './App';
 
 environmentService.configure({
-  apiBaseUrl: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000',
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL,
 });
 
 const rootEl = document.getElementById('root');

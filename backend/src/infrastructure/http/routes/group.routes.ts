@@ -62,7 +62,7 @@ router.get("/groups", authMiddleware, (req, res) => controller.getGroups(req, re
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get("/groups/:id", (req, res) => controller.getGroupById(req, res));
+router.get("/groups/:id", authMiddleware, (req, res) => controller.getGroupById(req, res));
 
 /**
  * @openapi
@@ -91,7 +91,7 @@ router.get("/groups/:id", (req, res) => controller.getGroupById(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.post("/groups", authMiddleware, (req, res) =>
+router.post("/groups", authMiddleware, validate(createGroupSchema), (req, res) =>
   controller.createGroup(req, res),
 );
 

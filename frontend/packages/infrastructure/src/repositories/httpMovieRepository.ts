@@ -13,7 +13,6 @@ export const httpMovieRepository: MovieRepository = {
   },
   async addToGroup(input: AddMovieToGroupInput) {
     await httpClient.post('/vote', {
-      userId: input.userId,
       groupId: input.groupId,
       externalId: String(input.externalId),
       movieTitle: input.movieTitle,

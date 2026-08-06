@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Button, TextField, Alert } from '@watch-it/ui';
@@ -10,6 +10,8 @@ import { useLogin } from '../hooks/useLogin';
 export function LoginForm() {
   const { mutate: login, isPending, isError } = useLogin();
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo = (location.state as { redirectTo?: string } | null)?.redirectTo;
 
   const {
     register,
@@ -66,7 +68,7 @@ export function LoginForm() {
           label="Criar Conta"
           variant="secondary"
           fullWidth
-          onPress={() => navigate('/register')}
+          onPress={() => navigate('/register', { state: { redirectTo } })}
         />
       </Box>
     </Box>

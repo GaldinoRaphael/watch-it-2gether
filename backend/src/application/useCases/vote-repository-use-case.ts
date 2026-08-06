@@ -56,8 +56,12 @@ export class VoteRepositoryUseCase {
     return VoteMapper.modelToDto(saved as Vote);
   }
 
-  async update(id: string, input: UpdateVoteInput): Promise<VoteDTO> {
+  async update(id: string, input: UpdateVoteInput, requesterId: string): Promise<VoteDTO> {
     const currentVote = await this.getById(id);
+
+    if (currentVote.userId !== requesterId) {
+      throw new Error("Forbidden: cannot update another user's vote");
+    }
 
     const vote = new VoteDTO(
       id,
@@ -73,8 +77,13 @@ export class VoteRepositoryUseCase {
     return VoteMapper.modelToDto(updated as Vote);
   }
 
-  async delete(id: string): Promise<void> {
-    await this.getById(id);
+  async delete(id: string, requesterId: string): Promise<void> {
+    const vote = await this.getById(id);
+
+    if (vote.userId !== requesterId) {
+      throw new Error("Forbidden: cannot delete another user's vote");
+    }
+
     await this.voteRepository.delete(id);
   }
 

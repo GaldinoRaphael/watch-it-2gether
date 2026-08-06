@@ -76,7 +76,7 @@ router.get("/movies/external/:id", authMiddleware, (req, res) => controller.getB
  *               items:
  *                 $ref: '#/components/schemas/Movie'
  */
-router.get("/movies/db", (req, res) => controller.getStoredMovies(req, res));
+router.get("/movies/db", authMiddleware, (req, res) => controller.getStoredMovies(req, res));
 
 /**
  * @openapi
@@ -106,7 +106,7 @@ router.get("/movies/db", (req, res) => controller.getStoredMovies(req, res));
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get("/movies/db/external/:externalId", (req, res) =>
+router.get("/movies/db/external/:externalId", authMiddleware, (req, res) =>
   controller.getStoredMovieByExternalId(req, res),
 );
 
@@ -138,7 +138,7 @@ router.get("/movies/db/external/:externalId", (req, res) =>
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get("/movies/db/:id", (req, res) => controller.getStoredMovieById(req, res));
+router.get("/movies/db/:id", authMiddleware, (req, res) => controller.getStoredMovieById(req, res));
 
 /**
  * @openapi

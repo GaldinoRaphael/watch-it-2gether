@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { Button, TextField, Alert } from '@watch-it/ui';
 import { registerSchema, type RegisterFormData } from '../schemas/registerSchema';
@@ -9,6 +9,8 @@ import { useRegister, getRegisterErrorMessage } from '../hooks/useRegister';
 export function RegisterForm() {
   const { mutate: register, isPending, isError, error } = useRegister();
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo = (location.state as { redirectTo?: string } | null)?.redirectTo;
 
   const {
     register: field,
@@ -76,7 +78,7 @@ export function RegisterForm() {
           label="Já tenho conta"
           variant="secondary"
           fullWidth
-          onPress={() => navigate('/login')}
+          onPress={() => navigate('/login', { state: { redirectTo } })}
         />
       </Box>
     </Box>
