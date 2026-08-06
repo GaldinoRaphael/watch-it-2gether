@@ -10,15 +10,15 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^6.1.0",
-    "@mui/material": "^6.1.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^6.5.0",
+    "@mui/material": "^6.5.0",
     "@watch-it/design-system": "workspace:*"
   },
   "devDependencies": {
-    "@types/react": "^18.3.5",
-    "typescript": "^5.5.3"
+    "@types/react": "^18.3.31",
+    "typescript": "^5.9.3"
   },
   "peerDependencies": {
     "react": "^18.3.1"

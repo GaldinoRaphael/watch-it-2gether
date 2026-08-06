@@ -10,32 +10,32 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@hookform/resolvers": "^3.9.0",
-    "@mui/icons-material": "^6.1.0",
-    "@mui/material": "^6.1.0",
-    "@tanstack/react-query": "^5.56.2",
-    "@tanstack/react-query-devtools": "^5.56.2",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@hookform/resolvers": "^3.10.0",
+    "@mui/icons-material": "^6.5.0",
+    "@mui/material": "^6.5.0",
+    "@tanstack/react-query": "^5.101.4",
+    "@tanstack/react-query-devtools": "^5.101.4",
     "@watch-it/application": "workspace:*",
     "@watch-it/design-system": "workspace:*",
     "@watch-it/domain": "workspace:*",
     "@watch-it/infrastructure": "workspace:*",
     "@watch-it/shared": "workspace:*",
     "@watch-it/ui": "workspace:*",
-    "axios": "^1.7.7",
+    "axios": "^1.19.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.53.0",
-    "react-router-dom": "^6.26.2",
-    "zod": "^3.23.8"
+    "react-hook-form": "^7.84.0",
+    "react-router-dom": "^6.30.1",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
-    "@types/node": "^22.5.4",
-    "@types/react": "^18.3.5",
-    "@types/react-dom": "^18.3.0",
-    "@vitejs/plugin-react": "^4.3.1",
-    "typescript": "^5.5.3",
-    "vite": "^5.4.2"
+    "@types/node": "^22.20.1",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.21"
   }
 }
