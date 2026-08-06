@@ -34,7 +34,7 @@ router.post("/groups/invite/:groupId", authMiddleware, (req, res) =>
   controller.createGroupInvite(req, res),
 );
 
-router.get("/groups/invite/:token", authMiddleware, (req, res) =>
+router.get("/groups/invite/:token", (req, res) =>
   controller.getGroupInvite(req, res),
 ); 
 

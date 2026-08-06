@@ -10,7 +10,8 @@ export class GroupController {
 
   async getGroups(req: Request, res: Response) {
     try {
-      const groups = await this.groupRepositoryUseCase.getAll();
+      const userId = req.user!.id;
+      const groups = await this.groupRepositoryUseCase.getAllByUserId(userId);
       return res.json(groups);
     } catch (error) {
       return this.handleError(res, error);

@@ -50,5 +50,6 @@ router.post("/user/login", loginLimiter, validate(loginSchema), (req, res) =>
  *         description: Token inválido ou ausente
  */
 router.get("/user/me", authMiddleware, (req, res) => controller.getProfile(req, res));
+router.get("/user/:id", authMiddleware, (req, res) => controller.getUserById(req, res));
 
 export default router;

@@ -8,7 +8,8 @@ export function AppLayout() {
   const { pathname } = useLocation();
   const isTaskFocusedRoute = Boolean(
     matchPath('/groups/:groupId/add-movie', pathname) ||
-      matchPath('/groups/:groupId/add-movie/rate', pathname),
+      matchPath('/groups/:groupId/add-movie/rate', pathname) ||
+      matchPath('/groups/:groupId/pending-votes', pathname),
   );
 
   return (

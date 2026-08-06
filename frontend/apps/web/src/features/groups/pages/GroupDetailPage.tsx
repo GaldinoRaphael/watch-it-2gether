@@ -3,10 +3,13 @@ import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import type { Vote } from '@watch-it/domain';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../../providers/AuthContext';
 import { AddMovieCard } from '../components/AddMovieCard';
+import { GroupInviteDialog } from '../components/GroupInviteDialog';
 import { GroupMovieCard } from '../components/GroupMovieCard';
 import { useGroup } from '../hooks/useGroup';
 import { useGroupVotes } from '../hooks/useGroupVotes';
@@ -15,6 +18,7 @@ import { useWatchedMovies } from '../hooks/useWatchedMovies';
 export function GroupDetailPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const { groupId } = useParams<{ groupId: string }>();
   const { data: group, isLoading: groupLoading, isError: groupError } = useGroup(groupId);
   const { data: watchedMovies, isLoading: moviesLoading } = useWatchedMovies(groupId);
@@ -23,6 +27,7 @@ export function GroupDetailPage() {
   const isLoading = groupLoading || moviesLoading;
 
   const watchedCount = watchedMovies?.length ?? 0;
+  const isOwner = group?.ownerId === user?.id;
 
   // Movies in this group that the current user hasn't rated yet
   const pendingCount = (() => {
@@ -100,6 +105,28 @@ export function GroupDetailPage() {
             <Typography variant="body2" sx={{ color: 'onSecondaryContainer', opacity: 0.8 }}>
               {group.members.length} {group.members.length === 1 ? 'membro' : 'membros'}
             </Typography>
+
+            {isOwner && (
+              <Button
+                variant="contained"
+                onClick={() => setInviteDialogOpen(true)}
+                startIcon={<GroupAddIcon />}
+                sx={{
+                  mt: 2,
+                  bgcolor: 'background.paper',
+                  color: 'secondary.dark',
+                  textTransform: 'none',
+                  fontWeight: 700,
+                  border: '2px solid',
+                  borderColor: 'background.paper',
+                  borderBottomWidth: '4px',
+                  '&:hover': { bgcolor: 'background.default' },
+                  '&:active': { transform: 'translateY(2px)', borderBottomWidth: '2px' },
+                }}
+              >
+                Convidar amigos
+              </Button>
+            )}
           </Box>
 
 
@@ -196,7 +223,7 @@ export function GroupDetailPage() {
           <Button
             variant="contained"
             color="error"
-            onClick={() => navigate(`/groups/${groupId}/add-movie`)}
+            onClick={() => navigate(`/groups/${groupId}/pending-votes`)}
             sx={{
               borderRadius: '0.75rem',
               fontWeight: 800,
@@ -237,10 +264,19 @@ export function GroupDetailPage() {
               title={movie.title}
               posterUrl={movie.posterUrl}
               averageRating={movie.averageRating}
+              onPress={() => navigate(`/groups/${groupId}/movie/${movie.movieId}`)}
             />
           ))}
         </Box>
       </Box>
+
+      {groupId && (
+        <GroupInviteDialog
+          open={inviteDialogOpen}
+          groupId={groupId}
+          onClose={() => setInviteDialogOpen(false)}
+        />
+      )}
     </Box>
   );
 }

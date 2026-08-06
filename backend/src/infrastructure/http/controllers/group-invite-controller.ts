@@ -44,10 +44,26 @@ export class GroupInviteController {
 
   private handleError(res: Response, error: unknown) {
     const errorMessage = (error as Error).message;
-    const statusCode = errorMessage.toLowerCase().includes("not found") ? 404 : 500;
+    const normalizedMessage = errorMessage.toLowerCase();
+
+    let statusCode = 500;
+    if (normalizedMessage.includes("not found")) {
+      statusCode = 404;
+    } else if (normalizedMessage.includes("only owner")) {
+      statusCode = 403;
+    } else if (normalizedMessage.includes("already a member")) {
+      statusCode = 409;
+    }
+
+    const errorTypeByStatus: Record<number, string> = {
+      403: "Forbidden",
+      404: "Not Found",
+      409: "Conflict",
+      500: "Internal Server Error",
+    };
 
     return res.status(statusCode).json({
-      error: statusCode === 404 ? "Not Found" : "Internal Server Error",
+      error: errorTypeByStatus[statusCode] ?? "Internal Server Error",
       errorMessage,
     });
   }

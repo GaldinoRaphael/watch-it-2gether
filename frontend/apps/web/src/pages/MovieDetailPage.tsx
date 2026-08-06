@@ -1,7 +1,1 @@
-import Typography from '@mui/material/Typography';
-import { useParams } from 'react-router-dom';
-
-export function MovieDetailPage() {
-  const { movieId } = useParams<{ movieId: string }>();
-  return <Typography variant="h4">Filme {movieId}</Typography>;
-}
+export { MovieDetailPage } from '../features/movies/pages/MovieDetailPage';

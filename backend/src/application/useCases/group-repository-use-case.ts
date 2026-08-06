@@ -33,6 +33,10 @@ export class GroupRepositoryUseCase {
     return this.groupRepository.getAll();
   }
 
+  async getAllByUserId(userId: string): Promise<Group[]> {
+    return this.groupRepository.findAllByUserId(userId);
+  }
+
   async create(input: CreateGroupInput): Promise<Group> {
     const group = await this.groupRepository.save({
       id: randomUUID(),

@@ -23,4 +23,8 @@ export const httpMovieRepository: MovieRepository = {
       commentary: input.commentary ?? '',
     });
   },
+  async getByExternalId(externalId: string) {
+    const { data } = await httpClient.get<MovieSearchResultDTO>(`/movies/external/${externalId}`);
+    return MovieSearchResultMapper.toDomain(data);
+  },
 };

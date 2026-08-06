@@ -7,11 +7,15 @@ interface GroupMovieCardProps {
   title: string;
   posterUrl: string | null;
   averageRating: number | null;
+  onPress?: () => void;
 }
 
-export function GroupMovieCard({ title, posterUrl, averageRating }: GroupMovieCardProps) {
+export function GroupMovieCard({ title, posterUrl, averageRating, onPress }: GroupMovieCardProps) {
   return (
     <Box
+      component={onPress ? 'button' : 'div'}
+      type={onPress ? 'button' : undefined}
+      onClick={onPress}
       sx={{
         width: '100%',
         border: '2px solid',
@@ -20,8 +24,11 @@ export function GroupMovieCard({ title, posterUrl, averageRating }: GroupMovieCa
         borderRadius: '1rem',
         p: 1,
         bgcolor: 'background.paper',
+        cursor: onPress ? 'pointer' : 'default',
         transition: 'transform 150ms ease',
-        '&:hover': { transform: 'translateY(-2px)' },
+        '&:hover': onPress ? { transform: 'translateY(-2px)' } : {},
+        '&:active': onPress ? { transform: 'translateY(2px)', borderBottomWidth: '2px' } : {},
+        textAlign: 'left',
       }}
     >
       <Box

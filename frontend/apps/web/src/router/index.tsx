@@ -10,6 +10,11 @@ import { GuestGuard } from '../features/auth/guards/GuestGuard';
 
 export const router = createBrowserRouter([
   {
+    path: '/invite/:token',
+    lazy: () =>
+      import('../pages/InvitePage').then((m) => ({ Component: m.InvitePage })),
+  },
+  {
     element: <GuestGuard />,
     children: [
       { path: '/login', element: <LoginPage /> },
@@ -39,6 +44,11 @@ export const router = createBrowserRouter([
             path: 'groups/:groupId/add-movie/rate',
             lazy: () =>
               import('../pages/RateMoviePage').then((m) => ({ Component: m.RateMoviePage })),
+          },
+          {
+            path: 'groups/:groupId/pending-votes',
+            lazy: () =>
+              import('../pages/PendingVotesPage').then((m) => ({ Component: m.PendingVotesPage })),
           },
           {
             path: 'groups/:groupId/movie/:movieId',

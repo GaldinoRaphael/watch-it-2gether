@@ -45,6 +45,15 @@ export class UserController {
     }
   }
 
+  async getUserById(req: Request, res: Response) {
+    try {
+      const { id, name } = await this.userProfileUseCase.getProfile(String(req.params.id));
+      return res.json({ id, name });
+    } catch (error) {
+      return this.handleError(res, error);
+    }
+  }
+
   private handleError(res: Response, error: unknown) {
     const errorMessage = (error as Error).message;
     if (errorMessage.toLowerCase().includes("email already in use")) {

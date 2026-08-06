@@ -19,4 +19,9 @@ export const httpUserRepository: UserRepository = {
     const { data } = await httpClient.get<VoteDTO[]>('/votes');
     return data.filter((v) => v.userId === userId).length;
   },
+
+  async getUserById(id: string) {
+    const { data } = await httpClient.get<{ id: string; name: string }>(`/user/${id}`);
+    return data;
+  },
 };

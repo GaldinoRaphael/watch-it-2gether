@@ -18,6 +18,14 @@ export class GroupRepositoryImpl implements GroupRepository {
     return groups;
   }
 
+  async findAllByUserId(userId: string): Promise<Group[]> {
+    const members = await this.repositoryClient.client.groupMember.findMany({
+      where: { userId },
+      include: { group: true },
+    });
+    return members.map((m) => m.group);
+  }
+
   async save(entity: Group): Promise<Group> {
     const group = await this.repositoryClient.client.group.create({
       data: {

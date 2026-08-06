@@ -14,4 +14,5 @@ export interface AddMovieToGroupInput {
 export interface MovieRepository {
   search(query: string): Promise<MovieSearchResult[]>;
   addToGroup(input: AddMovieToGroupInput): Promise<void>;
+  getByExternalId(externalId: string): Promise<MovieSearchResult>;
 }

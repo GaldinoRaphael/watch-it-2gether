@@ -57,6 +57,7 @@ const controller = new MovieController(searchMoviesUseCase, movieRepositoryUseCa
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.get("/movies/search", searchLimiter, (req, res) => controller.search(req, res));
+router.get("/movies/external/:id", authMiddleware, (req, res) => controller.getById(req, res));
 
 /**
  * @openapi

@@ -11,3 +11,7 @@ export function makeGetTotalRatingsUseCase(repository: UserRepository) {
     return repository.getTotalRatings(userId);
   };
 }
+
+export function makeGetUserByIdUseCase(repository: UserRepository) {
+  return (id: string) => repository.getUserById(id);
+}

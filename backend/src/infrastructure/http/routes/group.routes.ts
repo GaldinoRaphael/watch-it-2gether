@@ -32,7 +32,7 @@ const controller = new GroupController(groupRepositoryUseCase);
  *               items:
  *                 $ref: '#/components/schemas/Group'
  */
-router.get("/groups", (req, res) => controller.getGroups(req, res));
+router.get("/groups", authMiddleware, (req, res) => controller.getGroups(req, res));
 
 /**
  * @openapi

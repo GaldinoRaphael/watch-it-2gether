@@ -11,10 +11,16 @@ export { makeSearchMoviesUseCase } from './useCases/searchMoviesUseCase';
 export { makeAddMovieToGroupUseCase } from './useCases/addMovieToGroupUseCase';
 export type { UserProfileDTO } from './dto/UserProfileDTO';
 export { UserProfileMapper } from './mappers/UserProfileMapper';
-export { makeGetProfileUseCase, makeGetTotalRatingsUseCase } from './useCases/profileUseCases';
+export { makeGetProfileUseCase, makeGetTotalRatingsUseCase, makeGetUserByIdUseCase } from './useCases/profileUseCases';
 export type { WatchedMovieDTO } from './dto/WatchedMovieDTO';
 export { WatchedMovieMapper } from './mappers/WatchedMovieMapper';
 export { makeGetWatchedMoviesUseCase } from './useCases/watchedMovieUseCases';
 export type { GroupVoteDTO } from './dto/GroupVoteDTO';
 export { GroupVoteMapper } from './mappers/GroupVoteMapper';
 export { makeGetGroupVotesUseCase } from './useCases/groupVoteUseCases';
+export { makeGetMovieSynopsisUseCase } from './useCases/movieDetailUseCase';
+export {
+	makeCreateGroupInviteUseCase,
+	makeGetGroupInviteUseCase,
+	makeAcceptGroupInviteUseCase,
+} from './useCases/groupInviteUseCases';
