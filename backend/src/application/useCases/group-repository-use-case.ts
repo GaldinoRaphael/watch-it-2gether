@@ -19,22 +19,29 @@ export interface UpdateGroupInput {
 export class GroupRepositoryUseCase {
   constructor(private readonly groupRepository: GroupRepository, private readonly groupMemberRepository: GroupMemberRepository) {}
 
-  async getById(id: string): Promise<Group> {
+  async getById(id: string): Promise<Group & { memberCount: number }> {
     const group = await this.groupRepository.findByID(id);
 
     if (!group) {
       throw new Error("Group not found");
     }
 
-    return group;
+    const memberCount = await this.groupMemberRepository.countMembers(id);
+    return { ...group, memberCount };
   }
 
   async getAll(): Promise<Group[]> {
     return this.groupRepository.getAll();
   }
 
-  async getAllByUserId(userId: string): Promise<Group[]> {
-    return this.groupRepository.findAllByUserId(userId);
+  async getAllByUserId(userId: string): Promise<(Group & { memberCount: number })[]> {
+    const groups = await this.groupRepository.findAllByUserId(userId);
+    return Promise.all(
+      groups.map(async (group) => ({
+        ...group,
+        memberCount: await this.groupMemberRepository.countMembers(group.id),
+      })),
+    );
   }
 
   async create(input: CreateGroupInput): Promise<Group> {

@@ -8,6 +8,7 @@ export const GroupMapper = {
       name: dto.name,
       ownerId: dto.ownerId,
       members: [],
+      memberCount: dto.memberCount ?? 0,
       movieCount: 0,
       createdAt: new Date(dto.createdAt),
     };

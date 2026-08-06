@@ -103,7 +103,7 @@ export function GroupDetailPage() {
               {group.name}
             </Typography>
             <Typography variant="body2" sx={{ color: 'onSecondaryContainer', opacity: 0.8 }}>
-              {group.members.length} {group.members.length === 1 ? 'membro' : 'membros'}
+              {group.memberCount} {group.memberCount === 1 ? 'membro' : 'membros'}
             </Typography>
 
             {isOwner && (
