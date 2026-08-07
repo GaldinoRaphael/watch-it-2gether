@@ -9,5 +9,7 @@ export function useWatchedMovies(groupId?: string) {
     queryKey: ['watched-movies', groupId],
     queryFn: () => getWatchedMovies(groupId as string),
     enabled: Boolean(groupId),
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 }

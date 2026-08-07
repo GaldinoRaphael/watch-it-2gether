@@ -13,6 +13,8 @@ export function useAddMovieToGroup(groupId: string) {
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['group', groupId] }),
         queryClient.invalidateQueries({ queryKey: ['groups'] }),
+        queryClient.invalidateQueries({ queryKey: ['watched-movies', groupId] }),
+        queryClient.invalidateQueries({ queryKey: ['group-votes', groupId] }),
       ]);
     },
   });

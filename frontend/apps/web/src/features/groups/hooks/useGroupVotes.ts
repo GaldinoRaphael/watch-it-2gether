@@ -9,6 +9,7 @@ export function useGroupVotes(groupId?: string) {
     queryKey: ['group-votes', groupId],
     queryFn: () => getGroupVotes(groupId as string),
     enabled: Boolean(groupId),
-    staleTime: 30_000,
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 }
