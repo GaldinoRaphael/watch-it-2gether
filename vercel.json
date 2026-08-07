@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd frontend && pnpm install && pnpm run build",
+  "outputDirectory": "frontend/apps/web/dist",
+  "installCommand": "npm install -g pnpm@11.20.0"
+}
