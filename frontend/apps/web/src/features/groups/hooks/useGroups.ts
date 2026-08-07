@@ -10,6 +10,7 @@ export function useGroups() {
     queryKey: ['groups'],
     queryFn: listGroups,
     staleTime: 0,
+    refetchOnMount: 'always',
   });
 }
 
