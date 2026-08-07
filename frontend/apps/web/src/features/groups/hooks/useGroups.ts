@@ -9,6 +9,7 @@ export function useGroups() {
   return useQuery({
     queryKey: ['groups'],
     queryFn: listGroups,
+    staleTime: 0,
   });
 }
 
