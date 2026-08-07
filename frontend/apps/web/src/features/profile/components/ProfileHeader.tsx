@@ -47,7 +47,7 @@ export function ProfileHeader({ name, email, createdAt, onEditAvatar }: ProfileH
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: (t) => `0 6px 0 0 ${(t.palette as Record<string, unknown>).outlineVariant as string ?? t.palette.divider}`,
+            boxShadow: (t) => `0 6px 0 0 ${(t.palette as unknown as Record<string, unknown>)['outlineVariant'] as string ?? t.palette.divider}`,
             overflow: 'hidden',
           }}
         >
