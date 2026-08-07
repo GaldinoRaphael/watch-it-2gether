@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/main/server.ts",
     "compile": "npx tsc",
-    "build": "npx prisma generate && npx tsc",
+    "build": "npx prisma generate && npx tsc && node -e \"require('fs').cpSync('src/infrastructure/database/prisma/generated','dist/infrastructure/database/prisma/generated',{recursive:true})\"",
     "start": "node ./dist/main/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
